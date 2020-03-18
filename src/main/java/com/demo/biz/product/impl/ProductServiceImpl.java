@@ -58,10 +58,23 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public void deleteProducts(List<Integer> productList) {
+		// TODO Auto-generated method stub
+		dao.deleteProducts(productList);
+	}
+	
+	@Override
 	public void modifyProduct(ProductVO vo) {
 		// TODO Auto-generated method stub
 		dao.modifyProduct(vo);
 	}
+
+	@Override
+	public void modifyCheckedProduct(ProductVO vo) {
+		// TODO Auto-generated method stub
+		dao.modifyCheckedProduct(vo);
+	}
+
 
 
 }

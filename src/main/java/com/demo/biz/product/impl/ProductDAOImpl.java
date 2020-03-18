@@ -58,10 +58,23 @@ public class ProductDAOImpl implements ProductDAO {
 		// TODO Auto-generated method stub
 		session.delete(NAMESPACE + ".deleteProduct", pdNo);
 	}
-
+	
+	@Override
+	public void deleteProducts(List<Integer> productList) {
+		// TODO Auto-generated method stub
+		session.delete(NAMESPACE + ".deleteProducts", productList);
+	}
+	
 	@Override
 	public void modifyProduct(ProductVO vo) {
 		// TODO Auto-generated method stub
 		session.update(NAMESPACE + ".modifyProduct", vo);
 	}
+
+	@Override
+	public void modifyCheckedProduct(ProductVO vo) {
+		// TODO Auto-generated method stub
+		session.update(NAMESPACE + ".modifyCheckedProduct", vo);
+	}
+
 }

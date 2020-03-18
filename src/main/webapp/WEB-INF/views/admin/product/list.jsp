@@ -52,6 +52,8 @@
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">LIST PAGING</h3>
+								<button type="button" id="btnCheckDelete" class="btn btn-sm btn-danger" style="float: right;">체크 삭제</button>
+								<button type="button" id="btnCheckModify" class="btn btn-sm btn-info" style="float: right;">체크 수정</button>
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered text-center">
@@ -63,6 +65,7 @@
 										<th>상품 이름</th>
 										<th>가격</th>
 										<th>세일</th>
+										<th>진열</th>
 										<th>등록 날짜</th>
 										<th>재고 수량</th>
 										<th>수정</th>
@@ -72,18 +75,24 @@
 									<c:forEach items="${productList}" var="productVO">
 
 										<tr>
-											<td><input type="checkbox" class="checkbox" name="checkbox" value="${productVO.pdNo }"></td>
+											<td><input type="checkbox" class="checkbox check" name="checkbox" value="${productVO.pdNo }"></td>
 											<td>${productVO.pdNo }</td>
 											<td><a href="/admin/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
 											<img src="/admin/product/displayFile?fileName=${productVO.pdImg }" alt="Attachment"></a></td>
 											<td>${productVO.ctgyNm }</td>
 											<td><a href="/admin/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
 											${productVO.pdNm }</a></td>
-											<td><input type="text" pattern="[0-9]+" class="text-center" style="width:50px;" value="${productVO.pdTag }"></td>
-											<td><input type="text" pattern="[0-9]+" class="text-center" style="width:30px;" value="${productVO.pdSale }"></td>
+											<td><input type="text" pattern="[0-9]+" class="text-center pdTag" style="width:50px;" value="${productVO.pdTag }"></td>
+											<td><input type="text" pattern="[0-9]+" class="text-center pdSale" style="width:30px;" value="${productVO.pdSale }"></td>
+											<c:if test="${productVO.pdStatus eq 'Y' }">
+											<td><input type="checkbox" class="checkbox status" name="pdStatus" checked>
+											</c:if>
+											<c:if test="${productVO.pdStatus eq 'N' }">
+											<td><input type="checkbox" class="checkbox status" name="pdStatus">
+											</c:if>
 											<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
 													value="${productVO.pdEnldt}" /></td>
-											<td><input type="text" pattern="[0-9]+" class="text-center" style="width:30px;" value="${productVO.pdStock }"></td>
+											<td><input type="text" pattern="[0-9]+" class="text-center pdStock" style="width:30px;" value="${productVO.pdStock }"></td>
 											<td><button type="button" class="modbtn btn btn-success" id="btnModify">수정</button></td>
 											<td><button type="button" class="delbtn btn btn-danger" id="btnDelete">삭제</button></td>
 
@@ -199,6 +208,103 @@
 
 			});
 
+			$('#btnCheckModify').on('click', function() {
+
+				let checkArr = [];
+				let modifyArr = [];
+
+				$('tr .check:checked').each(function() {
+					checkArr.push($(this).val());
+
+					let status = 'N';
+					
+					if($(this).parent().parent().find('.status').is(':checked'))
+						status = 'Y';
+					
+			        let data = {pdTag   : $(this).parent().parent().find('.pdTag').val(), 
+	                      	 	pdSale  : $(this).parent().parent().find('.pdSale').val(), 
+	                        	pdStock  : $(this).parent().parent().find('.pdStock').val(),
+	                        	pdStatus : status
+	                };
+
+	                modifyArr.push(data);
+				});
+
+				alert(modifyArr[0]['pdTag']);
+
+				
+				$.ajax({
+			        type		: "post",
+			        url 		: "modifyChecked",
+			        data		: {productList : checkArr},
+			        success 	: function(data) {
+
+						self.location = "list"
+							+ '${pageMaker.makeQuery(1)}'
+							+ "&searchType="
+							+ $("select option:selected").val()
+							+ "&keyword="
+							+ $('#keywordInput').val();
+			        }
+			  	});
+				/*
+				$('tr .check:checked').each(function() {
+
+					let status = 'N';
+					
+					if($(this).parent().parent().find('.status').is(':checked'))
+						status = 'Y';
+
+			        let data = {pdNo    : $(this).val(),
+					        	pdTag   : $(this).parent().parent().find('.pdTag').val(), 
+		                        pdSale  : $(this).parent().parent().find('.pdSale').val(), 
+		                        pdStock  : $(this).parent().parent().find('.pdStock').val(),
+		                        pdStatus : status
+		         	};
+
+		             $.ajax({
+					        type		: "put",
+					        url 		: "modifyChecked",
+					        data		:  JSON.stringify(data), 
+					        contentType : "application/json",
+					        success 	: function(data) {
+
+								self.location = "list"
+									+ '${pageMaker.makeQuery(1)}'
+									+ "&searchType="
+									+ $("select option:selected").val()
+									+ "&keyword="
+									+ $('#keywordInput').val();
+					        }
+					  });
+				});
+				*/
+			});
+
+			$('#btnCheckDelete').on('click', function() {
+
+				let checkArr = [];
+				
+				$('tr .check:checked').each(function() {
+					checkArr.push($(this).val());
+				});
+
+				$.ajax({
+			        type		: "get",
+			        url 		: "deleteChecked",
+			        data		: {productList : checkArr},
+			        success 	: function(data) {
+
+						self.location = "list"
+							+ '${pageMaker.makeQuery(1)}'
+							+ "&searchType="
+							+ $("select option:selected").val()
+							+ "&keyword="
+							+ $('#keywordInput').val();
+			        }
+			  	});
+				
+			});
 			// 파일 업로드한거 삭제 요망
 			/*
 			$(".uploadedList .delbtn").each((index, item) => {

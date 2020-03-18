@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="registerProduct">
 		<![CDATA[
 			INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO), 0)+1 FROM PRODUCTS_TB),
-			#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm}, #{pdTag}, #{pdSale}, #{pdImg}, #{pdDetl}, #{pdStock}, SYSDATE, SYSDATE)
+			#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm}, #{pdTag}, #{pdSale}, #{pdStatus}, #{pdImg}, #{pdDetl}, #{pdStock}, SYSDATE, SYSDATE)
 		]]>
 	</insert>
 
@@ -62,12 +62,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</delete>
 	
+	<delete id="deleteProducts" parameterType="list">
+		<![CDATA[
+			DELETE FROM PRODUCTS_TB WHERE PD_NO IN
+		]]>
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
 	<update id="modifyProduct" parameterType="product">
 		<![CDATA[
 			UPDATE PRODUCTS_TB SET CTGY_PTCD=#{ctgyPtcd}, CTGY_PTNM=#{ctgyPtnm}, CTGY_CD=#{ctgyCd}, CTGY_NM=#{ctgyNm}, 
-			PD_NM=#{pdNm}, PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_IMG=#{pdImg}, PD_DETL=#{pdDetl}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
+			PD_NM=#{pdNm}, PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_IMG=#{pdImg}, PD_DETL=#{pdDetl}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
 			WHERE PD_NO=#{pdNo}
 		]]>
 	</update>
+	
+	<update id="modifyCheckedProduct" parameterType="product">
+		<![CDATA[
+			UPDATE PRODUCTS_TB SET PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
+			WHERE PD_NO=#{pdNo}
+		]]>
+	</update>
+	
 
 </mapper>

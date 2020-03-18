@@ -23,9 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -235,43 +235,102 @@ public class AdminProductController {
 	@RequestMapping(value = "delete/{pdNo}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteProduct(HttpServletRequest request, @PathVariable("pdNo") Integer pdNo) {
 		
+		ResponseEntity<String> entity = null;
+		
 		ProductVO vo = service.getProduct(pdNo);
 		String uploadPath = request.getSession().getServletContext().getRealPath("/") + "resources\\upload\\";
 		
-		// Delete product_img
-		String fileName = vo.getPdImg();
-		logger.info("delete pdImg : " + fileName);
+		try {
 		
-		String front = fileName.substring(0,12);
-		String end = fileName.substring(14);
-		new File(uploadPath + (front+end).replace('/', File.separatorChar)).delete();
-		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
-		
-		// Delete product_detl_img
-		String content = vo.getPdDetl();
-		int index = content.indexOf("src=");
-		List<String> imgList = new ArrayList<>();
-		
-		while(index > -1) {
-			String img = content.substring(index + 13).split("\"")[0];
-			imgList.add(img);
-			content = content.substring(index + 13 + img.length());
-			index = content.indexOf("src=");
+			// Delete product_img
+			String fileName = vo.getPdImg();
+			logger.info("delete pdImg : " + fileName);
+			
+			String front = fileName.substring(0,12);
+			String end = fileName.substring(14);
+			new File(uploadPath + (front+end).replace('/', File.separatorChar)).delete();
+			new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+			
+			// Delete product_detl_img
+			String content = vo.getPdDetl();
+			int index = content.indexOf("src=");
+			List<String> imgList = new ArrayList<>();
+			
+			while(index > -1) {
+				String img = content.substring(index + 13).split("\"")[0];
+				imgList.add(img);
+				content = content.substring(index + 13 + img.length());
+				index = content.indexOf("src=");
+			}
+			
+			for(String img : imgList)
+				new File(uploadPath + img).delete();
+			
+			service.deleteProduct(pdNo);
+			
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
+		} catch(Exception e) {
+			
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
-		for(String img : imgList)
-			new File(uploadPath + img).delete();
+		return entity;
+	}
+	
+	// DELETE 방식으로 변경해야 함.
+	@ResponseBody
+	@RequestMapping(value = "deleteChecked", method = RequestMethod.GET)
+	public ResponseEntity<String> deleteCheckedProduct(HttpServletRequest request, @RequestParam("productList[]") List<Integer> productList) {
 		
-		service.deleteProduct(pdNo);
+		ResponseEntity<String> entity = null;
 		
-		return new ResponseEntity<String>(HttpStatus.OK);
+		String uploadPath = request.getSession().getServletContext().getRealPath("/") + "resources\\upload\\";
+		
+		for(int pdNo : productList) {
+			
+			ProductVO vo = service.getProduct(pdNo);
+			
+			// Delete product_img
+			String fileName = vo.getPdImg();
+			logger.info("delete pdImg : " + fileName);
+						
+			String front = fileName.substring(0,12);
+			String end = fileName.substring(14);
+			new File(uploadPath + (front+end).replace('/', File.separatorChar)).delete();
+			new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+			
+			// Delete product_detl_img
+			String content = vo.getPdDetl();
+			int index = content.indexOf("src=");
+			List<String> imgList = new ArrayList<>();
+						
+			while(index > -1) {
+				String img = content.substring(index + 13).split("\"")[0];
+				imgList.add(img);
+				content = content.substring(index + 13 + img.length());
+				index = content.indexOf("src=");
+			}
+				
+			for(String img : imgList)
+				new File(uploadPath + img).delete();
+		}
+		
+		try {
+			service.deleteProducts(productList);
+			entity = new ResponseEntity<String>(HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 	
 	@RequestMapping(value = "read", method = RequestMethod.GET)
 	public void readProduct(@RequestParam("pdNo") Integer pdNo, @ModelAttribute("cri") SearchCriteria cri, Model model) {
 
 		logger.info(service.getProduct(pdNo).toString());
-		System.out.println(service.getProduct(pdNo).toString());
+		
 		model.addAttribute("productVO", service.getProduct(pdNo));
 		
 	}
@@ -344,7 +403,6 @@ public class AdminProductController {
 				new File(uploadPath + img).delete();
 			}
 		}
-		
 		service.modifyProduct(vo);
 		
 		rttr.addAttribute("page", cri.getPage());
@@ -353,5 +411,43 @@ public class AdminProductController {
 	    rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:list";
+	}
+	/*
+	@ResponseBody
+	@RequestMapping(value = "modifyChecked", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyCheckedProduct(@RequestBody ProductVO vo) {
+		
+		logger.info("modifyCheckedProduct : " + vo.toString());
+		
+		ResponseEntity<String> entity = null;
+
+		try {
+			service.modifyCheckedProduct(vo);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	*/
+	
+	// PUT으로 바꿔야 함
+	@ResponseBody
+	@RequestMapping(value = "modifyChecked", method = RequestMethod.POST)
+	public ResponseEntity<String> modifyCheckedProduct(List<Integer> productList) {
+		
+		ResponseEntity<String> entity = null;
+		
+		System.out.println(productList);
+		
+		try {
+//			service.modifyCheckedProduct(vo);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 }

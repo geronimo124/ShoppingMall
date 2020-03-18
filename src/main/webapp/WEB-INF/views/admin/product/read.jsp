@@ -41,20 +41,24 @@
 											id="pdNm" class="form-control" value="${productVO.pdNm }"
 											readonly="readonly">
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdTag">상품 가격</label> <input type="text"
 											name='pdTag' id="pdTag" class="form-control"
 											value="${productVO.pdTag }" readonly="readonly">
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdSale">할인율</label> <input type="text"
 											name='pdSale' id="pdSale" class="form-control" value="${productVO.pdSale }"
 											readonly="readonly">
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdStock">재고 수량</label> <input type="text"
 											name='pdStock' id="pdStock" class="form-control"
 											value="${productVO.pdStock }" readonly="readonly">
+									</div>
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
+										<label for="pdStatus" style="display: block;">진열 상태</label> 
+										<input type="text" class="form-control" value="${productVO.pdStatus }" readonly="readonly">
 									</div>
 									<div class="form-group">
 										<label for="pdDetl">상품 내용</label>

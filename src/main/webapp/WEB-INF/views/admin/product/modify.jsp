@@ -64,20 +64,33 @@
 											id="pdNm" class="form-control" placeholder="Enter Name" value="${productVO.pdNm }"
 											required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdTag">상품 가격</label> <input type="text"
 											name='pdTag' id="pdTag" class="form-control"
 											placeholder="Enter Price" pattern="[0-9]+" value="${productVO.pdTag }" required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdSale">할인율</label> <input type="text"
 											name='pdSale' id="pdSale" class="form-control" value="${productVO.pdSale }"
 											pattern="[0-9]+" required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdStock">재고 수량</label> <input type="text"
 											name='pdStock' id="pdStock" class="form-control"
 											placeholder="Enter Stock" pattern="[0-9]+" value="${productVO.pdStock }" required>
+									</div>
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
+										<label for="pdStatus" style="display: block;">진열 상태</label> 
+										<select name="pdStatus" class="form-control select2" required>
+										<c:if test="${productVO.pdStatus eq 'Y' }">
+											<option value="Y" selected="selected">Y</option>
+											<option value="N">N</option>
+										</c:if>
+										<c:if test="${productVO.pdStatus eq 'N' }">
+											<option value="Y">Y</option>
+											<option value="N" selected="selected">N</option>
+										</c:if>
+										</select>								
 									</div>
 									<div class="form-group">
 										<label for="pdDetl">상품 내용</label>

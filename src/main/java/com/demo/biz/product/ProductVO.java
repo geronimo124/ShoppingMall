@@ -16,6 +16,7 @@ public class ProductVO implements Serializable {
 	private String pdNm;
 	private Integer pdTag;
 	private Integer pdSale;
+	private String pdStatus;
 	private String pdImg;
 	private String pdDetl;
 	private Integer pdStock;
@@ -88,6 +89,14 @@ public class ProductVO implements Serializable {
 		this.pdSale = pdSale;
 	}
 
+	public String getPdStatus() {
+		return pdStatus;
+	}
+
+	public void setPdStatus(String pdStatus) {
+		this.pdStatus = pdStatus;
+	}
+
 	public String getPdImg() {
 		return pdImg;
 	}
@@ -139,8 +148,8 @@ public class ProductVO implements Serializable {
 	@Override
 	public String toString() {
 		return "ProductVO [pdNo=" + pdNo + ", ctgyPtcd=" + ctgyPtcd + ", ctgyPtnm=" + ctgyPtnm + ", ctgyCd=" + ctgyCd
-				+ ", ctgyNm=" + ctgyNm + ", pdNm=" + pdNm + ", pdTag=" + pdTag + ", pdSale=" + pdSale + ", pdImg="
-				+ pdImg + ", pdDetl=" + pdDetl + ", pdStock=" + pdStock + ", pdEnldt=" + pdEnldt + ", pdUpddt="
-				+ pdUpddt + ", file=" + file + "]";
+				+ ", ctgyNm=" + ctgyNm + ", pdNm=" + pdNm + ", pdTag=" + pdTag + ", pdSale=" + pdSale + ", pdStatus="
+				+ pdStatus + ", pdImg=" + pdImg + ", pdDetl=" + pdDetl + ", pdStock=" + pdStock + ", pdEnldt=" + pdEnldt
+				+ ", pdUpddt=" + pdUpddt + ", file=" + file + "]";
 	}
 }

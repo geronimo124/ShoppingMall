@@ -52,20 +52,28 @@
 											id="pdNm" class="form-control" placeholder="Enter Name"
 											required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdTag">상품 가격</label> <input type="text"
 											name='pdTag' id="pdTag" class="form-control"
 											placeholder="Enter Price" pattern="[0-9]+" required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdSale">할인율</label> <input type="text"
 											name='pdSale' id="pdSale" class="form-control" value="0"
 											pattern="[0-9]+" required>
 									</div>
-									<div class="form-group">
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
 										<label for="pdStock">재고 수량</label> <input type="text"
 											name='pdStock' id="pdStock" class="form-control"
 											placeholder="Enter Stock" pattern="[0-9]+" required>
+									</div>
+									<div class="form-group" style="width: 49.8%; display: inline-block;">
+										<label for="pdStatus" style="display: block;">진열 상태</label> 
+										<select
+											name="pdStatus" class="form-control select2" required>
+											<option value="Y" selected="selected">Y</option>
+											<option value="N">N</option>
+										</select>										
 									</div>
 									<div class="form-group">
 										<label for="pdDetl">상품 내용</label>

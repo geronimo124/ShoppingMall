@@ -8,6 +8,7 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias alias="list" type="java.util.List" />
 		<typeAlias alias="admin" type="com.demo.biz.admin.AdminVO" />
 		<typeAlias alias="product" type="com.demo.biz.product.ProductVO" />
 		<typeAlias alias="category" type="com.demo.biz.product.CategoryVO" />
