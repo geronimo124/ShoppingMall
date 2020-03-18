@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.MemberMapper">
+
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO MEMBERS_TB (MB_ID, MB_PW, MB_NM, MB_NICK, MB_PHONE, MB_EMAIL, MB_ZIP, MB_ADDR, MB_DEADDR)
+			VALUES (#{mbId}, #{mbPw}, #{mbNm}, #{mbNick}, #{mbPhone}, #{mbEmail}, #{mbZip}, #{mbAddr}, #{mbDeAddr})
+		]]>
+	</insert>
+
+</mapper>

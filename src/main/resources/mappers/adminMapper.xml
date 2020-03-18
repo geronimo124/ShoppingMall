@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.AdminMapper">
+
+	<select id="login" resultType="admin">
+		<![CDATA[
+			SELECT ADM_ID, ADM_PW, ADM_NM, ADM_CONDT FROM ADMIN_TB WHERE ADM_ID=#{id}
+		]]>
+	</select>
+
+	<update id="updateConDate">
+		<![CDATA[
+			UPDATE ADMIN_TB SET ADM_CONDT=SYSDATE WHERE ADM_ID=#{id}
+		]]>
+	</update>
+</mapper>

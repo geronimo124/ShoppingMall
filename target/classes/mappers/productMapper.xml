@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.ProductMapper">
+
+	<insert id="registerProduct">
+		<![CDATA[
+			INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO), 0)+1 FROM PRODUCTS_TB),
+			#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm}, #{pdTag}, #{pdSale}, #{pdImg}, #{pdDetl}, #{pdStock}, SYSDATE, SYSDATE)
+		]]>
+	</insert>
+
+	<select id="getProductList" resultType="product">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
+				FROM PRODUCTS_TB P WHERE 1=1
+		]]>
+				<include refid="search"></include>		
+		<![CDATA[
+			)
+			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
+		]]>
+	</select>
+	
+	<select id="countProductList" resultType="int">
+		<![CDATA[
+			SELECT COUNT(PD_NO) FROM PRODUCTS_TB WHERE 1=1
+		]]>
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'n'.toString()">
+				AND PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND CTGY_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getCategoryList" resultType="category">
+		<![CDATA[
+			SELECT * FROM CATEGORY_TB WHERE CTGY_PARENT=#{ctgyParent}
+		]]>
+	</select>
+	
+	<select id="getProduct" parameterType="Integer" resultType="product">
+		<![CDATA[
+			SELECT * FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+		]]>
+	</select>
+	
+	<delete id="deleteProduct" parameterType="Integer">
+		<![CDATA[
+			DELETE FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+		]]>
+	</delete>
+	
+	<update id="modifyProduct" parameterType="product">
+		<![CDATA[
+			UPDATE PRODUCTS_TB SET CTGY_PTCD=#{ctgyPtcd}, CTGY_PTNM=#{ctgyPtnm}, CTGY_CD=#{ctgyCd}, CTGY_NM=#{ctgyNm}, 
+			PD_NM=#{pdNm}, PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_IMG=#{pdImg}, PD_DETL=#{pdDetl}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
+			WHERE PD_NO=#{pdNo}
+		]]>
+	</update>
+
+</mapper>
