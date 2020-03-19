@@ -1,9 +1,11 @@
 package com.demo.biz.product.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.CategoryVO;
@@ -69,10 +71,12 @@ public class ProductServiceImpl implements ProductService {
 		dao.modifyProduct(vo);
 	}
 
+	@Transactional
 	@Override
-	public void modifyCheckedProduct(ProductVO vo) {
+	public void modifyCheckedProducts(List<ProductVO> productList) {
 		// TODO Auto-generated method stub
-		dao.modifyCheckedProduct(vo);
+		for(ProductVO vo : productList)
+			dao.modifyCheckedProduct(vo);
 	}
 
 

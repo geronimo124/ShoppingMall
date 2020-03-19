@@ -41,6 +41,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="searchType == 'c'.toString()">
 				AND CTGY_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
 			</if>
+			<if test="searchType == 'u'.toString()">
+				<![CDATA[ AND PD_TAG <= #{keyword} ]]> 
+			</if>
+			<if test="searchType == 'd'.toString()">
+				<![CDATA[ AND PD_TAG >= #{keyword} ]]> 
+			</if>
 		</if>
 	</sql>
 	
@@ -81,7 +87,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="modifyCheckedProduct" parameterType="product">
 		<![CDATA[
-			UPDATE PRODUCTS_TB SET PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
+			UPDATE PRODUCTS_TB SET
+			PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_STOCK=#{pdStock}
 			WHERE PD_NO=#{pdNo}
 		]]>
 	</update>

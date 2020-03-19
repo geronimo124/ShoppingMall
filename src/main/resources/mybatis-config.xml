@@ -9,7 +9,9 @@
 
 	<typeAliases>
 		<typeAlias alias="list" type="java.util.List" />
+		<typeAlias alias="map" type="java.util.Map" />
 		<typeAlias alias="admin" type="com.demo.biz.admin.AdminVO" />
+		<typeAlias alias="member" type="com.demo.biz.member.MemberVO" />
 		<typeAlias alias="product" type="com.demo.biz.product.ProductVO" />
 		<typeAlias alias="category" type="com.demo.biz.product.CategoryVO" />
 	</typeAliases>

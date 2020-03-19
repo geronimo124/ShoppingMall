@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -435,14 +437,14 @@ public class AdminProductController {
 	// PUT으로 바꿔야 함
 	@ResponseBody
 	@RequestMapping(value = "modifyChecked", method = RequestMethod.POST)
-	public ResponseEntity<String> modifyCheckedProduct(List<Integer> productList) {
+	public ResponseEntity<String> modifyCheckedProduct(@RequestBody List<ProductVO> productList) {
+		
+		logger.info(productList.toString());
 		
 		ResponseEntity<String> entity = null;
 		
-		System.out.println(productList);
-		
 		try {
-//			service.modifyCheckedProduct(vo);
+			service.modifyCheckedProducts(productList);
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch(Exception e) {
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);

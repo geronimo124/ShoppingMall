@@ -14,10 +14,11 @@ public class MemberVO implements Serializable {
 	private String mbEmail;
 	private String mbZip;
 	private String mbAddr;
-	private String mbDeAddr;
+	private String mbDeaddr;
 	private Integer mbMile;
 	private Date mbRegdt;
 	private Date mbCondt;
+	private String mbAuthkey;
 	private String mbAuth;
 	
 	public String getMbId() {
@@ -68,11 +69,11 @@ public class MemberVO implements Serializable {
 	public void setMbAddr(String mbAddr) {
 		this.mbAddr = mbAddr;
 	}
-	public String getMbDeAddr() {
-		return mbDeAddr;
+	public String getMbDeaddr() {
+		return mbDeaddr;
 	}
-	public void setMbDeAddr(String mbDeAddr) {
-		this.mbDeAddr = mbDeAddr;
+	public void setMbDeaddr(String mbDeaddr) {
+		this.mbDeaddr = mbDeaddr;
 	}
 	public Integer getMbMile() {
 		return mbMile;
@@ -92,6 +93,12 @@ public class MemberVO implements Serializable {
 	public void setMbCondt(Date mbCondt) {
 		this.mbCondt = mbCondt;
 	}
+	public String getMbAuthkey() {
+		return mbAuthkey;
+	}
+	public void setMbAuthkey(String mbAuthkey) {
+		this.mbAuthkey = mbAuthkey;
+	}
 	public String getMbAuth() {
 		return mbAuth;
 	}
@@ -102,8 +109,8 @@ public class MemberVO implements Serializable {
 	@Override
 	public String toString() {
 		return "MemberVO [mbId=" + mbId + ", mbPw=" + mbPw + ", mbNm=" + mbNm + ", mbNick=" + mbNick + ", mbPhone="
-				+ mbPhone + ", mbEmail=" + mbEmail + ", mbZip=" + mbZip + ", mbAddr=" + mbAddr + ", mbDeAddr="
-				+ mbDeAddr + ", mbMile=" + mbMile + ", mbRegdt=" + mbRegdt + ", mbCondt=" + mbCondt + ", mbAuth="
-				+ mbAuth + "]";
+				+ mbPhone + ", mbEmail=" + mbEmail + ", mbZip=" + mbZip + ", mbAddr=" + mbAddr + ", mbDeaddr="
+				+ mbDeaddr + ", mbMile=" + mbMile + ", mbRegdt=" + mbRegdt + ", mbCondt=" + mbCondt + ", mbAuthkey="
+				+ mbAuthkey + ", mbAuth=" + mbAuth + "]";
 	}
 }

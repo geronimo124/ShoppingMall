@@ -5,6 +5,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.demo.mapper.MemberMapper">
 
+	<select id="login" resultType="member">
+		<![CDATA[
+			SELECT * FROM MEMBERS_TB WHERE MB_ID=#{id}
+		]]>
+	</select>
+	
+	<update id="updateConDate">
+		<![CDATA[
+			UPDATE MEMBERS_TB SET MB_CONDT=SYSDATE WHERE MB_ID=#{id}
+		]]>
+	</update>
+
 	<insert id="insert">
 		<![CDATA[
 			INSERT INTO MEMBERS_TB (MB_ID, MB_PW, MB_NM, MB_NICK, MB_PHONE, MB_EMAIL, MB_ZIP, MB_ADDR, MB_DEADDR)

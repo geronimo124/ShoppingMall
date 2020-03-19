@@ -51,67 +51,11 @@
 			<c:choose>
 				<c:when test="${sessionScope.member_id == null}"> <!-- 로그인 X -->
 					<li>
-						<a href="/member/join">회원 가입</a>
+						<a href="/member/register">회원 가입</a>
 					</li>
 					<li>
 						<a href="/member/login">로그인</a>
 					</li>		
-				</c:when>
-				<c:when test="${sessionScope.member_id == 'admin'}"> <!-- 관리자 -->
-					<li class="treeview">
-						<a href="#">
-							<i class="fa fa-link"></i>
-							<span>카테고리 관리</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li>
-								<a href="#">카테고리 등록</a>
-							</li>
-							<li>
-								<a href="#">카테고리 수정</a>
-							</li>
-						</ul>
-					</li>
-					<li class="treeview">
-						<a href="#">
-							<i class="fa fa-link"></i>
-							<span>상품 관리</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li>
-								<a href="/admin/product/insert">상품 등록</a>
-							</li>
-							<li>
-								<a href="/admin/product/list">상품 목록</a>
-							</li>
-						</ul>
-					</li>
-					<li class="treeview">
-						<a href="#">
-							<i class="fa fa-link"></i>
-							<span>회원 관리</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
-							<li>
-								<a href="/member/logout">로그아웃</a>
-							</li>
-							<li>
-								<a href="#">회원 목록</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="/admin/orderList">주문조회</a>
-					</li>
 				</c:when>
 				<c:otherwise> <!-- 일반 회원 -->
 					<li>
@@ -126,8 +70,6 @@
 					<li>
 						<a href="/order/list">주문조회</a>
 					</li>
-					
-					
 				</c:otherwise>
 			</c:choose>
 		</ul>

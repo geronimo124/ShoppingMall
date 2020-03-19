@@ -41,10 +41,16 @@
 									<option value="c"
 										<c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
 										카테고리</option>
+									<option value="u"
+										<c:out value="${cri.searchType eq 'u'?'selected':''}"/>>
+										상한가</option>
+									<option value="d"
+										<c:out value="${cri.searchType eq 'd'?'selected':''}"/>>
+										하한가</option>
 								</select> <input type="text" name='keyword' id="keywordInput"
 									value='${cri.keyword }'>
 								<button id='btnSearch'>검색</button>
-
+								<button id='btnRegister'>상품 등록</button>
 							</div>
 						</div>
 
@@ -149,7 +155,13 @@
 
 	<script>
 		$(() => {
-			$('#btnSearch').on('click', (event) => {
+			$('#btnRegister').on('click', () => {
+
+				self.location = "register";
+
+			});
+			
+			$('#btnSearch').on('click', () => {
 
 				self.location = "list"
 					+ '${pageMaker.makeQuery(1)}'
@@ -210,18 +222,17 @@
 
 			$('#btnCheckModify').on('click', function() {
 
-				let checkArr = [];
 				let modifyArr = [];
 
 				$('tr .check:checked').each(function() {
-					checkArr.push($(this).val());
 
 					let status = 'N';
 					
 					if($(this).parent().parent().find('.status').is(':checked'))
 						status = 'Y';
 					
-			        let data = {pdTag   : $(this).parent().parent().find('.pdTag').val(), 
+			        let data = {pdNo	: $(this).val(),
+					        	pdTag   : $(this).parent().parent().find('.pdTag').val(), 
 	                      	 	pdSale  : $(this).parent().parent().find('.pdSale').val(), 
 	                        	pdStock  : $(this).parent().parent().find('.pdStock').val(),
 	                        	pdStatus : status
@@ -229,16 +240,14 @@
 
 	                modifyArr.push(data);
 				});
-
-				alert(modifyArr[0]['pdTag']);
-
 				
 				$.ajax({
 			        type		: "post",
 			        url 		: "modifyChecked",
-			        data		: {productList : checkArr},
+			        data		: JSON.stringify(modifyArr),
+			        contentType : "application/json",
 			        success 	: function(data) {
-
+			        	
 						self.location = "list"
 							+ '${pageMaker.makeQuery(1)}'
 							+ "&searchType="

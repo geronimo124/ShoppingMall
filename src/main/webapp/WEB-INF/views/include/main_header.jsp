@@ -112,7 +112,7 @@
 					<c:when test="${sessionScope.member_id == null}">
 						<!-- 로그인 X -->
 						<li class="dropdown user user-menu">
-							<!-- Menu Toggle Button --> <a href="/member/join"> <!-- class="dropdown-toggle" data-toggle="dropdown" -->
+							<!-- Menu Toggle Button --> <a href="/member/register"> <!-- class="dropdown-toggle" data-toggle="dropdown" -->
 								<span class="hidden-xs">회원가입</span>
 						</a>
 						</li>
