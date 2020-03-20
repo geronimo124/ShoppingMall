@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -19,25 +21,53 @@
 				<h1>
 					Page Header <small>Optional description</small>
 				</h1>
-				<%= application.getRealPath("/") %>
+				<%=application.getRealPath("/")%>
 				<ol class="breadcrumb">
-					<li>
-						<a href="#"><i class="fa fa-dashboard"></i> Level</a>
-					</li>
+					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
 					<li class="active">Here</li>
 				</ol>
 			</section>
 
 			<!-- Main content -->
 			<section class="content container-fluid">
+				<div class="album py-5 bg-light">
+
+					<div class="row">
+						<c:forEach items="${productList}" var="productVO">
+							<c:if test="${productVO.pdStatus eq 'Y' }">
+								<div class="col-md-4">
+									<div>
+										<img src="/product/displayFile?fileName=${productVO.pdImg }" width="100%" height="100%" />
+									
+										<!-- 
+										<a
+											href="/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
+											<img src="/product/displayFile?fileName=${productVO.pdImg }"
+											alt="Attachment">
+										</a>
+									 -->
+										<div>
+											<p><strong>${productVO.pdNm }</strong></p>
+											<div
+												class="d-flex justify-content-between align-items-center">
+												${productVO.pdTag }원 <small class="text-muted">Sale
+													: ${productVO.pdSale }%</small>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
 
 				<!--------------------------
         | Your Page Content Here |
         -------------------------->
-        
-        		<!-- 하위 카테고리 목록 -->
-	        	
-	        	<!-- 상품 리스트 -->
+
+				<!-- 하위 카테고리 목록 -->
+
+				<!-- 상품 리스트 -->
 
 			</section>
 			<!-- /.content -->
@@ -45,13 +75,13 @@
 		<!-- /.content-wrapper -->
 
 		<!-- Main Footer -->
-		<%@include file="/WEB-INF/views/include/footer.jsp" %>
+		<%@include file="/WEB-INF/views/include/footer.jsp"%>
 
 		<!-- Control Sidebar -->
-		<%@include file="/WEB-INF/views/include/aside.jsp" %>
+		<%@include file="/WEB-INF/views/include/aside.jsp"%>
 	</div>
 	<!-- ./wrapper -->
 
-	<%@include file="/WEB-INF/views/include/plugin_js.jsp" %>
+	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 </body>
 </html>

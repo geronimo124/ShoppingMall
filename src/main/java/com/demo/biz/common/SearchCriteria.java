@@ -17,9 +17,9 @@ public class SearchCriteria extends Criteria{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
 	@Override
 	public String toString() {
-		return super.toString() + " SearchCriteria [searchType=" + searchType + ", keyword="
-				+ keyword + "]";
+		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + "]";
 	}
 }

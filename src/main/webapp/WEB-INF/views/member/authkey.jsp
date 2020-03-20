@@ -10,7 +10,7 @@
 			<a href="/"><b>Admin</b>LTE</a>
 		</div>
 		<!-- User name -->
-		<div class="lockscreen-name">${temp.mbNick }</div>
+		<div class="lockscreen-name">${temp }</div>
 
 		<!-- START LOCK SCREEN ITEM -->
 		<div class="lockscreen-item">
@@ -21,12 +21,12 @@
 			<!-- /.lockscreen-image -->
 
 			<!-- lockscreen credentials (contains the form) -->
-			<form class="lockscreen-credentials">
+			<form class="lockscreen-credentials" method="post" action="authkey">
 				<div class="input-group">
-					<input type="password" class="form-control" placeholder="Auth key">
-
+					<input type="password" name="mbAuth" class="form-control" placeholder="Auth key">
+					<input type="hidden" name="mbId" value="${temp }">
 					<div class="input-group-btn">
-						<button type="button" class="btn">
+						<button type="submit" id="btnAuth" class="btn">
 							<i class="fa fa-arrow-right text-muted"></i>
 						</button>
 					</div>
@@ -48,5 +48,15 @@
 	</div>
 	<!-- /.center -->
 	<%@include file="/WEB-INF/views/admin/include/plugin_js.jsp"%>
+	<script>
+
+		var result = '${msg}';
+	
+		if(result == 'FAIL') {
+			alert('인증키가 다릅니다');
+			location.replace(self.location);
+		}
+		
+	</script>
 </body>
 </html>

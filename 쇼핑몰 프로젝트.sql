@@ -10,6 +10,7 @@ DROP TABLE PRODUCTS_TB;
 DROP TABLE CATEGORY_TB;
 
 select * from admin_tb;
+select * from members_tb   ;
 select * from products_tb order by pd_no desc;
 commit;
 
@@ -134,7 +135,7 @@ CREATE TABLE QNA_TB(
 
 select * from products_tb order by pd_no;
 
--- 包府磊
+-- 包府磊(pw:1234)
 INSERT INTO ADMIN_TB VALUES('admin', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '包府磊', sysdate);
 
 -- 雀盔

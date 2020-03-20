@@ -5,12 +5,16 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.demo.biz.admin.AdminVO;
 import com.demo.biz.common.LoginDTO;
 import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
@@ -46,17 +50,21 @@ public class MemberController {
 		logger.info(dto.toString());
 		
 		MemberVO vo = service.loginMember(dto);
-		
+
 		if(vo == null) {
 			rttr.addFlashAttribute("msg", "FAIL");
 			return "redirect:login";
 		}
 		
+		if(vo.getMbAuth().equals("N")) {
+			rttr.addFlashAttribute("temp", vo.getMbId());
+			return "redirect:authkey";
+		} 
+		
 		session.setAttribute("member", vo);
 		session.setMaxInactiveInterval(60 * 60 * 24);
-		rttr.addFlashAttribute("msg", "SUCCESS");
 		
-		return "redirect:home";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -85,11 +93,34 @@ public class MemberController {
 		logger.info(vo.toString());
 		
 		System.out.println(vo.toString());
-		// 디비에 일단 넣고(auth = 'N')
-		// authkey 생성 후 이메일로 보내기
-		session.setAttribute("temp", vo);
+		
+		service.insertMember(vo);
+		
+		session.setAttribute("temp", vo.getMbId());
 		
 		return "redirect:authkey";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkId/{mbId}", method = RequestMethod.GET)
+	public ResponseEntity<String> checkId(@PathVariable("mbId") String mbId) {
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			
+			if(service.checkId(mbId) > 0)
+				entity = new ResponseEntity<String>("FAIL", HttpStatus.OK);
+			else
+				entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
+		}
+		
+		return entity;
 	}
 	
 	@RequestMapping(value = "/authkey", method = RequestMethod.GET)
@@ -103,5 +134,41 @@ public class MemberController {
 			System.out.println(session.getAttribute("temp").toString());
 			return "member/authkey";
 		}
+	}
+	
+	@RequestMapping(value = "/authkey", method = RequestMethod.POST)
+	public String authkey(@RequestParam("mbAuth") String mbAuth, @RequestParam("mbId") String mbId, RedirectAttributes rttr, HttpSession session) {
+		
+		logger.info(mbAuth);
+
+		MemberVO vo = service.getMember(mbId);
+		
+		if(mbAuth.equals(vo.getMbAuthkey())) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+			session.removeAttribute("temp");
+			service.updateAuth(mbId);
+			return "redirect:login";
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+			return "redirect:authkey";
+		}
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public void modifyMember() {
+		
+		logger.info("modify page");
+		
+	}
+
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modifyMember(HttpSession session, MemberVO vo) {
+		
+		logger.info(vo.toString());
+		
+		service.updateMember(vo);
+		session.setAttribute("member", vo);
+		
+		return "/home";
 	}
 }

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <aside class="main-sidebar">
@@ -8,14 +9,20 @@
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel">
 			<div class="pull-left image">
-				<img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+				<img src="/dist/img/user2-160x160.jpg" class="img-circle"
+					alt="User Image">
 			</div>
 			<div class="pull-left info">
-				<p>Alexander Pierce</p>
+				<c:choose>
+					<c:when test="${member == null}">
+						<p>로그인하세요</p>
+					</c:when>
+					<c:otherwise>
+						<p>${member.mbNick }</p>
+					</c:otherwise>
+				</c:choose>
 				<!-- Status -->
-				<a href="#">
-					<i class="fa fa-circle text-success"></i>
-					Online
+				<a href="#"> <i class="fa fa-circle text-success"></i> Online
 				</a>
 			</div>
 		</div>
@@ -23,9 +30,10 @@
 		<!-- search form (Optional) -->
 		<form action="#" method="get" class="sidebar-form">
 			<div class="input-group">
-				<input type="text" name="q" class="form-control" placeholder="Search...">
-				<span class="input-group-btn">
-					<button type="submit" name="search" id="search-btn" class="btn btn-flat">
+				<input type="text" name="q" class="form-control"
+					placeholder="Search..."> <span class="input-group-btn">
+					<button type="submit" name="search" id="search-btn"
+						class="btn btn-flat">
 						<i class="fa fa-search"></i>
 					</button>
 				</span>
@@ -49,26 +57,37 @@
 				</a>
 			</li> -->
 			<c:choose>
-				<c:when test="${sessionScope.member_id == null}"> <!-- 로그인 X -->
-					<li>
-						<a href="/member/register">회원 가입</a>
-					</li>
-					<li>
-						<a href="/member/login">로그인</a>
-					</li>		
+				<c:when test="${sessionScope.member == null}">
+					<!-- 로그인 X -->
+					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원
+								가입</span></a>
+					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a>
 				</c:when>
-				<c:otherwise> <!-- 일반 회원 -->
-					<li>
-						<a href="/member/logout">로그아웃</a>
+				<c:otherwise>
+					<!-- 일반 회원 -->
+
+					<li class="treeview"><a href="#"> <i class="fa fa-list-ul"></i> <span>상품 목록</span>
+					<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+					</span>
+					</a>
+						<ul class="treeview-menu">
+						<c:forEach items="${mainCateList}" var="categoryVO">
+							<li class="treeview"><a href="#"><i
+									class="fa fa-dot-circle-o"></i>${categoryVO.ctgyNm }
+									<span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
+									<input type="hidden" class="mainCategory" value="${categoryVO.ctgyCd }"/>
+								</span></a>
+									<ul class="treeview-menu subCategory">
+									</ul>
+							</li>
+						</c:forEach>
+						</ul></li>
+
+
+					<li><a href="/cart/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
 					</li>
-					<li>
-						<a href="/member/modify">회원 정보 수정</a>
-					</li>
-					<li>
-						<a href="/cart/list">장바구니</a>
-					</li>
-					<li>
-						<a href="/order/list">주문조회</a>
+					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a>
 					</li>
 				</c:otherwise>
 			</c:choose>
@@ -77,3 +96,41 @@
 	</section>
 	<!-- /.sidebar -->
 </aside>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+	<script id="cateTemplate" type="text/x-handlebars-template">
+		{{#each .}}
+			<li><a href="/product/list?ctgyCd={{ctgyCd}}"><i class="fa fa-circle-o"></i>{{ctgyNm}}</a></li>
+		{{/each}}
+	</script>
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+
+	$(() => {
+
+		$('.treeview-menu .treeview').on('click', function() {
+
+			let clicked = $(this);
+			let mainCategory = $(this).find('.mainCategory').val();
+			let cateTemplate = Handlebars.compile($("#cateTemplate").html());
+
+			$.ajax({
+				   url:"getSubCateList/" + mainCategory,
+				   type:"get",
+				   dataType:"json",
+				   success:function(subCategories){
+						  
+						  let html = cateTemplate(subCategories);
+
+						  clicked.find('.subCategory li').remove();
+						  clicked.find('.subCategory').append(html);
+				   }
+			});
+			
+
+
+		});
+
+	});
+
+</script>

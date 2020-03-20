@@ -9,6 +9,7 @@ public interface ProductService {
 
 	public void registerProduct(ProductVO vo);
 	public List<ProductVO> getProductList(SearchCriteria cri);
+	public List<ProductVO> getProductList(Integer ctgyCd);
 	public int countProductList(SearchCriteria cri);
 	public List<CategoryVO> getCategoryList(Integer ctgyParent);
 	public ProductVO getProduct(Integer pdNo);

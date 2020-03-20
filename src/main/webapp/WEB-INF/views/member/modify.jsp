@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <%@include file="/WEB-INF/views/admin/include/header.jsp"%>
@@ -33,13 +35,12 @@
 		</div>
 
 		<div class="register-box-body">
-			<p class="login-box-msg">Register a new membership</p>
+			<p class="login-box-msg">Modify member info</p>
 
-			<form id="formRegister" action="register" method="post">
+			<form id="formModify" action="modify" method="post">
 				<div class="form-group has-feedback">
-					<input type="text" id="mbId" name="mbId" class="form-control" style="width:60%; display:inline-block;" placeholder="ID" autocomplete="off" required>
-					<input type="button" id="btnCheckId" class="btn" style="width:35%; display:inline-block; float:right;" value="중복확인">
-					<input type="hidden" id="checkId">
+					<input type="text" name="mbId" value="${member.mbId }" class="form-control" readonly="readonly">
+					<span class="glyphicon glyphicon-user form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
 					<input type="password" id="mbPw" name="mbPw" class="form-control" placeholder="Password" required>
@@ -50,69 +51,59 @@
 					<span class="glyphicon glyphicon-log-in form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" name="mbNm" class="form-control" placeholder="Name" autocomplete="off" required>
+					<input type="text" name="mbNm" value="${member.mbNm }" class="form-control" placeholder="Name" autocomplete="off" required>
 					<span class="glyphicon glyphicon-user form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" name="mbNick" class="form-control" placeholder="Nickname" autocomplete="off" required>
+					<input type="text" name="mbNick" value="${member.mbNick }" class="form-control" placeholder="Nickname" autocomplete="off" required>
 					<span class="glyphicon glyphicon glyphicon-heart form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback form-row">
+					<c:set var="phone" value="${fn:split(member.mbPhone, '-')}" />
+                    <c:forEach var="phones" items="${phone }" varStatus="g">
+                    <c:if test="${g.count == 1 }">
                     <select class="form-control select2" style="width:31%; display:inline-block;" id="mbPhone1">
-                        <option value="010">010</option>
-                        <option value="011">011</option>
-                        <option value="019">019</option>
+                        <c:if test="${phones eq '010' }"><option selected="selected" value="010">010</option></c:if>
+                        <c:if test="${phones ne '010' }"><option value="010">010</option></c:if>
+                        <c:if test="${phones eq '011' }"><option selected="selected" value="011">011</option></c:if>
+                        <c:if test="${phones ne '011' }"><option value="011">011</option></c:if>
+                        <c:if test="${phones eq '019' }"><option selected="selected" value="019">019</option></c:if>
+                        <c:if test="${phones ne '019' }"><option value="019">019</option></c:if>
                     </select>
-                    <span>-</span><input type="text" class="form-control" style="width:32%; display:inline-block;" id="mbPhone2" autocomplete="off" pattern="\d{3,4}" required />
-                    <span>-</span><input type="text" class="form-control" style="width:32%; display:inline-block;" id="mbPhone3" autocomplete="off" pattern="\d{3,4}" required />
+                    </c:if>
+                    <c:if test="${g.count == 2 }">
+                    <span>-</span><input type="text" class="form-control" value="${phones }" style="width:32%; display:inline-block;" id="mbPhone2" autocomplete="off" pattern="\d{3,4}" required />
+                    </c:if>
+                    <c:if test="${g.count == 3 }">
+                    <span>-</span><input type="text" class="form-control" value="${phones }" style="width:32%; display:inline-block;" id="mbPhone3" autocomplete="off" pattern="\d{3,4}" required />
+                    </c:if>
+                    </c:forEach>
                     <span class="glyphicon glyphicon-phone form-control-feedback"></span>
                     <input type="hidden" id="mbPhone" name="mbPhone">
 				</div>
 				<div class="form-group has-feedback">
-					<input type="email" name="mbEmail" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Email" autocomplete="off" required>
+					<input type="email" name="mbEmail" class="form-control" value="${member.mbEmail }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Email" autocomplete="off" required>
 					<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" id="mbZip" name="mbZip" class="form-control" style="width:60%; display:inline-block;" readonly="readonly" placeholder="Zip" autocomplete="off" required>
+					<input type="text" id="mbZip" value="${member.mbZip }" name="mbZip" class="form-control" style="width:60%; display:inline-block;" readonly="readonly" placeholder="Zip" autocomplete="off" required>
 					<input type="button" id="btnSearchZip" class="btn" style="width:35%; display:inline-block; float:right;" value="우편번호 찾기">
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" id="mbAddr" name="mbAddr" class="form-control" placeholder="Address" readonly="readonly" autocomplete="off" required>
+					<input type="text" id="mbAddr" value="${member.mbAddr }" name="mbAddr" class="form-control" placeholder="Address" readonly="readonly" autocomplete="off" required>
 					<span class="glyphicon glyphicon-home form-control-feedback"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" id="mbDeaddr" name="mbDeaddr" class="form-control" placeholder="Detail Address" pattern="^[0-9가-힣-()\s]+$" autocomplete="off" required>
+					<input type="text" id="mbDeaddr" value="${member.mbDeaddr }" name="mbDeaddr" class="form-control" placeholder="Detail Address" pattern="^[0-9가-힣-()\s]+$" autocomplete="off" required>
 					<span class="glyphicon glyphicon-home form-control-feedback"></span>
 				</div>
 				<div id="iframeSearchZip" class="search-zip">
                 	<img src="//t1.daumcdn.net/postcode/resource/images/close.png" class="search-zip-close-img" id="imgSearchZip" alt="접기 버튼">
             	</div>
 				
-				<div class="row">
-					<div class="col-xs-8">
-						<div class="checkbox icheck">
-							<label> <input type="checkbox" id="terms"> I agree to the <a
-								href="#">terms</a>
-							</label>
-						</div>
-					</div>
+				<button type="submit" id="btnModify" class="btn btn-primary btn-block btn-flat text-center">Modify</button>
 					<!-- /.col -->
-					<div class="col-xs-4">
-						<button type="submit" id="btnRegister" class="btn btn-primary btn-block btn-flat">Register</button>
-					</div>
-					<!-- /.col -->
-				</div>
 			</form>
-
-			<div class="social-auth-links text-center">
-				<p>- OR -</p>
-				<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i
-					class="fa fa-facebook"></i> Sign up using Facebook</a> <a href="#"
-					class="btn btn-block btn-social btn-google btn-flat"><i
-					class="fa fa-google-plus"></i> Sign up using Google+</a>
-			</div>
-
-			<a href="login" class="text-center">I already have a membership</a>
 		</div>
 		<!-- /.form-box -->
 	</div>
@@ -124,28 +115,7 @@
 
 		$(() => {
 
-			$('#btnCheckId').on('click', () => {
-
-				$.ajax({
-					   url:"checkId/" + $('#mbId').val(),
-					   type:"get",
-					   dataType:"text",
-					   success:(data) => {
-
-							if(data == "SUCCESS") {
-								alert('사용 가능한 아이디입니다.');
-								$('#checkId').val($('#mbId').val());
-							} else {
-								alert('아이디가 중복됩니다.');
-								$('#mbId').val('');
-							}
-						}
-
-				 });
-
-			});
-			
-			$('#formRegister').on('submit', function(event) {
+			$('#formModify').on('submit', function(event) {
 
 				$('#mbPhone').val($('#mbPhone1').val() + '-' + $('#mbPhone2').val() + '-' + $('#mbPhone3').val());
 				
@@ -154,15 +124,6 @@
 					alert('입력한 비밀번호가 다릅니다');
 				}
 
-				if(!$('#terms').is(':checked')) {
-					event.preventDefault();
-					alert('약관에 동의해야 합니다');
-				}
-
-				if($('#checkId').val() != $('#mbId').val()) {
-					event.preventDefault();
-					alert('아이디 중복확인은 필수입니다.');
-				}
 			});
 
 		});

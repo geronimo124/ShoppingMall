@@ -27,6 +27,12 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
+	public int checkId(String mbId) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".checkId", mbId);
+	}
+	
+	@Override
 	public void insertMember(MemberVO vo) {
 		// TODO Auto-generated method stub
 		session.insert(NAMESPACE + ".insert", vo);
@@ -36,6 +42,24 @@ public class MemberDAOImpl implements MemberDAO {
 	public void updateConDate(LoginDTO dto) {
 		// TODO Auto-generated method stub
 		session.update(NAMESPACE + ".updateConDate", dto);
+	}
+
+	@Override
+	public MemberVO getMember(String mbId) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getMember", mbId);
+	}
+
+	@Override
+	public void updateAuth(String mbId) {
+		// TODO Auto-generated method stub
+		session.update(NAMESPACE + ".updateAuth", mbId);
+	}
+
+	@Override
+	public void updateMember(MemberVO vo) {
+		// TODO Auto-generated method stub
+		session.update(NAMESPACE + ".update", vo);
 	}
 
 	

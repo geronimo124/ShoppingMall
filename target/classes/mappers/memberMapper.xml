@@ -11,6 +11,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
+	<select id="getMember" resultType="member">
+		<![CDATA[
+			SELECT * FROM MEMBERS_TB WHERE MB_ID=#{mbId}
+		]]>
+	</select>
+	
+	<update id="updateAuth">
+		<![CDATA[
+			UPDATE MEMBERS_TB SET MB_AUTH='Y' WHERE MB_ID=#{mbId}
+		]]>
+	</update>
+
+	<select id="checkId" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM MEMBERS_TB WHERE MB_ID=#{mbId}
+		]]>
+	</select>
+	
 	<update id="updateConDate">
 		<![CDATA[
 			UPDATE MEMBERS_TB SET MB_CONDT=SYSDATE WHERE MB_ID=#{id}
@@ -19,9 +37,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insert">
 		<![CDATA[
-			INSERT INTO MEMBERS_TB (MB_ID, MB_PW, MB_NM, MB_NICK, MB_PHONE, MB_EMAIL, MB_ZIP, MB_ADDR, MB_DEADDR)
-			VALUES (#{mbId}, #{mbPw}, #{mbNm}, #{mbNick}, #{mbPhone}, #{mbEmail}, #{mbZip}, #{mbAddr}, #{mbDeAddr})
+			INSERT INTO MEMBERS_TB VALUES (#{mbId}, #{mbPw}, #{mbNm}, #{mbNick}, #{mbPhone}, #{mbEmail}, 
+			#{mbZip}, #{mbAddr}, #{mbDeaddr}, 0, SYSDATE, NULL, #{mbAuthkey}, 'N')
 		]]>
 	</insert>
+	
+	<update id="update" parameterType="member">
+		<![CDATA[
+			UPDATE MEMBERS_TB SET MB_PW=#{mbPw}, MB_NM=#{mbNm}, MB_NICK=#{mbNick}, MB_PHONE=#{mbPhone},
+			MB_EMAIL=#{mbEmail}, MB_ZIP=#{mbZip}, MB_ADDR=#{mbAddr}, MB_DEADDR=#{mbDeaddr} WHERE MB_ID=#{mbId}
+		]]>
+	</update>
 
 </mapper>

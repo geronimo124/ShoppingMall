@@ -77,4 +77,10 @@ public class ProductDAOImpl implements ProductDAO {
 		session.update(NAMESPACE + ".modifyCheckedProduct", vo);
 	}
 
+	@Override
+	public List<ProductVO> getProductList(Integer ctgyCd) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getProductListByCtgy", ctgyCd);
+	}
+
 }

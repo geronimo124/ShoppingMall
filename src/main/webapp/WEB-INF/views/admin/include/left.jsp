@@ -70,7 +70,7 @@
 				</span>
 			</a>
 				<ul class="treeview-menu">
-					<li><a href="#" onclick="logout();">로그아웃</a>
+					<li><a href="#" onclick="logout();"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
 					<form id="formLogout" action="/admin/logout" method="post"></form></li>
 					<li><a href="#">회원 목록</a></li>
 				</ul></li>

@@ -75,6 +75,11 @@
 		alert('아이디 또는 비밀번호가 다릅니다');
 		location.replace(self.location);
 	}
+
+	if(result == 'SUCCESS') {
+		alert('회원가입이 완료되었습니다');
+		location.replace(self.location);
+	}
 	</script>
 </body>
 </html>

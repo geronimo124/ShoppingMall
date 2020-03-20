@@ -109,7 +109,7 @@
 				</li> -->
 				<!-- User Account Menu -->
 				<c:choose>
-					<c:when test="${sessionScope.member_id == null}">
+					<c:when test="${sessionScope.member == null}">
 						<!-- 로그인 X -->
 						<li class="dropdown user user-menu">
 							<!-- Menu Toggle Button --> <a href="/member/register"> <!-- class="dropdown-toggle" data-toggle="dropdown" -->
@@ -122,9 +122,10 @@
 					</c:when>
 					<c:otherwise>
 						<!-- 일반회원 -->
-						<li class="dropdown user user-menu"><a href="/member/logout">
+						<li class="dropdown user user-menu"><a href="#" onclick="logout();">
 								<span class="hidden-xs">로그아웃</span>
-						</a></li>
+						</a>
+						<form id="formLogout" action="/member/logout" method="post"></form></li>
 						<li class="dropdown user user-menu"><a href="/member/modify">
 								<span class="hidden-xs">회원 정보 수정</span>
 						</a></li>
@@ -183,3 +184,8 @@
 		</div>
 	</nav>
 </header>
+<script>
+		function logout() {
+			$('#formLogout').submit();
+		}
+</script>

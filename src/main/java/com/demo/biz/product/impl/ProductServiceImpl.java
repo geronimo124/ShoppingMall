@@ -79,6 +79,12 @@ public class ProductServiceImpl implements ProductService {
 			dao.modifyCheckedProduct(vo);
 	}
 
+	@Override
+	public List<ProductVO> getProductList(Integer ctgyCd) {
+		// TODO Auto-generated method stub
+		return dao.getProductList(ctgyCd);
+	}
+
 
 
 }

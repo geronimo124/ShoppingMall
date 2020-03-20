@@ -64,7 +64,7 @@
 							<div class="box-body">
 								<table class="table table-bordered text-center">
 									<tr>
-										<th></th>
+										<th><input type="checkbox" class="checkbox" id="checkAll"></th>
 										<th>번호</th>
 										<th>썸네일</th>
 										<th>카테고리</th>
@@ -172,6 +172,8 @@
 
 			});
 
+			$('#checkAll').on('click', function () { $('.check').prop('checked', this.checked) });
+			
 			$('.delbtn').each(function() {
 
 				let pdNo = $(this).parent().parent().find('.checkbox').val();

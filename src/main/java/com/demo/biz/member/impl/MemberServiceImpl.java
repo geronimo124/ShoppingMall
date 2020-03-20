@@ -1,6 +1,11 @@
 package com.demo.biz.member.impl;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +21,13 @@ public class MemberServiceImpl implements MemberService {
 	
 	private final BCryptPasswordEncoder crptPassEnc; 
 	
+	private final JavaMailSender mailSender;
+	
 	@Autowired
-	public MemberServiceImpl(MemberDAO dao, BCryptPasswordEncoder crptPassEnc) {
+	public MemberServiceImpl(MemberDAO dao, BCryptPasswordEncoder crptPassEnc, JavaMailSender mailSender) {
 		this.dao = dao;
 		this.crptPassEnc = crptPassEnc;
+		this.mailSender = mailSender;
 	}
 	
 	@Override
@@ -38,10 +46,58 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public int checkId(String mbId) {
+		// TODO Auto-generated method stub
+		return dao.checkId(mbId);
+	}
+
+	@Override
 	public void insertMember(MemberVO vo) {
 		// TODO Auto-generated method stub
+		
+		vo.setMbPw(crptPassEnc.encode(vo.getMbPw()));
+		vo.setMbAuthkey(crptPassEnc.encode(vo.getMbId()));
+		
+		try {
+			
+			MimeMessage msg = mailSender.createMimeMessage();
+			
+			msg.addRecipient(RecipientType.TO, new InternetAddress(vo.getMbEmail()));
+			
+			msg.addFrom(new InternetAddress[] { new InternetAddress("temp@temp.com", "어쩌구쇼핑몰") });
+			
+			msg.setSubject("회원가입 인증키 메일", "utf-8");
+			
+			msg.setText(vo.getMbAuthkey(), "utf-8");
+			
+			mailSender.send(msg);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		dao.insertMember(vo);
 	}
+
+	@Override
+	public MemberVO getMember(String mbId) {
+		// TODO Auto-generated method stub
+		return dao.getMember(mbId);
+	}
+
+	@Override
+	public void updateAuth(String mbId) {
+		// TODO Auto-generated method stub
+		dao.updateAuth(mbId);
+	}
+
+	@Override
+	public void updateMember(MemberVO vo) {
+		// TODO Auto-generated method stub
+		vo.setMbPw(crptPassEnc.encode(vo.getMbPw()));
+		dao.updateMember(vo);
+	}
+
 
 
 }
