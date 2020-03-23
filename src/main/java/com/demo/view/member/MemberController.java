@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,26 +46,17 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(HttpSession session, RedirectAttributes rttr, LoginDTO dto) {
+	public void login(LoginDTO dto, Model model) {
 		
 		logger.info(dto.toString());
 		
 		MemberVO vo = service.loginMember(dto);
 
 		if(vo == null) {
-			rttr.addFlashAttribute("msg", "FAIL");
-			return "redirect:login";
+			return;
 		}
-		
-		if(vo.getMbAuth().equals("N")) {
-			rttr.addFlashAttribute("temp", vo.getMbId());
-			return "redirect:authkey";
-		} 
-		
-		session.setAttribute("member", vo);
-		session.setMaxInactiveInterval(60 * 60 * 24);
-		
-		return "redirect:/";
+
+		model.addAttribute("member", vo);
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -76,7 +68,7 @@ public class MemberController {
 		
 		session.invalidate();
 		
-		return "redirect:login";
+		return "redirect:/";
 	}
 	
 	
@@ -124,16 +116,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/authkey", method = RequestMethod.GET)
-	public String authkey(HttpSession session) {
+	public void authkey(String id, HttpSession session, Model model) {
 		
 		logger.info("authkey page");
 
-		if(session.getAttribute("temp") == null)
-			return "/home";
-		else {
-			System.out.println(session.getAttribute("temp").toString());
-			return "member/authkey";
-		}
+		model.addAttribute("temp", id);
 	}
 	
 	@RequestMapping(value = "/authkey", method = RequestMethod.POST)
@@ -145,7 +132,6 @@ public class MemberController {
 		
 		if(mbAuth.equals(vo.getMbAuthkey())) {
 			rttr.addFlashAttribute("msg", "SUCCESS");
-			session.removeAttribute("temp");
 			service.updateAuth(mbId);
 			return "redirect:login";
 		} else {
@@ -170,5 +156,20 @@ public class MemberController {
 		session.setAttribute("member", vo);
 		
 		return "/home";
+	}
+	
+	@RequestMapping(value = "/basket", method = RequestMethod.GET)
+	public void basket(HttpSession session, Model model) {
+		
+		MemberVO vo = (MemberVO) session.getAttribute("member");
+		
+		model.addAttribute("basketList", service.getBaskets(vo.getMbId()));
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/insertBasket", method = RequestMethod.POST)
+	public void insertBasket() {
+		
 	}
 }

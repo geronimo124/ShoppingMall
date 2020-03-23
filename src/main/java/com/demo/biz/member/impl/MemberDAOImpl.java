@@ -1,10 +1,13 @@
 package com.demo.biz.member.impl;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.biz.common.LoginDTO;
+import com.demo.biz.member.BasketVO;
 import com.demo.biz.member.MemberDAO;
 import com.demo.biz.member.MemberVO;
 
@@ -60,6 +63,12 @@ public class MemberDAOImpl implements MemberDAO {
 	public void updateMember(MemberVO vo) {
 		// TODO Auto-generated method stub
 		session.update(NAMESPACE + ".update", vo);
+	}
+
+	@Override
+	public List<BasketVO> getBaskets(String mbId) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getBaskets", mbId);
 	}
 
 	

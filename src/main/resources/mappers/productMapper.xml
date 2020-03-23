@@ -26,12 +26,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
-	<select id="getProductListByCtgy" resultType="product">
-		<![CDATA[
-			SELECT * FROM PRODUCTS_TB WHERE CTGY_CD=#{ctgyCd}
-		]]>
-	</select>
-	
 	<select id="countProductList" resultType="int">
 		<![CDATA[
 			SELECT COUNT(PD_NO) FROM PRODUCTS_TB WHERE 1=1

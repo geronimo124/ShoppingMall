@@ -2,6 +2,7 @@ package com.demo.view.product;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,15 +17,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.biz.common.Criteria;
 import com.demo.biz.common.MediaUtils;
 import com.demo.biz.common.PageMaker;
-import com.demo.biz.common.SearchCriteria;
-import com.demo.biz.product.ProductService;
+import com.demo.biz.product.CategoryVO;
+import com.demo.biz.product.MProductService;
 
 @Controller
 @RequestMapping("/product")
@@ -32,10 +35,10 @@ public class ProductController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
-	private final ProductService service;
+	private final MProductService service;
 	
 	@Autowired
-	public ProductController(ProductService service) {
+	public ProductController(MProductService service) {
 		this.service = service;
 	}
 	
@@ -86,10 +89,51 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void listProduct(@RequestParam("ctgyCd") Integer ctgyCd, Model model) {
+	public void listProduct(@ModelAttribute("cri") Criteria cri, String ctgyCd, Model model) {
 
-		model.addAttribute("mainCateList", service.getCategoryList(1));
-		model.addAttribute("productList", service.getProductList(ctgyCd));
+		model.addAttribute("productList", service.getProductList(ctgyCd, cri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(service.countProductList(ctgyCd));
+
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getSubCateList/{ctgyParent}", method = RequestMethod.GET)
+	public ResponseEntity<List<CategoryVO>> getSubCateList(@PathVariable("ctgyParent") Integer ctgyParent) {
+
+		ResponseEntity<List<CategoryVO>> entity = null;
+
+		try {
+			entity = new ResponseEntity<List<CategoryVO>>(service.getCategoryList(ctgyParent), HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<List<CategoryVO>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
+	public void readProduct(@RequestParam("pdNo") Integer pdNo, Criteria cri, Model model) {
+
+		logger.info(service.getProduct(pdNo).toString());
+		
+		model.addAttribute("productVO", service.getProduct(pdNo));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	@RequestMapping(value = "/order", method = RequestMethod.GET)
+	public void orderProduct() {
+		
+		
 		
 	}
 }

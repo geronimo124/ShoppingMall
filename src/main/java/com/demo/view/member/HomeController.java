@@ -1,8 +1,6 @@
 package com.demo.view.member;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,6 @@ public class HomeController {
 		
 		logger.info(cri.toString());
 		
-		model.addAttribute("mainCateList", service.getCategoryList(1));
 		model.addAttribute("productList", service.getProductList(cri));
 
 		PageMaker pageMaker = new PageMaker();

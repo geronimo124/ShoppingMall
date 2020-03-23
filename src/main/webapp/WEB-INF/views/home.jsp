@@ -37,15 +37,11 @@
 							<c:if test="${productVO.pdStatus eq 'Y' }">
 								<div class="col-md-4">
 									<div>
-										<img src="/product/displayFile?fileName=${productVO.pdImg }" width="100%" height="100%" />
-									
-										<!-- 
 										<a
 											href="/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
 											<img src="/product/displayFile?fileName=${productVO.pdImg }"
 											alt="Attachment">
 										</a>
-									 -->
 										<div>
 											<p><strong>${productVO.pdNm }</strong></p>
 											<div
@@ -58,8 +54,35 @@
 								</div>
 							</c:if>
 						</c:forEach>
-					</div>
 				</div>
+					</div>
+						<div>
+
+								<div class="text-center">
+									<ul class="pagination">
+
+										<c:if test="${pageMaker.prev}">
+											<li><a
+												href="${pageMaker.makeSearch(pageMaker.startPage - 1) }">&laquo;</a></li>
+										</c:if>
+
+										<c:forEach begin="${pageMaker.startPage }"
+											end="${pageMaker.endPage }" var="idx">
+											<li
+												<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+												<a href="${pageMaker.makeSearch(idx)}">${idx}</a>
+											</li>
+										</c:forEach>
+
+										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+											<li><a
+												href="${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+										</c:if>
+
+									</ul>
+								</div>
+
+							</div>
 
 				<!--------------------------
         | Your Page Content Here |

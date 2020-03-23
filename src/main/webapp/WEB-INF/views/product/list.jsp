@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -37,21 +37,17 @@
 							<c:if test="${productVO.pdStatus eq 'Y' }">
 								<div class="col-md-4">
 									<div>
-										<img src="/product/displayFile?fileName=${productVO.pdImg }" width="100%" height="100%" />
-									
-										<!-- 
 										<a
-											href="/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
+											href="/product/read${pageMaker.makeQuery(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">
 											<img src="/product/displayFile?fileName=${productVO.pdImg }"
 											alt="Attachment">
 										</a>
-									 -->
 										<div>
 											<p><strong>${productVO.pdNm }</strong></p>
 											<div
 												class="d-flex justify-content-between align-items-center">
-												${productVO.pdTag }원 <small class="text-muted">Sale
-													: ${productVO.pdSale }%</small>
+												<fmt:formatNumber value="${productVO.pdTag }" pattern="#,###" />원 <small class="text-muted">Sale
+													: <fmt:formatNumber value="${productVO.pdSale }" type="percent" /></small>
 											</div>
 										</div>
 									</div>
@@ -62,27 +58,27 @@
 				</div>
 
 			</section>
-			<div class="box-footer">
+			<div>
 
 								<div class="text-center">
 									<ul class="pagination">
 
 										<c:if test="${pageMaker.prev}">
 											<li><a
-												href="list${pageMaker.makeSearch(pageMaker.startPage - 1) }">&laquo;</a></li>
+												href="list${pageMaker.makeQuery(pageMaker.startPage - 1) }">&laquo;</a></li>
 										</c:if>
 
 										<c:forEach begin="${pageMaker.startPage }"
 											end="${pageMaker.endPage }" var="idx">
 											<li
 												<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-												<a href="list${pageMaker.makeSearch(idx)}">${idx}</a>
+												<a href="list${pageMaker.makeQuery(idx)}">${idx}</a>
 											</li>
 										</c:forEach>
 
 										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 											<li><a
-												href="list${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+												href="list${pageMaker.makeQuery(pageMaker.endPage +1) }">&raquo;</a></li>
 										</c:if>
 
 									</ul>

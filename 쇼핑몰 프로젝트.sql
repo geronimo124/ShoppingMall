@@ -12,6 +12,7 @@ DROP TABLE CATEGORY_TB;
 select * from admin_tb;
 select * from members_tb   ;
 select * from products_tb order by pd_no desc;
+delete from products_tb where pd_no=5;
 commit;
 
 CREATE TABLE ADMIN_TB(

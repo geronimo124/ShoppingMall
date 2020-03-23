@@ -56,17 +56,7 @@
 					<span>Another Link</span>
 				</a>
 			</li> -->
-			<c:choose>
-				<c:when test="${sessionScope.member == null}">
-					<!-- 로그인 X -->
-					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원
-								가입</span></a>
-					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a>
-				</c:when>
-				<c:otherwise>
-					<!-- 일반 회원 -->
-
-					<li class="treeview"><a href="#"> <i class="fa fa-list-ul"></i> <span>상품 목록</span>
+			<li class="treeview"><a href="#"> <i class="fa fa-list-ul"></i> <span>상품 목록</span>
 					<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 					</span>
@@ -83,9 +73,18 @@
 							</li>
 						</c:forEach>
 						</ul></li>
+			
+			<c:choose>
+				<c:when test="${sessionScope.member == null}">
+					<!-- 로그인 X -->
+					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원
+								가입</span></a>
+					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a>
+				</c:when>
+				<c:otherwise>
+					<!-- 일반 회원 -->
 
-
-					<li><a href="/cart/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
+					<li><a href="/member/basket"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
 					</li>
 					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a>
 					</li>
@@ -100,7 +99,8 @@
 
 	<script id="cateTemplate" type="text/x-handlebars-template">
 		{{#each .}}
-			<li><a href="/product/list?ctgyCd={{ctgyCd}}"><i class="fa fa-circle-o"></i>{{ctgyNm}}</a></li>
+			<li><a href="/product/list?${pageMaker.makeQuery(1)}&ctgyCd={{ctgyCd}}"><i class="fa fa-circle-o"></i><span>{{ctgyNm}}</span>
+			</a></li>
 		{{/each}}
 	</script>
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
@@ -115,7 +115,7 @@
 			let cateTemplate = Handlebars.compile($("#cateTemplate").html());
 
 			$.ajax({
-				   url:"getSubCateList/" + mainCategory,
+				   url:"/product/getSubCateList/" + mainCategory,
 				   type:"get",
 				   dataType:"json",
 				   success:function(subCategories){
@@ -126,10 +126,9 @@
 						  clicked.find('.subCategory').append(html);
 				   }
 			});
-			
-
-
 		});
+
+		
 
 	});
 

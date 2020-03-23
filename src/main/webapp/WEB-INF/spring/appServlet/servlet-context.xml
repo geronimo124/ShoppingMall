@@ -35,4 +35,21 @@
 	
 	<context:component-scan base-package="com.demo.view" />
 	
+	
+	<!-- Interceptors -->
+	<beans:bean id="authInterceptor" class="com.demo.view.common.AuthInterceptor"></beans:bean>
+	<beans:bean id="loginInterceptor" class="com.demo.view.common.LoginInterceptor"></beans:bean>
+		
+	<interceptors>
+		<interceptor>
+			<mapping path="/product/order" />
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/member/login" />
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+	</interceptors>
+		
+	
 </beans:beans>
