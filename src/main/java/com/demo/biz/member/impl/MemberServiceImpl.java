@@ -1,7 +1,5 @@
 package com.demo.biz.member.impl;
 
-import java.util.List;
-
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -12,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.demo.biz.common.LoginDTO;
-import com.demo.biz.member.BasketVO;
 import com.demo.biz.member.MemberDAO;
 import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
@@ -100,13 +97,4 @@ public class MemberServiceImpl implements MemberService {
 		vo.setMbPw(crptPassEnc.encode(vo.getMbPw()));
 		dao.updateMember(vo);
 	}
-
-	@Override
-	public List<BasketVO> getBaskets(String mbId) {
-		// TODO Auto-generated method stub
-		return dao.getBaskets(mbId);
-	}
-
-
-
 }

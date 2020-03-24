@@ -157,19 +157,4 @@ public class MemberController {
 		
 		return "/home";
 	}
-	
-	@RequestMapping(value = "/basket", method = RequestMethod.GET)
-	public void basket(HttpSession session, Model model) {
-		
-		MemberVO vo = (MemberVO) session.getAttribute("member");
-		
-		model.addAttribute("basketList", service.getBaskets(vo.getMbId()));
-		
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/insertBasket", method = RequestMethod.POST)
-	public void insertBasket() {
-		
-	}
 }

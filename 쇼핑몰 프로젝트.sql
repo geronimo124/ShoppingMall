@@ -12,6 +12,9 @@ DROP TABLE CATEGORY_TB;
 select * from admin_tb;
 select * from members_tb   ;
 select * from products_tb order by pd_no desc;
+select * from baskets_tb;
+
+
 delete from products_tb where pd_no=5;
 commit;
 
@@ -167,38 +170,8 @@ INSERT INTO CATEGORY_TB VALUES ('20', '6', '로퍼');
 INSERT INTO CATEGORY_TB VALUES ('21', '6', '샌들');
 
 -- 상품
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-7, '가디건', '두근두근 브이넥 오버핏 가디건', 22000, 5, NULL, '두근두근 브이넥 오버핏 가디건입니다.', 24, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-8, '자켓', '샌더 빅더블 포켓 자켓', 32000, 15, NULL, '샌더 빅더블 포켓 자켓입니다.', 40, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-9, '코트', '타임 블렌 싱글 코트', 29000, 10, NULL, '타임 블렌 싱글 코트입니다.', 31, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-10, '맨투맨', '스톡홀름 네오프렌 맨투맨', 24900, 10, NULL, '스톡홀름 네오프렌 맨투맨입니다.', 93, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-11, '후드', '사랑받는 15컬러 후드', 19800, 0, NULL, '사랑받는 15컬러 후드입니다.', 82, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-12, '니트', '언더브 스티치 니트', 29700, 0, NULL, '언더브 스티치 니트입니다.', 24, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-13, '베이직/데님', '베이직 옥스포드 셔츠', 12700, 0, NULL, '베이직 옥스포드 셔츠입니다.', 55, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-14, '스트라이프', '밸런 포켓 스트라이프 셔츠', 19700, 0, NULL, '밸런 포켓 스트라이프 셔츠입니다.', 15, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-15, '체크/패턴', '레이 오버핏 체크셔츠', 22700, 0, NULL, '레이 오버핏 체크셔츠입니다.', 35, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-16, '데님', '트론 밴딩 워싱 데님팬츠', 52800, 50, NULL, '트론 밴딩 워싱 데님팬츠입니다.', 105, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-17, '슬랙스', '세상편한 밴딩 팬츠', 9900, 0, NULL, '세상편한 밴딩 팬츠입니다.', 76, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-18, '면바지', '속밴딩 슬림 스판 면팬츠', 9000, 0, NULL, '속밴딩 슬림 스판 면팬츠입니다.', 79, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-19, '스니커즈', '마르지엘 독일군 밴딩 스니커즈', 37000, 0, NULL, '마르지엘 독일군 밴딩 스니커즈입니다.', 23, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-20, '로퍼', '어반 버클 블로퍼', 39900, 0, NULL, '어반 버클 블로퍼입니다.', 44, SYSDATE, SYSDATE);
-INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO),0)+1 FROM PRODUCTS_TB),
-21, '샌들', '버클 썸머 슬리퍼', 27000, 20, NULL, '버클 썸머 슬리퍼입니다.', 114, SYSDATE, SYSDATE);
-
-SELECT * FROM PRODUCTS_TB;
+INSERT INTO BASKETS_TB VALUES('helloman', 7, 3);
+INSERT INTO BASKETS_TB VALUES('helloman', 3, 2);
 commit;
 
 

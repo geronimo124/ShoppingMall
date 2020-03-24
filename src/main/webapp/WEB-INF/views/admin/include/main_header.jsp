@@ -5,7 +5,7 @@
 
 <header class="main-header">
 	<!-- Logo -->
-	<a href="/admin/" class="logo"> <span class="logo-mini"></span> <!-- logo for regular state and mobile devices -->
+	<a href="/admin/home" class="logo"> <span class="logo-mini"></span> <!-- logo for regular state and mobile devices -->
 		<span class="logo-lg"> <b>Admin</b>LTE
 	</span>
 	</a>

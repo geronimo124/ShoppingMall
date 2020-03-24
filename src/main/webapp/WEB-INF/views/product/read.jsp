@@ -38,6 +38,7 @@
 							<p></p>
 								<img src="/product/displayFile?fileName=${productVO.pdImg }"
 									class="product-image my-3" alt="Attachment">
+								<input type="hidden" id="pdNo" value="${productVO.pdNo }">
 							</div>
 							<p></p>
 						</div>
@@ -102,7 +103,8 @@
 									<small>Sale: ${productVO.pdSale }%</small>
 								</h4>
 								<h4>
-									수량 : <input type="number" class="form-control-sm form-control text-center">			
+									수량  <input id="bskQty" value="1" type="number" class="form-control text-center"
+									style="width:150px; display:inline-block;">			
 								</h4>
 							</div>
 
@@ -143,6 +145,22 @@
 
 		$(() => {
 
+			$.ajaxSetup({
+
+				error:function(x, e) {
+
+					if(x.status == 500) {
+
+						alert('로그인이 필요합니다');
+						self.location = '/member/login';
+
+					}
+
+				}
+
+			});
+				
+			
 			$('#btnOrder').on('click', () => {
 
 				self.location = '/product/order';
@@ -150,21 +168,23 @@
 			});
 
 			$('#btnBasket').on('click', () => {
-
+				
 				$.ajax({
-					   url:"insertBasket/" + pdNo,
-					   type:"delete",
-					   dataType:"text",
-					   success:() => {
-
-							self.location = "list"
-								+ '${pageMaker.makeQuery(1)}'
-								+ "&searchType="
-								+ $("select option:selected").val()
-								+ "&keyword="
-								+ $('#keywordInput').val();
-
-
+						url:"/basket/insert",
+					    type:"post",
+					    data: JSON.stringify(
+							{pdNo : $('#pdNo').val(),
+						     bskQty : $('#bskQty').val()}),
+						headers : {
+								"Content-Type" : "application/json",
+								"X-HTTP-Method-Override" : "POST"
+							},
+					    dataType:"text",
+					    success:(data) => {
+					    	if(data == 'SUCCESS')
+						    	alert('장바구니에 상품이 추가되었습니다.');
+					    	else
+						    	alert('이미 장바구니에 상품이 있습니다.');
 						}
 
 				 });

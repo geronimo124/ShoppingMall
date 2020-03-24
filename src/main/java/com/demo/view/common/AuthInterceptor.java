@@ -22,6 +22,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		if(session.getAttribute("member") == null){
 
 			logger.info("current user is not logined");
+			
+			// Ajax request
+			if("XMLHttpRequest".equals(request.getHeader("x-requested-with")))
+				response.sendError(500);
 
 			saveDest(request);
 

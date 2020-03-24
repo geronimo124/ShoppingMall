@@ -48,13 +48,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MB_EMAIL=#{mbEmail}, MB_ZIP=#{mbZip}, MB_ADDR=#{mbAddr}, MB_DEADDR=#{mbDeaddr} WHERE MB_ID=#{mbId}
 		]]>
 	</update>
-	
-	<select id="getBaskets" resultType="basket">
-		<![CDATA[
-			SELECT B.PD_NO, P.PD_IMG, P.PD_NM, P.PD_TAG, P.PD_SALE, B.BSK_QTY
-			FROM PRODUCTS_TB P, BASKETS_TB B
-			WHERE P.PD_NO = B.PD_NO AND B.MB_ID=#{mbId}
-		]]>
-	</select>
 
 </mapper>

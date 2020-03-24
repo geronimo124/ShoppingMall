@@ -84,7 +84,7 @@
 				<c:otherwise>
 					<!-- 일반 회원 -->
 
-					<li><a href="/member/basket"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
+					<li><a href="/basket/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
 					</li>
 					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a>
 					</li>

@@ -278,9 +278,8 @@ public class AdminProductController {
 		return entity;
 	}
 	
-	// DELETE 방식으로 변경해야 함.
 	@ResponseBody
-	@RequestMapping(value = "deleteChecked", method = RequestMethod.GET)
+	@RequestMapping(value = "deleteChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteCheckedProduct(HttpServletRequest request, @RequestParam("productList[]") List<Integer> productList) {
 		
 		ResponseEntity<String> entity = null;
@@ -432,7 +431,6 @@ public class AdminProductController {
 	}
 	*/
 	
-	// PUT으로 바꿔야 함
 	@ResponseBody
 	@RequestMapping(value = "modifyChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> modifyCheckedProduct(@RequestBody List<ProductVO> productList) {

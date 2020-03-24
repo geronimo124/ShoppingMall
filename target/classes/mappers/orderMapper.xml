@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.OrderMapper">
+
+	<select id="getBaskets" parameterType="list" resultType="basket">
+		<![CDATA[
+			SELECT * FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO IN
+		]]>
+		<foreach item="item" index="index" collection="basketList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+</mapper>

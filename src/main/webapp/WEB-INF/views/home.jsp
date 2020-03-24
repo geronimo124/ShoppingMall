@@ -35,7 +35,7 @@
 					<div class="row">
 						<c:forEach items="${productList}" var="productVO">
 							<c:if test="${productVO.pdStatus eq 'Y' }">
-								<div class="col-md-4">
+								<div class="col-md-4 text-center">
 									<div>
 										<a
 											href="/product/read${pageMaker.makeSearch(pageMaker.cri.page) }&pdNo=${productVO.pdNo}">

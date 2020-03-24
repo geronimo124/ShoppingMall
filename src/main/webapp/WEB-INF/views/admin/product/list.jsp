@@ -258,38 +258,6 @@
 							+ $('#keywordInput').val();
 			        }
 			  	});
-				/*
-				$('tr .check:checked').each(function() {
-
-					let status = 'N';
-					
-					if($(this).parent().parent().find('.status').is(':checked'))
-						status = 'Y';
-
-			        let data = {pdNo    : $(this).val(),
-					        	pdTag   : $(this).parent().parent().find('.pdTag').val(), 
-		                        pdSale  : $(this).parent().parent().find('.pdSale').val(), 
-		                        pdStock  : $(this).parent().parent().find('.pdStock').val(),
-		                        pdStatus : status
-		         	};
-
-		             $.ajax({
-					        type		: "put",
-					        url 		: "modifyChecked",
-					        data		:  JSON.stringify(data), 
-					        contentType : "application/json",
-					        success 	: function(data) {
-
-								self.location = "list"
-									+ '${pageMaker.makeQuery(1)}'
-									+ "&searchType="
-									+ $("select option:selected").val()
-									+ "&keyword="
-									+ $('#keywordInput').val();
-					        }
-					  });
-				});
-				*/
 			});
 
 			$('#btnCheckDelete').on('click', function() {
@@ -301,7 +269,7 @@
 				});
 
 				$.ajax({
-			        type		: "get",
+			        type		: "POST",
 			        url 		: "deleteChecked",
 			        data		: {productList : checkArr},
 			        success 	: function(data) {

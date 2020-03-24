@@ -129,7 +129,7 @@
 						<li class="dropdown user user-menu"><a href="/member/modify">
 								<span class="hidden-xs">회원 정보 수정</span>
 						</a></li>
-						<li class="dropdown user user-menu"><a href="/member/basket">
+						<li class="dropdown user user-menu"><a href="/basket/list">
 								<span class="hidden-xs">장바구니</span>
 						</a></li>
 						<li class="dropdown user user-menu"><a href="/order/list">

@@ -1,10 +1,11 @@
-package com.demo.biz.member;
+package com.demo.biz.product;
 
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class BasketVO implements Serializable {
 
+	private String mbId;
 	private Integer pdNo;
 	private Integer bskQty;
 	private String pdImg;
@@ -12,6 +13,12 @@ public class BasketVO implements Serializable {
 	private Integer pdTag;
 	private Integer pdSale;
 	
+	public String getMbId() {
+		return mbId;
+	}
+	public void setMbId(String mbId) {
+		this.mbId = mbId;
+	}
 	public Integer getPdNo() {
 		return pdNo;
 	}
@@ -51,7 +58,7 @@ public class BasketVO implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "BasketVO [pdNo=" + pdNo + ", bskQty=" + bskQty + ", pdImg=" + pdImg + ", pdNm=" + pdNm + ", pdTag="
-				+ pdTag + ", pdSale=" + pdSale + "]";
+		return "BasketVO [mbId=" + mbId + ", pdNo=" + pdNo + ", bskQty=" + bskQty + ", pdImg=" + pdImg + ", pdNm="
+				+ pdNm + ", pdTag=" + pdTag + ", pdSale=" + pdSale + "]";
 	}
 }
