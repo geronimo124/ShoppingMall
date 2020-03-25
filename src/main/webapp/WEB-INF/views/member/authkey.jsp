@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/views/admin/include/header.jsp"%>
+<%@include file="/WEB-INF/views/include/header.jsp"%>
 <body class="hold-transition lockscreen">
 	<!-- Automatic element centering -->
 	<div class="lockscreen-wrapper">
@@ -47,7 +47,7 @@
 		</div>
 	</div>
 	<!-- /.center -->
-	<%@include file="/WEB-INF/views/admin/include/plugin_js.jsp"%>
+	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 	<script>
 
 		var result = '${msg}';

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/views/admin/include/header.jsp"%>
+<%@include file="/WEB-INF/views/include/header.jsp"%>
 <head>
 <link rel="stylesheet" href="/plugins/iCheck/square/blue.css">
 </head>
@@ -56,7 +56,7 @@
 	</div>
 	<!-- /.login-box -->
 
-	<%@include file="/WEB-INF/views/admin/include/plugin_js.jsp"%>
+	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 	<script src="/plugins/iCheck/icheck.min.js"></script>
 	<script>
 	  $(function () {

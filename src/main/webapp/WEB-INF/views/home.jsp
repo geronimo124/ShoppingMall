@@ -106,5 +106,13 @@
 	<!-- ./wrapper -->
 
 	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
+	<script>
+
+		let orderMsg = '${orderMsg}';
+
+		if(orderMsg == 'SUCCESS')
+			alert('주문이 완료되었습니다.');
+		
+	</script>
 </body>
 </html>

@@ -256,7 +256,13 @@
 
 			$('#btnOrder').on('click', () => {
 
-				self.location = "/order/insert";
+				let queryString = "?";
+
+				$('tr .check').each(function() {
+					queryString += "&pdNo=" + $(this).val();
+				});
+				
+				self.location = "/order/insert" + queryString;
 				
 			});
 

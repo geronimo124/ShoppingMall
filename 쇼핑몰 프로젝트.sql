@@ -13,6 +13,8 @@ select * from admin_tb;
 select * from members_tb   ;
 select * from products_tb order by pd_no desc;
 select * from baskets_tb;
+select * from orders_tb;
+select * from order_detail_tb;
 
 
 delete from products_tb where pd_no=5;
@@ -77,23 +79,23 @@ CREATE TABLE BASKETS_TB(
 );
 
 
-
 CREATE TABLE ORDERS_TB(
     ORD_NO          NUMBER              PRIMARY KEY,
     MB_ID           VARCHAR2(15)        NOT NULL,
     ORD_NM          VARCHAR2(30)        NOT NULL,
     ORD_ZIP         CHAR(5)             NOT NULL,
     ORD_ADDR        VARCHAR2(50)        NOT NULL,
-    ORD_DTADDR      VARCHAR2(50)        NOT NULL,
+    ORD_DEADDR      VARCHAR2(50)        NOT NULL,
     ORD_PHONE       VARCHAR2(20)        NOT NULL,
     ORD_PRICE       NUMBER              NOT NULL,
+    ORD_MSG         VARCHAR2(500)       NULL,
     ORD_DT          DATE                DEFAULT SYSDATE,
     FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID)
 );
 
 CREATE TABLE ORDER_DETAIL_TB(
-    ORD_NO          NUMBER              UNIQUE,
-    PD_NO           NUMBER              UNIQUE,
+    ORD_NO          NUMBER              NOT NULL,
+    PD_NO           NUMBER              NOT NULL,
     ORDDT_QTY       NUMBER              NOT NULL,
     ORDDT_PRICE     NUMBER              NOT NULL,
     PRIMARY KEY (ORD_NO, PD_NO),

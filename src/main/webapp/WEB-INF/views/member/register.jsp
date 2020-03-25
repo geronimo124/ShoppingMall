@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<%@include file="/WEB-INF/views/admin/include/header.jsp"%>
+<%@include file="/WEB-INF/views/include/header.jsp"%>
 <head>
 <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
 <style>
@@ -118,7 +118,7 @@
 	</div>
 	<!-- /.register-box -->
 
-	<%@include file="/WEB-INF/views/admin/include/plugin_js.jsp"%>
+	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 	
 	<script>
 

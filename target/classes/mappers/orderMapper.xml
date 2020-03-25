@@ -5,13 +5,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.demo.mapper.OrderMapper">
 
-	<select id="getBaskets" parameterType="list" resultType="basket">
+	<select id="getBaskets" parameterType="map" resultType="basket">
 		<![CDATA[
-			SELECT * FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO IN
+			SELECT B.PD_NO, P.PD_IMG, P.PD_NM, P.PD_TAG, P.PD_SALE, B.BSK_QTY
+			FROM PRODUCTS_TB P, BASKETS_TB B
+			WHERE P.PD_NO = B.PD_NO AND B.MB_ID=#{mbId} AND B.PD_NO IN
 		]]>
-		<foreach item="item" index="index" collection="basketList" open="(" separator="," close=")">
+		<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
 			#{item}
 		</foreach>
 	</select>
 	
+	<insert id="insertOrder" parameterType="order">
+		<![CDATA[
+			INSERT INTO ORDERS_TB VALUES ((SELECT NVL(MAX(ORD_NO), 0)+1 FROM ORDERS_TB), #{mbId}, #{ordNm},
+			#{ordZip}, #{ordAddr}, #{ordDeaddr}, #{ordPhone}, #{ordPrice}, #{ordMsg}, SYSDATE)
+		]]>
+	</insert>
+	
+	<select id="getOrderNo" resultType="int">
+		<![CDATA[
+			SELECT MAX(ORD_NO) FROM ORDERS_TB
+		]]>
+	</select>
+	
+	<insert id="insertOrderDetail" parameterType="orderDetail">
+		<![CDATA[
+			INSERT INTO ORDER_DETAIL_TB VALUES (#{ordNo}, #{pdNo}, #{orddtQty}, #{orddtPrice})
+		]]>
+	</insert>
+	
+	<delete id="deleteBaskets" parameterType="map">
+		<![CDATA[
+			DELETE FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO IN
+		]]>
+		<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="updateMileage" parameterType="member">
+		<![CDATA[
+			UPDATE MEMBERS_TB SET MB_MILE=#{mbMile} WHERE MB_ID=#{mbId}
+		]]>
+	</update>
 </mapper>
