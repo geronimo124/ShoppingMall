@@ -1,5 +1,6 @@
 package com.demo.biz.order.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Transactional
 	@Override
-	public void insertOrder(OrderVO vo, List<Integer> productList, Integer mile) {
+	public void insertOrder(OrderVO vo, List<Integer> productList, Integer mile, Integer bskQty) {
 		// TODO Auto-generated method stub
 		
 		// 주문테이블 삽입(ordervo)
@@ -49,7 +50,19 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<BasketVO> basketList = dao.getBaskets(map);
 		
-		System.out.println(basketList);
+		// 즉시구매를 눌렀을 경우 장바구니에서 가져올 수 없음
+		if(basketList.size() == 0) {
+			OrderDetailVO orderDetail = new OrderDetailVO();
+			BasketVO basketVO = dao.getProduct(productList.get(0));
+			
+			orderDetail.setOrdNo(ordNo);
+			orderDetail.setPdNo(basketVO.getPdNo());
+			orderDetail.setOrddtQty(bskQty);
+			orderDetail.setOrddtPrice((basketVO.getPdTag() * bskQty) * (100 - basketVO.getPdSale()) / 100);
+			
+			dao.insertOrderDetail(orderDetail);
+
+		}
 		
 		for(BasketVO basketVO : basketList) {
 			OrderDetailVO orderDetail = new OrderDetailVO();
@@ -62,7 +75,6 @@ public class OrderServiceImpl implements OrderService {
 			dao.insertOrderDetail(orderDetail);
 		}
 		
-		System.out.println("여기");
 		// 장바구니 삭제(productList, mbId 사용)
 		dao.deleteBaskets(map);
 		
@@ -70,6 +82,82 @@ public class OrderServiceImpl implements OrderService {
 		MemberVO member = new MemberVO();
 		member.setMbId(vo.getMbId());
 		member.setMbMile(mile);
+		dao.updateMileage(member);
 		
+	}
+
+	@Override
+	public List<OrderVO> getOrderList(String mbId) {
+		// TODO Auto-generated method stub
+		
+		List<OrderVO> list = dao.getOrderList(mbId);
+		List<OrderVO> orderList = new ArrayList<>();
+		
+		if(list.size() <= 1)
+			return list;
+		
+		OrderVO vo = list.get(0);
+		
+		for (int i = 1; i < list.size(); i++) {
+			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+			} else {
+				orderList.add(vo);
+				vo = list.get(i);
+			}
+			if(i == list.size() - 1)
+				orderList.add(vo);
+		}
+		
+		return orderList;
+	}
+
+	@Override
+	public MemberVO getMember(String mbId) {
+		// TODO Auto-generated method stub
+		return dao.getMember(mbId);
+	}
+
+	@Override
+	public BasketVO getProduct(Integer pdNo) {
+		// TODO Auto-generated method stub
+		return dao.getProduct(pdNo);
+	}
+
+	@Override
+	public List<BasketVO> getOrderDetail(Integer ordNo) {
+		// TODO Auto-generated method stub
+		return dao.getOrderDetail(ordNo);
+	}
+
+	@Override
+	public OrderVO getOrder(Integer ordNo) {
+		// TODO Auto-generated method stub
+		return dao.getOrder(ordNo);
+	}
+
+	@Override
+	public List<OrderVO> getAllOrderList() {
+		// TODO Auto-generated method stub
+		List<OrderVO> list = dao.getAllOrderList();
+		List<OrderVO> orderList = new ArrayList<>();
+		
+		if(list.size() <= 1)
+			return list;
+		
+		OrderVO vo = list.get(0);
+		
+		for (int i = 1; i < list.size(); i++) {
+			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+			} else {
+				orderList.add(vo);
+				vo = list.get(i);
+			}
+			if(i == list.size() - 1)
+				orderList.add(vo);
+		}
+		
+		return orderList;
 	}
 }

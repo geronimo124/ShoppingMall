@@ -60,5 +60,41 @@ public class OrderDAOImpl implements OrderDAO {
 		// TODO Auto-generated method stub
 		session.update(NAMESPACE + ".updateMileage", vo);
 	}
+
+	@Override
+	public List<OrderVO> getOrderList(String mbId) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getOrderList", mbId);
+	}
+
+	@Override
+	public MemberVO getMember(String mbId) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getMember", mbId);
+	}
+
+	@Override
+	public BasketVO getProduct(Integer pdNo) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getProduct", pdNo);
+	}
+
+	@Override
+	public List<BasketVO> getOrderDetail(Integer ordNo) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getOrderDetail", ordNo);
+	}
+
+	@Override
+	public OrderVO getOrder(Integer ordNo) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getOrder", ordNo);
+	}
+
+	@Override
+	public List<OrderVO> getAllOrderList() {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getAllOrderList");
+	}
 	
 }

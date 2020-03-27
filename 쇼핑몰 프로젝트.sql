@@ -10,12 +10,26 @@ DROP TABLE PRODUCTS_TB;
 DROP TABLE CATEGORY_TB;
 
 select * from admin_tb;
-select * from members_tb   ;
+select * from members_tb;
 select * from products_tb order by pd_no desc;
 select * from baskets_tb;
 select * from orders_tb;
 select * from order_detail_tb;
+select * from reviews_tb;
 
+delete from order_detail_tb;
+delete from orders_tb;
+commit;
+
+
+SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS
+FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
+WHERE O.ORD_NO = OD.ORD_NO AND OD.PD_NO = P.PD_NO AND O.MB_ID='helloman'
+ORDER BY O.ORD_NO DESC;
+
+SELECT P.PD_IMG, P.PD_NM, OD.ORDDT_QTY BSK_QTY, OD.ORDDT_PRICE PD_TAG
+FROM ORDER_DETAIL_TB OD, PRODUCTS_TB P
+WHERE OD.PD_NO = P.PD_NO AND OD.ORD_NO = 2;
 
 delete from products_tb where pd_no=5;
 commit;
@@ -89,6 +103,7 @@ CREATE TABLE ORDERS_TB(
     ORD_PHONE       VARCHAR2(20)        NOT NULL,
     ORD_PRICE       NUMBER              NOT NULL,
     ORD_MSG         VARCHAR2(500)       NULL,
+    ORD_STATUS      CHAR(1)             DEFAULT 'R',
     ORD_DT          DATE                DEFAULT SYSDATE,
     FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID)
 );
@@ -118,12 +133,10 @@ CREATE TABLE REVIEWS_TB(
     ORDDT_ORD_NO    NUMBER              NOT NULL,
     MB_ID           VARCHAR2(15)        NOT NULL,
     REV_TITLE       VARCHAR2(100)       NOT NULL,
-    REV_CONTENT     VARCHAR2(4000)      NOT NULL,
+    REV_CONTENT     VARCHAR2(500)       NOT NULL,
     REV_GRADE       NUMBER              NOT NULL,
     REV_DT          DATE                DEFAULT SYSDATE,
-    FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID),
-    FOREIGN KEY (ORDDT_PD_NO) REFERENCES ORDER_DETAIL_TB (PD_NO),
-    FOREIGN KEY (ORDDT_ORD_NO) REFERENCES ORDER_DETAIL_TB (ORD_NO)
+    FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID)
 );
 
 CREATE TABLE QNA_TB(

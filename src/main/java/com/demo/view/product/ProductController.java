@@ -99,6 +99,7 @@ public class ProductController {
 		pageMaker.setTotalCount(service.countProductList(ctgyCd));
 
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("ctgyCd", ctgyCd);
 		
 	}
 	
@@ -127,13 +128,6 @@ public class ProductController {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		model.addAttribute("pageMaker", pageMaker);
-		
-	}
-	
-	@RequestMapping(value = "/order", method = RequestMethod.GET)
-	public void orderProduct() {
-		
-		
 		
 	}
 }

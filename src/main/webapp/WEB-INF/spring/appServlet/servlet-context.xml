@@ -42,7 +42,7 @@
 		
 	<interceptors>
 		<interceptor>
-			<mapping path="/product/order" />
+			<mapping path="/order/insert" />
 			<mapping path="/basket/insert" />
 			<beans:ref bean="authInterceptor" />
 		</interceptor>

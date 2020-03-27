@@ -116,7 +116,7 @@
 				<li class="dropdown user user-menu"><a href="#" onclick="logout();">
 						<span class="hidden-xs">로그아웃</span>
 				</a></li>
-				<li class="dropdown user user-menu"><a href="/admin/orderList">
+				<li class="dropdown user user-menu"><a href="/admin/order/list">
 						<span class="hidden-xs">주문조회</span>
 				</a></li>
 

@@ -122,6 +122,11 @@
 
 		$(() => {
 
+			let orderMsg = '${orderMsg}';
+
+			if(orderMsg == 'FAIL')
+				alert('주문할 상품이 없습니다.');
+
 			$('.checkbox').prop('checked', true);
 			
 			let sum = 0, mile = 0, total = 0;
@@ -250,7 +255,10 @@
 					queryString += "&pdNo=" + $(this).val();
 				});
 
-				self.location = "/order/insert" + queryString;
+				if(queryString == "?")
+					alert('주문할 상품이 없습니다.');
+				else
+					self.location = "/order/insert" + queryString;
 
 			});
 
@@ -261,8 +269,11 @@
 				$('tr .check').each(function() {
 					queryString += "&pdNo=" + $(this).val();
 				});
-				
-				self.location = "/order/insert" + queryString;
+
+				if(queryString == "?")
+					alert('주문할 상품이 없습니다.');
+				else
+					self.location = "/order/insert" + queryString;
 				
 			});
 

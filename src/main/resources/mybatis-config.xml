@@ -17,6 +17,7 @@
 		<typeAlias alias="basket" type="com.demo.biz.product.BasketVO" />
 		<typeAlias alias="order" type="com.demo.biz.order.OrderVO" />
 		<typeAlias alias="orderDetail" type="com.demo.biz.order.OrderDetailVO" />
+		<typeAlias alias="review" type="com.demo.biz.order.ReviewVO" />
 	</typeAliases>
 
 </configuration>

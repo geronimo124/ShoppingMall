@@ -56,23 +56,19 @@
 					<span>Another Link</span>
 				</a>
 			</li> -->
-			<li class="treeview"><a href="#"> <i class="fa fa-list-ul"></i> <span>상품 목록</span>
-					<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-					</span>
+			<c:forEach items="${mainCateList}" var="categoryVO">
+				<li class="treeview mainCate">
+					<a href="#"> <i class="fa fa-tags"></i> <span>${categoryVO.ctgyNm }</span>
+						<span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+						</span>
 					</a>
-						<ul class="treeview-menu">
-						<c:forEach items="${mainCateList}" var="categoryVO">
-							<li class="treeview"><a href="#"><i
-									class="fa fa-dot-circle-o"></i>${categoryVO.ctgyNm }
-									<span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i>
-									<input type="hidden" class="mainCategory" value="${categoryVO.ctgyCd }"/>
-								</span></a>
-									<ul class="treeview-menu subCategory">
-									</ul>
-							</li>
-						</c:forEach>
-						</ul></li>
+							<ul class="treeview-menu subCategory">
+								
+							</ul>
+					<input type="hidden" class="mainCategory" value="${categoryVO.ctgyCd }"/>
+				</li>
+			</c:forEach>
 			
 			<c:choose>
 				<c:when test="${sessionScope.member == null}">
@@ -99,8 +95,7 @@
 
 	<script id="cateTemplate" type="text/x-handlebars-template">
 		{{#each .}}
-			<li><a href="/product/list?${pageMaker.makeQuery(1)}&ctgyCd={{ctgyCd}}"><i class="fa fa-circle-o"></i><span>{{ctgyNm}}</span>
-			</a></li>
+			<li><a href="/product/list?${pageMaker.makeQuery(1)}&ctgyCd={{ctgyCd}}"><i class="fa fa-dot-circle-o"></i><span>{{ctgyNm}}</span></a></li>
 		{{/each}}
 	</script>
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
@@ -108,10 +103,10 @@
 
 	$(() => {
 
-		$('.treeview-menu .treeview').on('click', function() {
+		$('.mainCate').on('click', function() {
 
 			let clicked = $(this);
-			let mainCategory = $(this).find('.mainCategory').val();
+			let mainCategory = clicked.find('.mainCategory').val();
 			let cateTemplate = Handlebars.compile($("#cateTemplate").html());
 
 			$.ajax({
@@ -127,8 +122,6 @@
 				   }
 			});
 		});
-
-		
 
 	});
 

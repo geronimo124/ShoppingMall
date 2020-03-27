@@ -74,7 +74,7 @@
 					<form id="formLogout" action="/admin/logout" method="post"></form></li>
 					<li><a href="#">회원 목록</a></li>
 				</ul></li>
-			<li><a href="/admin/orderList">주문조회</a></li>
+			<li><a href="/admin/order/list">주문조회</a></li>
 		</ul>
 		<!-- /.sidebar-menu -->
 	</section>

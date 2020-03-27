@@ -35,10 +35,10 @@
 					<div class="row">
 						<div class="col-12 col-sm-6">
 							<div class="col-12 text-center">
-							<p></p>
+								<p></p>
 								<img src="/product/displayFile?fileName=${productVO.pdImg }"
-									class="product-image my-3" alt="Attachment">
-								<input type="hidden" id="pdNo" value="${productVO.pdNo }">
+									class="product-image my-3" alt="Attachment"> <input
+									type="hidden" id="pdNo" value="${productVO.pdNo }">
 							</div>
 							<p></p>
 						</div>
@@ -103,8 +103,9 @@
 									<small>Sale: ${productVO.pdSale }%</small>
 								</h4>
 								<h4>
-									수량  <input id="bskQty" value="1" type="number" class="form-control text-center"
-									style="width:150px; display:inline-block;">			
+									수량 <input id="bskQty" value="1" type="number"
+										class="form-control text-center"
+										style="width: 150px; display: inline-block;">
 								</h4>
 							</div>
 
@@ -125,7 +126,89 @@
 				<div class="box box-default">
 					<div class="box-body text-center">${productVO.pdDetl}</div>
 				</div>
-					<!-- /.card -->
+
+				<div class="row">
+					<div class="col-md-12">
+
+
+						<div class="box box-success">
+							<div class="box-header">
+								<h3 class="box-title">상품 리뷰</h3>
+							</div>
+
+							<c:if test="${not empty member}">
+								<div class="box-body">
+									<label for="exampleInputEmail1">Writer</label> <input
+										class="form-control" type="text" placeholder="USER ID"
+										id="newReplyWriter" value="${login.uid }" readonly="readonly">
+									<label for="exampleInputEmail1">Reply Text</label> <input
+										class="form-control" type="text" placeholder="REPLY TEXT"
+										id="newReplyText">
+								</div>
+
+								<div class="box-footer">
+									<button type="submit" class="btn btn-primary" id="replyAddBtn">ADD
+										REPLY</button>
+								</div>
+							</c:if>
+
+							<c:if test="${empty member}">
+								<div class="box-body">
+									<div>
+										<a href="javascript:goLogin();">Login Please</a>
+									</div>
+								</div>
+							</c:if>
+						</div>
+
+
+
+						<!-- The time line -->
+						<ul class="timeline">
+							<!-- timeline time label -->
+							<li class="time-label" id="repliesDiv"><span
+								class="bg-green"> Replies List <small id='replycntSmall'>
+										[ ${boardVO.replycnt} ] </small>
+							</span></li>
+						</ul>
+
+						<div class='text-center'>
+							<ul id="pagination" class="pagination pagination-sm no-margin ">
+
+							</ul>
+						</div>
+
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+
+
+
+				<!-- Modal -->
+				<div id="modifyModal" class="modal modal-primary fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title"></h4>
+							</div>
+							<div class="modal-body" data-rno>
+								<p>
+									<input type="text" id="replytext" class="form-control">
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" id="replyModBtn">Modify</button>
+								<button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.card -->
 			</section>
 
 			<!-- /.content -->
@@ -163,7 +246,8 @@
 			
 			$('#btnOrder').on('click', () => {
 
-				self.location = '/product/order';
+				self.location = '/order/insert?pdNo=' + '${productVO.pdNo}'
+							 + '&bskQty=' + $('#bskQty').val();
 
 			});
 

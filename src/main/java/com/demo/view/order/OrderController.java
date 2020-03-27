@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,30 +51,54 @@ public class OrderController {
 		map.put("mbId", vo.getMbId());
 		map.put("productList", productList);
 
-		model.addAttribute("basketList", service.getBaskets(map));
+		List<BasketVO> basketList = service.getBaskets(map);
 		
+		// 상품 상세보기에서 즉시구매를 클릭하였을 경우
+		if(basketList.size() == 0) {
+			BasketVO product = service.getProduct(productList.get(0));
+			product.setBskQty(Integer.parseInt(request.getParameter("bskQty")));
+			basketList.add(product);
+		}
+		
+		model.addAttribute("basketList", basketList);
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertOrder(HttpServletRequest request, OrderVO vo, RedirectAttributes rttr) {
 		
 		logger.info(vo.toString());
-		System.out.println(vo.toString());
 
 		String[] arrayParam = request.getParameterValues("pdNo");
 		Integer mile = Integer.parseInt(request.getParameter("mile"));
+		MemberVO member = (MemberVO) request.getSession().getAttribute("member");
 		
 		List<Integer> productList = new ArrayList<>();
 		for(String tmp : arrayParam)
 			productList.add(Integer.parseInt(tmp));
 		
-		System.out.println(productList);
-		System.out.println(mile);
+		service.insertOrder(vo, productList, mile, Integer.parseInt(request.getParameter("bskQty")));
 		
-		service.insertOrder(vo, productList, mile);
+		request.getSession().setAttribute("member", service.getMember(member.getMbId()));
 		
 		rttr.addFlashAttribute("orderMsg", "SUCCESS");
 		
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public void listOrder(HttpSession session, Model model) {
+		
+		MemberVO vo = (MemberVO) session.getAttribute("member");
+		
+		model.addAttribute("orderList", service.getOrderList(vo.getMbId()));
+		
+	}
+	
+	@RequestMapping(value = "/detail", method = RequestMethod.GET)
+	public void detailOrder(Integer ordNo, Model model) {
+		
+		model.addAttribute("orderList", service.getOrderDetail(ordNo));
+		model.addAttribute("order", service.getOrder(ordNo));
+		
 	}
 }

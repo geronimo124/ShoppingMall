@@ -84,6 +84,7 @@
 											integerOnly="true" /></td>
 								</tr>
 								<input type="hidden" name="pdNo" value="${basketVO.pdNo }">
+								<input type="hidden" name="bskQty" value="${basketVO.bskQty }">
 							</c:forEach>
 
 						</table>
@@ -239,7 +240,7 @@
 	<script>
 
 		$(() => {
-
+			
 			let maxMile = '${member.mbMile}';
 			let sum = 0;
 			

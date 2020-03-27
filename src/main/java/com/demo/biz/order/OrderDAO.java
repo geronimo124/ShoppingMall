@@ -14,5 +14,11 @@ public interface OrderDAO {
 	public void insertOrderDetail(OrderDetailVO vo);
 	public void deleteBaskets(Map<String, Object> map);
 	public void updateMileage(MemberVO vo);
-
+	public List<OrderVO> getOrderList(String mbId);
+	public MemberVO getMember(String mbId);
+	public BasketVO getProduct(Integer pdNo);
+	public List<BasketVO> getOrderDetail(Integer ordNo);
+	public OrderVO getOrder(Integer ordNo);
+	public List<OrderVO> getAllOrderList();
+	
 }
