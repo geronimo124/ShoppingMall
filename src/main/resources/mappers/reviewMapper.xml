@@ -8,8 +8,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertReview" parameterType="review">
 		<![CDATA[
 			INSERT INTO REVIEWS_TB VALUES ((SELECT NVL(MAX(REV_NO), 0)+1 FROM REVIEWS_TB),
-			#{orddtPdNo}, #{orddtOrdNo}, #{mbId}, #{revTitle}, #{revContent}, #{revGrade}, SYSDATE)
+			#{orddtPdNo}, #{orddtOrdNo}, #{mbId}, #{revTitle}, #{revWriter}, #{revContent}, #{revGrade}, SYSDATE)
 		]]>	
 	</insert>
+	
+	<select id="listReview" parameterType="map" resultType="review">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT R.*, ROW_NUMBER() OVER(ORDER BY REV_NO DESC) AS RNUM
+				FROM REVIEWS_TB R WHERE ORDDT_PD_NO=#{pdNo}
+			)
+			WHERE RNUM BETWEEN #{cri.pageStart} AND (#{cri.pageStart} + #{cri.perPageNum} - 1)
+		]]>
+	</select>
+	
+	<select id="countReviewList" resultType="int">
+		<![CDATA[
+			SELECT COUNT(REV_NO) FROM REVIEWS_TB WHERE ORDDT_PD_NO=#{pdNo}
+		]]>
+	</select>
+
+	<delete id="deleteReview" parameterType="int">
+		<![CDATA[
+			DELETE FROM REVIEWS_TB WHERE REV_NO=#{revNo}
+		]]>
+	</delete>	
+	
+	<update id="modifyReview" parameterType="review">
+		<![CDATA[
+			UPDATE REVIEWS_TB SET REV_TITLE=#{revTitle}, REV_WRITER=#{revWriter}, REV_CONTENT=#{revContent},
+			REV_GRADE=#{revGrade} WHERE REV_NO=#{revNo}
+		]]>
+	</update>
+	
+	<select id="getReview" parameterType="map" resultType="review">
+		<![CDATA[
+			SELECT * FROM REVIEWS_TB WHERE ORDDT_ORD_NO=#{ordNo} AND ORDDT_PD_NO=#{pdNo}
+		]]>
+	</select>
 	
 </mapper>

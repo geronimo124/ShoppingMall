@@ -32,7 +32,7 @@
 			<section class="content container-fluid">
 				<div class="box">
 					<div class="box-header with-border">
-						<h3 class="box-title">장바구니 리스트</h3>
+						<h3 class="box-title">주문현황 리스트</h3>
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
@@ -148,7 +148,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">리뷰 작성</h4>
+								<h4 class="modal-title"></h4>
 							</div>
 							<div class="modal-body" data-rno>
 								<p>
@@ -165,10 +165,10 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-primary" id="btnRegRev">등록</button>
-								<button type="button" class="btn btn-info" id="replyModBtn">Modify</button>
-								<button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
+								<button type="button" class="btn btn-info" id="btnModRev">수정</button>
+								<button type="button" class="btn btn-danger" id="btnDelRev">삭제</button>
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
+									data-dismiss="modal">닫기</button>
 							</div>
 						</div>
 					</div>
@@ -201,6 +201,49 @@
 			$('.review').on('click', function() {
 
 				$('#pdNo').val($(this).parents('tr').find('.hidden').html());
+
+				$.ajax({
+					type : 'get',
+					url : '/review/get/' + '${order.ordNo}' + '/' + $('#pdNo').val(),
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "GET"
+					},
+					dataType : 'text',
+					success : function(review) {
+
+						if(review != "") {
+
+							let data = JSON.parse(review);
+
+							$('#revGrade').val(data.revGrade);
+							$('#revTitle').val(data.revTitle);
+							$('#revContent').val(data.revContent);
+
+							///////////////// 여기 해야함
+							$('.modal-body').attr('data-rno');
+							///////////////////////////////////////////////////////////////여기여기..
+							// data-rno를 이용해서 수정 구현..
+
+							$('#btnRegRev').hide();
+							$('#btnModRev').show();
+							$('#btnDelRev').show();
+
+						} else {
+
+							$('#revGrade').val('');
+							$('#revTitle').val('');
+							$('#revContent').val('');
+
+							$('#btnRegRev').show();
+							$('#btnModRev').hide();
+							$('#btnDelRev').hide();
+							
+						}			
+						
+					}
+				});
+
 				
 			});
 			
@@ -210,12 +253,13 @@
 							   orddtOrdNo : '${order.ordNo}',
 							   mbId : '${member.mbId}',
 							   revTitle : $('#revTitle').val(),
+							   revWriter : '${member.mbNick}',
 							   revContent : $('#revContent').val(),
 							   revGrade : $('#revGrade').val()
 				};
 
 				$.ajax({
-					   url:"/review/insert",
+					   url:"/review",
 					   type:"post",
 					   data: JSON.stringify(review),
 						headers : {
@@ -224,12 +268,43 @@
 						},
 					   dataType:"text",
 					   success:(data) => {
-						   alert(data);
+							   alert('리뷰가 작성되었습니다.');
+						   if(data == 'SUCCESS')
+						   $("#reviewModal").modal('hide');
 						}
 
 				 });
 
 			});
+
+			$('#btnModRev').on('click', function() {
+
+				let revNo = $('.modal-body').attr('data-rno');
+
+				$.ajax({
+					type : 'put',
+					url : '/review/' + revNo,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "PUT"
+					},
+					data : JSON.stringify({
+						revTitle : $('#revTitle').val(),
+						revWriter : '${member.mbNick}',
+						revContent : $('#revContent').val(),
+						revGrade : $('#revGrade').val()
+					}),
+					dataType : 'text',
+					success : function(data) {
+						if (data == 'SUCCESS') {
+							alert("수정 되었습니다.");
+						}
+						$("#modifyModal").modal('hide');
+						getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+					}
+				});
+			});
+
 		});
 
 	</script>

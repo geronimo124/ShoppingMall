@@ -130,45 +130,11 @@
 				<div class="row">
 					<div class="col-md-12">
 
-
-						<div class="box box-success">
-							<div class="box-header">
-								<h3 class="box-title">상품 리뷰</h3>
-							</div>
-
-							<c:if test="${not empty member}">
-								<div class="box-body">
-									<label for="exampleInputEmail1">Writer</label> <input
-										class="form-control" type="text" placeholder="USER ID"
-										id="newReplyWriter" value="${login.uid }" readonly="readonly">
-									<label for="exampleInputEmail1">Reply Text</label> <input
-										class="form-control" type="text" placeholder="REPLY TEXT"
-										id="newReplyText">
-								</div>
-
-								<div class="box-footer">
-									<button type="submit" class="btn btn-primary" id="replyAddBtn">ADD
-										REPLY</button>
-								</div>
-							</c:if>
-
-							<c:if test="${empty member}">
-								<div class="box-body">
-									<div>
-										<a href="javascript:goLogin();">Login Please</a>
-									</div>
-								</div>
-							</c:if>
-						</div>
-
-
-
 						<!-- The time line -->
 						<ul class="timeline">
 							<!-- timeline time label -->
-							<li class="time-label" id="repliesDiv"><span
-								class="bg-green"> Replies List <small id='replycntSmall'>
-										[ ${boardVO.replycnt} ] </small>
+							<li class="time-label" id="reviewDiv"><span
+								class="bg-green"> 상품 리뷰 <small id='reviewcntSmall'></small>
 							</span></li>
 						</ul>
 
@@ -186,7 +152,7 @@
 
 
 				<!-- Modal -->
-				<div id="modifyModal" class="modal modal-primary fade" role="dialog">
+				<div id="modifyModal" class="modal modal-default fade" role="dialog">
 					<div class="modal-dialog">
 						<!-- Modal content-->
 						<div class="modal-content">
@@ -196,18 +162,26 @@
 							</div>
 							<div class="modal-body" data-rno>
 								<p>
-									<input type="text" id="replytext" class="form-control">
+									<select id="revGrade" name="revGrade" class="select2">
+										<option value="1">★</option>
+										<option value="2">★★</option>
+										<option value="3">★★★</option>
+										<option value="4">★★★★</option>
+										<option value="5" selected="selected">★★★★★</option>
+									</select> <input type="text" id="revTitle" name="revTitle"
+										class="form-control"><br />
+									<textarea rows="10" id="revContent" name="revContent" class="form-control"></textarea>
 								</p>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-info" id="replyModBtn">Modify</button>
-								<button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
+								<button type="button" class="btn btn-info" id="btnModRev">수정</button>
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
+									data-dismiss="modal">취소</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				
 				<!-- /.card -->
 			</section>
 
@@ -222,11 +196,146 @@
 		<%@include file="/WEB-INF/views/include/aside.jsp"%>
 	</div>
 	<!-- ./wrapper -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script id="template" type="text/x-handlebars-template">
+		{{#each .}}
+	         <li class="reviewLi" data-rno={{revNo}}>
+             <i class="fa fa-comments bg-blue"></i>
+             <div class="timeline-item" >
+                <span class="time">
+                  <i class="fa fa-clock-o"></i>{{prettifyDate revDt}}
+                </span>
+                <h3 class="timeline-header"><strong>[<span class="revGrade">{{grade revGrade}}</span>]
+					<span class="revTitle">{{revTitle}}</span>
+					</strong> -{{revWriter}}</h3>
+                <div class="timeline-body">{{revContent}} </div>
+								<div class="timeline-footer">
+								{{#eqReviewer revWriter }}
+				<a class="btn btn-primary" 
+									data-toggle="modal" data-target="#modifyModal">수정</a>
+				<a class="btn btn-danger" onClick="btnDelRev(this)">삭제</a>				
+								{{/eqReviewer}}
+							  </div>
+	            </div>			
+           </li>
+        {{/each}}
+	</script>  
 
 	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 	<script>
+	
+	Handlebars.registerHelper("eqReviewer", function(reviewer, block) {
+		var accum = '';
+		if (reviewer == '${member.mbNick}') {
+			accum += block.fn();
+		}
+		return accum;
+	});
+	
 
+	Handlebars.registerHelper("prettifyDate", function(timeValue) {
+		var dateObj = new Date(timeValue);
+		var year = dateObj.getFullYear();
+		var month = dateObj.getMonth() + 1;
+		var date = dateObj.getDate();
+		return year + "/" + month + "/" + date;
+	});
+	
+	Handlebars.registerHelper("grade", function(grade) {
+
+		let gradeStar = '';
+		
+		switch(grade) {
+		case 1:
+			gradeStar = '★';
+			break;			
+		case 2:
+			gradeStar = '★★';
+			break;			
+		case 3:
+			gradeStar = '★★★';
+			break;			
+		case 4:
+			gradeStar = '★★★★';
+			break;			
+		case 5:
+			gradeStar = '★★★★★';
+		}
+
+		return gradeStar;
+		
+	});
+
+	var reviewPage = 1;
+	
+	var printData = function(replyArr, target, templateObject) {
+
+		var template = Handlebars.compile(templateObject.html());
+
+		var html = template(replyArr);
+		$(".reviewLi").remove();
+		target.after(html);
+
+	}
+
+	function getPage(pageInfo) {
+
+		$.getJSON(pageInfo, function(data) {
+			printData(data.list, $("#reviewDiv"), $('#template'));
+			printPaging(data.pageMaker, $(".pagination"));
+
+			$("#reviewcntSmall").html("[ " + data.pageMaker.totalCount + " ]");
+
+		});
+	}
+
+	function btnDelRev(button) {
+
+		let revNo = button.parentNode.parentNode.parentNode.getAttribute("data-rno");
+
+		$.ajax({
+			type : 'delete',
+			url : '/review/' + revNo,
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "DELETE"
+			},
+			dataType : 'text',
+			success : function(result) {
+				console.log("result: " + result);
+				if (result == 'SUCCESS') {
+					alert("리뷰가 삭제 되었습니다.");
+					getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+				}
+			}
+		});
+	}
+
+	var printPaging = function(pageMaker, target) {
+
+		var str = "";
+
+		if (pageMaker.prev) {
+			str += "<li><a href='" + (pageMaker.startPage - 1)
+					+ "'> << </a></li>";
+		}
+
+		for (var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+			var strClass = pageMaker.cri.page == i ? 'class=active' : '';
+			str += "<li "+strClass+"><a href='"+i+"'>" + i + "</a></li>";
+		}
+
+		if (pageMaker.next) {
+			str += "<li><a href='" + (pageMaker.endPage + 1)
+					+ "'> >> </a></li>";
+		}
+
+		target.html(str);
+	};
+	
 		$(() => {
+
+			getPage("/review/" + '${productVO.pdNo}' + "/1");
 
 			$.ajaxSetup({
 
@@ -275,8 +384,54 @@
 			
 
 			});
-				
 
+			$(".pagination").on("click", "li a", function(event) {
+
+				event.preventDefault();
+
+				reviewPage = $(this).attr("href");
+
+				getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+
+			});
+
+			$(".timeline").on("click", ".reviewLi", function(event) {
+
+				var review = $(this);
+
+				$("#revTitle").val(review.find('.revTitle').text());
+				$("#revContent").val(review.find('.timeline-body').text());
+				$('.modal-body').attr('data-rno', review.attr('data-rno'));
+
+			});
+
+			$('#btnModRev').on('click', function() {
+
+				let revNo = $('.modal-body').attr('data-rno');
+
+				$.ajax({
+					type : 'put',
+					url : '/review/' + revNo,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "PUT"
+					},
+					data : JSON.stringify({
+						revTitle : $('#revTitle').val(),
+						revWriter : '${member.mbNick}',
+						revContent : $('#revContent').val(),
+						revGrade : $('#revGrade').val()
+					}),
+					dataType : 'text',
+					success : function(data) {
+						if (data == 'SUCCESS') {
+							alert("수정 되었습니다.");
+						}
+						$("#modifyModal").modal('hide');
+						getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+					}
+				});
+			});
 		});
 	
 	</script>
