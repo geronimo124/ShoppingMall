@@ -19,7 +19,9 @@ select * from reviews_tb;
 
 delete from order_detail_tb;
 delete from orders_tb;
+delete from reviews_tb;
 commit;
+rollback;
 
 
 SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS
@@ -133,6 +135,7 @@ CREATE TABLE REVIEWS_TB(
     ORDDT_ORD_NO    NUMBER              NOT NULL,
     MB_ID           VARCHAR2(15)        NOT NULL,
     REV_TITLE       VARCHAR2(100)       NOT NULL,
+    REV_WRITER      VARCHAR2(20)        NOT NULL,
     REV_CONTENT     VARCHAR2(500)       NOT NULL,
     REV_GRADE       NUMBER              NOT NULL,
     REV_DT          DATE                DEFAULT SYSDATE,
