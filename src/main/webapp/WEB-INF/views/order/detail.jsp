@@ -220,10 +220,7 @@
 							$('#revTitle').val(data.revTitle);
 							$('#revContent').val(data.revContent);
 
-							///////////////// 여기 해야함
-							$('.modal-body').attr('data-rno');
-							///////////////////////////////////////////////////////////////여기여기..
-							// data-rno를 이용해서 수정 구현..
+							$('.modal-body').attr('data-rno', data.revNo);
 
 							$('#btnRegRev').hide();
 							$('#btnModRev').show();
@@ -299,12 +296,34 @@
 						if (data == 'SUCCESS') {
 							alert("수정 되었습니다.");
 						}
-						$("#modifyModal").modal('hide');
+						$("#reviewModal").modal('hide');
 						getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
 					}
 				});
 			});
 
+			$('#btnDelRev').on('click', () => {
+
+				let revNo = $('.modal-body').attr('data-rno');
+
+				$.ajax({
+					type : 'delete',
+					url : '/review/' + revNo,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "DELETE"
+					},
+					dataType : 'text',
+					success : function(result) {
+						if (result == 'SUCCESS') {
+							alert("리뷰가 삭제 되었습니다.");
+						}
+						$("#reviewModal").modal('hide');
+						getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+					}
+				});
+			});
+					
 		});
 
 	</script>

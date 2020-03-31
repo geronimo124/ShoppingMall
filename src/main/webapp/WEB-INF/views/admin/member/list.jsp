@@ -25,7 +25,7 @@
 						<!-- general form elements -->
 						<div class='box'>
 							<div class="box-header with-border">
-								<h3 class="box-title">Order List</h3>
+								<h3 class="box-title">Member List</h3>
 							</div>
 
 
@@ -35,9 +35,15 @@
 									<option value="x"
 										<c:out value="${cri.searchType == null?'selected':''}"/>>
 										---</option>
+									<option value="i"
+										<c:out value="${cri.searchType eq 'i'?'selected':''}"/>>
+										아이디</option>
 									<option value="n"
 										<c:out value="${cri.searchType eq 'n'?'selected':''}"/>>
-										상품 이름</option>
+										이름</option>
+									<option value="a"
+										<c:out value="${cri.searchType eq 'a'?'selected':''}"/>>
+										닉네임</option>
 								</select> <input type="text" name='keyword' id="keywordInput"
 									value='${cri.keyword }'>
 								<button id='btnSearch'>검색</button>
@@ -49,42 +55,41 @@
 							<div class="box-header with-border">
 								<h3 class="box-title">LIST PAGING</h3>
 								<button type="button" id="btnCheckDelete" class="btn btn-sm btn-danger" style="float: right;">체크 삭제</button>
-								<button type="button" id="btnCheckModify" class="btn btn-sm btn-info" style="float: right;">체크 수정</button>
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered text-center">
 									<tr>
 										<th><input type="checkbox" class="checkbox" id="checkAll"></th>
-										<th>번호</th>
-										<th>주문일자</th>
-										<th>상품명</th>
-										<th>결제금액</th>
-										<th>주문상세</th>
-										<th>배송현황</th>
+										<th>아이디</th>
+										<th>이름</th>
+										<th>닉네임</th>
+										<th>전화번호</th>
+										<th>이메일</th>
+										<th>우편번호</th>
+										<th>주소1</th>
+										<th>주소2</th>
+										<th>적립금</th>
+										<th>가입일</th>
+										<th>접속일</th>
 									</tr>
 
-									<c:forEach items="${orderList}" var="orderVO">
+									<c:forEach items="${memberList}" var="memberVO">
 
 										<tr>
-											<td><input type="checkbox" class="checkbox check" name="checkbox" value="${orderVO.ordNo }"></td>
-											<td>${orderVO.ordNo }</td>
-											<td>${orderVO.ordDt }</td>
-											<td>${orderVO.pdNm }</td>
-											<td>${orderVO.ordPrice }</td>
-											<td><a href="/admin/order/detail?ordNo=${orderVO.ordNo }"><button type="button" class="btn">보기</button></a></td>
-											<td>
-												<c:choose>
-													<c:when test="${orderVO.ordStatus eq 'R' }">
-														배송 준비중
-													</c:when>
-													<c:when test="${orderVO.ordStatus eq 'D' }">
-														배송중
-													</c:when>
-													<c:when test="${orderVO.ordStatus eq 'S' }">
-														배송완료
-													</c:when>
-												</c:choose>
-											</td>
+											<td><input type="checkbox" class="checkbox check" name="checkbox" value="${memberVO.mbId }"></td>
+											<td>${memberVO.mbId }</td>
+											<td>${memberVO.mbNm }</td>
+											<td>${memberVO.mbNick }</td>
+											<td>${memberVO.mbPhone }</td>
+											<td>${memberVO.mbEmail }</td>
+											<td>${memberVO.mbZip }</td>
+											<td>${memberVO.mbAddr }</td>
+											<td>${memberVO.mbDeaddr }</td>
+											<td>${memberVO.mbMile }</td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
+													value="${memberVO.mbRegdt}" /></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
+													value="${memberVO.mbCondt}" /></td>
 										</tr>
 
 									</c:forEach>
@@ -150,7 +155,8 @@
 
 			});
 
-			$('#checkAll').on('click', function () { $('.check').prop('checked', this.checked) });	
+			$('#checkAll').on('click', function () { $('.check').prop('checked', this.checked) });
+			
 
 			$('#btnCheckDelete').on('click', function() {
 
@@ -163,7 +169,7 @@
 				$.ajax({
 			        type		: "POST",
 			        url 		: "deleteChecked",
-			        data		: {productList : checkArr},
+			        data		: {memberList : checkArr},
 			        success 	: function(data) {
 
 						self.location = "list"

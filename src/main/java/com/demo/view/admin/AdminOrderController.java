@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.demo.biz.common.PageMaker;
 import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.order.OrderService;
 
@@ -28,7 +29,17 @@ public class AdminOrderController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public void listOrder(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
-		model.addAttribute("orderList", service.getAllOrderList());
+		logger.info(cri.toString());
+
+		model.addAttribute("orderList", service.getAllOrderList(cri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(service.countAllOrderList(cri));
+
+		model.addAttribute("pageMaker", pageMaker);
+		
 	}
 
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)

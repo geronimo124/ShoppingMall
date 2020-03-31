@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.order.OrderDAO;
 import com.demo.biz.order.OrderDetailVO;
@@ -137,9 +138,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderVO> getAllOrderList() {
+	public List<OrderVO> getAllOrderList(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		List<OrderVO> list = dao.getAllOrderList();
+		List<OrderVO> list = dao.getAllOrderList(cri);
 		List<OrderVO> orderList = new ArrayList<>();
 		
 		if(list.size() <= 1)
@@ -159,5 +160,44 @@ public class OrderServiceImpl implements OrderService {
 		}
 		
 		return orderList;
+	}
+
+	@Override
+	public boolean checkStock(List<BasketVO> basketList) {
+		// TODO Auto-generated method stub
+		
+		for(BasketVO basket : basketList) {
+			int stock = dao.getStock(basket.getPdNo());
+			if(basket.getBskQty() > stock)
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int countAllOrderList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		List<OrderVO> list = dao.countAllOrderList(cri);
+		List<OrderVO> orderList = new ArrayList<>();
+		
+		if(list.size() == 0)
+			return 0;
+		else if(list.size() == 1)
+			return 1;
+		
+		OrderVO vo = list.get(0);
+		
+		for (int i = 1; i < list.size(); i++) {
+			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+			} else {
+				orderList.add(vo);
+				vo = list.get(i);
+			}
+			if(i == list.size() - 1)
+				orderList.add(vo);
+		}
+		
+		return orderList.size();
 	}
 }

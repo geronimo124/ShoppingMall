@@ -48,5 +48,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MB_EMAIL=#{mbEmail}, MB_ZIP=#{mbZip}, MB_ADDR=#{mbAddr}, MB_DEADDR=#{mbDeaddr} WHERE MB_ID=#{mbId}
 		]]>
 	</update>
+	
+	<select id="getMemberList" resultType="member">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT M.*, ROW_NUMBER() OVER(ORDER BY MB_ID DESC) AS RNUM
+				FROM MEMBERS_TB M WHERE 1=1
+		]]>
+				<include refid="search"></include>		
+		<![CDATA[
+			)
+			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
+		]]>
+	</select>
+	
+	<select id="countMemberList" resultType="int">
+		<![CDATA[
+			SELECT COUNT(MB_ID) FROM MEMBERS_TB WHERE 1=1
+		]]>
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'i'.toString()">
+				AND MB_ID LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'n'.toString()">
+				AND MB_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'a'.toString()">
+				AND MB_NICK LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	
+	<delete id="deleteMember">
+		<![CDATA[
+			DELETE FROM MEMBERS_TB WHERE MB_ID=#{mbId}
+		]]>	
+	</delete>
 
 </mapper>

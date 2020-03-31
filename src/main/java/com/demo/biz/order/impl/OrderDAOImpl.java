@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.order.OrderDAO;
 import com.demo.biz.order.OrderDetailVO;
@@ -92,9 +93,21 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public List<OrderVO> getAllOrderList() {
+	public List<OrderVO> getAllOrderList(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		return session.selectList(NAMESPACE + ".getAllOrderList");
+		return session.selectList(NAMESPACE + ".getAllOrderList", cri);
+	}
+
+	@Override
+	public int getStock(Integer pdNo) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getStock", pdNo);
+	}
+
+	@Override
+	public List<OrderVO> countAllOrderList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".countAllOrderList", cri);
 	}
 	
 }

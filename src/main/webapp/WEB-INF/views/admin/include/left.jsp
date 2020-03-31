@@ -70,9 +70,9 @@
 				</span>
 			</a>
 				<ul class="treeview-menu">
+					<li><a href="/admin/member/list">회원 목록</a></li>
 					<li><a href="#" onclick="logout();"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
 					<form id="formLogout" action="/admin/logout" method="post"></form></li>
-					<li><a href="#">회원 목록</a></li>
 				</ul></li>
 			<li><a href="/admin/order/list">주문조회</a></li>
 		</ul>

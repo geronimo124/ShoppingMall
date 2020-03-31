@@ -83,8 +83,8 @@
 											value="${basketVO.pdTag * (100 - basketVO.pdSale) / 100 * basketVO.bskQty / 100}"
 											integerOnly="true" /></td>
 								</tr>
-								<input type="hidden" name="pdNo" value="${basketVO.pdNo }">
-								<input type="hidden" name="bskQty" value="${basketVO.bskQty }">
+								<input type="hidden" class="pdNo" name="pdNo" value="${basketVO.pdNo }">
+								<input type="hidden" class="bskQty" name="bskQty" value="${basketVO.bskQty }">
 							</c:forEach>
 
 						</table>
@@ -283,8 +283,71 @@
 				});
 				$('#mileage').val(parseInt(maxMile) + totalMile - parseInt($('#useMile').val()));
 
-				$('#formOrder').submit();
+				let products = [];
+				let quantities = [];
+				
+				$('.pdNo').each(function() {
+					products.push($(this).val());
+				});
+				$('.bskQty').each(function() {
+					quantities.push($(this).val());
+				});
 
+				let basketList = [];
+				var i;
+				for(i = 0; i < products.length; i++) {
+
+					data = {pdNo : products[i],
+							bskQty : quantities[i]};
+
+					basketList.push(data);
+				}
+
+				$.ajax({
+					url:"/order/checkStock",
+				    type:"post",
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "GET"
+					},
+				    data:JSON.stringify(basketList),
+				    dataType:"text",
+				    success: function(data) {
+					    if(data == 'SUCCESS')
+							$('#formOrder').submit();
+					    else
+						    alert('재고가 부족하여 주문할 수 없습니다.');
+					}
+
+			 	});
+				/*
+				var i;
+				for(i = 0; i < products.length; i++) {
+
+					let product = products[i];
+					let quantity = quantities[i];
+					
+					$.ajax({
+							url:"/order/getStock/" + product,
+						    type:"get",
+						    dataType:"text",
+						    success: function(data) {
+							    if(data < quantity) {
+							    	alert('재고가 부족합니다');
+							    	event.preventDefault();
+								}
+							}
+
+					 });
+					
+				}
+
+				alert('으아아');
+				*/
+				/*
+				
+
+				*/
 			});
 
 		});

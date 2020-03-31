@@ -1,5 +1,7 @@
 package com.demo.biz.member.impl;
 
+import java.util.List;
+
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -8,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.biz.common.LoginDTO;
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberDAO;
 import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
+import com.demo.biz.product.ProductVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -96,5 +101,26 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		vo.setMbPw(crptPassEnc.encode(vo.getMbPw()));
 		dao.updateMember(vo);
+	}
+
+	@Override
+	public List<MemberVO> getMemberList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return dao.getMemberList(cri);
+	}
+
+	@Override
+	public int countMemberList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return dao.countMemberList(cri);
+	}
+
+	@Transactional
+	@Override
+	public void deleteMembers(List<String> memberList) {
+		// TODO Auto-generated method stub
+		for(String mbId : memberList)
+			dao.deleteMember(mbId);
+		
 	}
 }

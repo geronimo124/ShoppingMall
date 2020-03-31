@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.demo.biz.common.PageMaker;
 import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.CategoryVO;
-import com.demo.biz.product.ProductService;
+import com.demo.biz.product.MProductService;
 
 @Controller
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	private final ProductService service;
+	private final MProductService service;
 	
 	@Autowired
-	public HomeController(ProductService service) {
+	public HomeController(MProductService service) {
 		this.service = service;
 	}
 	
@@ -37,12 +37,12 @@ public class HomeController {
 		
 		logger.info(cri.toString());
 		
-		model.addAttribute("productList", service.getProductList(cri));
+		model.addAttribute("productList", service.getAllProductList(cri));
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 
-		pageMaker.setTotalCount(service.countProductList(cri));
+		pageMaker.setTotalCount(service.countAllProductList(cri));
 
 		model.addAttribute("pageMaker", pageMaker);
 		

@@ -87,10 +87,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getAllOrderList" resultType="order">
 		<![CDATA[
-			SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS
-			FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
-			WHERE O.ORD_NO = OD.ORD_NO AND OD.PD_NO = P.PD_NO
-			ORDER BY O.ORD_NO DESC
+			SELECT * FROM
+			(
+				SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS, 
+				ROW_NUMBER() OVER(ORDER BY O.ORD_NO DESC) AS RNUM
+				FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
+				WHERE O.ORD_NO = OD.ORD_NO AND OD.PD_NO = P.PD_NO
+		]]>	
+		<include refid="search"></include>	
+		<![CDATA[
+			)
+			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
+		]]>	
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'n'.toString()">
+				AND P.PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getStock" resultType="int">
+		<![CDATA[
+			SELECT PD_STOCK FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+		]]>	
+	</select>
+	
+	<select id="countAllOrderList" resultType="order">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS, 
+				ROW_NUMBER() OVER(ORDER BY O.ORD_NO DESC) AS RNUM
+				FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
+				WHERE O.ORD_NO = OD.ORD_NO AND OD.PD_NO = P.PD_NO
+		]]>	
+		<include refid="search"></include>	
+		<![CDATA[
+			)
 		]]>	
 	</select>
 </mapper>

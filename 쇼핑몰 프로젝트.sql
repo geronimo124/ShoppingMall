@@ -17,25 +17,6 @@ select * from orders_tb;
 select * from order_detail_tb;
 select * from reviews_tb;
 
-delete from order_detail_tb;
-delete from orders_tb;
-delete from reviews_tb;
-commit;
-rollback;
-
-
-SELECT O.ORD_NO, O.ORD_DT, P.PD_NM, O.ORD_PRICE, O.ORD_STATUS
-FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
-WHERE O.ORD_NO = OD.ORD_NO AND OD.PD_NO = P.PD_NO AND O.MB_ID='helloman'
-ORDER BY O.ORD_NO DESC;
-
-SELECT P.PD_IMG, P.PD_NM, OD.ORDDT_QTY BSK_QTY, OD.ORDDT_PRICE PD_TAG
-FROM ORDER_DETAIL_TB OD, PRODUCTS_TB P
-WHERE OD.PD_NO = P.PD_NO AND OD.ORD_NO = 2;
-
-delete from products_tb where pd_no=5;
-commit;
-
 CREATE TABLE ADMIN_TB(
     ADM_ID          VARCHAR2(15)        PRIMARY KEY,
     ADM_PW          VARCHAR2(60)        NOT NULL,
@@ -155,8 +136,6 @@ CREATE TABLE QNA_TB(
     FOREIGN KEY (PD_NO) REFERENCES PRODUCTS_TB (PD_NO)
 );
 
-select * from products_tb order by pd_no;
-
 -- 관리자(pw:1234)
 INSERT INTO ADMIN_TB VALUES('admin', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '관리자', sysdate);
 
@@ -187,34 +166,23 @@ INSERT INTO CATEGORY_TB VALUES ('19', '6', '스니커즈');
 INSERT INTO CATEGORY_TB VALUES ('20', '6', '로퍼');
 INSERT INTO CATEGORY_TB VALUES ('21', '6', '샌들');
 
--- 상품
-INSERT INTO BASKETS_TB VALUES('helloman', 7, 3);
-INSERT INTO BASKETS_TB VALUES('helloman', 3, 2);
 commit;
 
-
-
-INSERT INTO BASKET_TB VALUES (10, 123, 'bird', 2);
-INSERT INTO BASKET_TB VALUES (20, 123, 'hello', 2);
-INSERT INTO BASKET_TB VALUES (30, 97, 'world', 1);
-INSERT INTO BASKET_TB VALUES (40, 1234, 'car', 5);
-INSERT INTO BASKET_TB VALUES (50, 40, 'computer', 1);
-
-
-INSERT INTO ORDER_TB VALUES (3, 'hello', '김안녕', '12345', '경기도 안녕시', '안녕동 1', '010-1234-5678', 100000, SYSDATE);
-INSERT INTO ORDER_TB VALUES (5, 'world', '김세계', '12346', '경기도 세계시', '세계동 2', '010-2345-6789', 28000, SYSDATE);
-INSERT INTO ORDER_TB VALUES (30, 'bird', '김새', '12345', '경기도 세시', '동동 3', '031-444-4885', 100000, SYSDATE);
-
-
-INSERT INTO ORDER_DETAIL_TB VALUES (3, 123, 2, 50000);
-INSERT INTO ORDER_DETAIL_TB VALUES (5, 97, 1, 28000);
-INSERT INTO ORDER_DETAIL_TB VALUES (30, 123, 2, 50000);
-
-CREATE SEQUENCE BOARD_NO_SEQ START WITH 0 MINVALUE 0 INCREMENT BY 1; 
-INSERT INTO BOARD_TB VALUES (BOARD_NO_SEQ.NEXTVAL, 'world', '낡은 코트를 샀는데...', '진짜 너무 낡아서 바람만 불어도 뜯어집니다. 환불좀요', SYSDATE);
-INSERT INTO BOARD_TB VALUES (BOARD_NO_SEQ.NEXTVAL, 'computer', '쇼핑몰 서버', '내 컴보다 구린듯 너무 느림', SYSDATE);
-INSERT INTO BOARD_TB VALUES (BOARD_NO_SEQ.NEXTVAL, 'car', '차 사고싶다', '차 사는게 소원이라 아이디도 차로 만들어봄 ㅎㅎ', SYSDATE);
-
-INSERT INTO REVIEW_TB VALUES (1, 'world', 97, '개낡음 ㄹㅇ 절대사지마세요', 1, SYSDATE);
-INSERT INTO REVIEW_TB VALUES (2, 'hello', 123, '칼로 쑤셔도 안뜯어지네요', 5, SYSDATE);
-INSERT INTO REVIEW_TB VALUES (3, 'bird', 123, '너무 질겨서 짜증이납니다', 3, SYSDATE);
+-- 주문상세 INSERT -> 물품 재고 감소 트리거
+CREATE OR REPLACE TRIGGER trg_order
+   AFTER INSERT 
+   ON ORDER_DETAIL_TB
+   FOR EACH ROW 
+DECLARE
+   v_orddt_qty NUMBER;
+   v_pd_no NUMBER;
+   v_pd_stock NUMBER;
+BEGIN
+   SELECT :NEW.ORDDT_QTY INTO v_orddt_qty FROM DUAL;
+   SELECT :NEW.PD_NO INTO v_pd_no FROM DUAL;
+   SELECT PD_STOCK INTO v_pd_stock FROM PRODUCTS_TB WHERE PD_NO = v_pd_no;
+   UPDATE PRODUCTS_TB SET PD_STOCK = PD_STOCK - v_orddt_qty WHERE PD_NO = v_pd_no;
+   IF v_pd_stock - v_orddt_qty <= 0 THEN
+        UPDATE PRODUCTS_TB SET PD_STATUS = 'N' WHERE PD_NO = v_pd_no;
+   END IF;
+END;

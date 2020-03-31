@@ -12,11 +12,16 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.demo.biz.member.MemberVO;
@@ -100,5 +105,26 @@ public class OrderController {
 		model.addAttribute("orderList", service.getOrderDetail(ordNo));
 		model.addAttribute("order", service.getOrder(ordNo));
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkStock", method = RequestMethod.POST)
+	public ResponseEntity<String> checkStock(@RequestBody List<BasketVO> basketList) { 
+
+		logger.info(basketList.toString());
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			if(service.checkStock(basketList))
+				entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			else
+				entity = new ResponseEntity<String>("FAIL", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 }

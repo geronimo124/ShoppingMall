@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.biz.common.Criteria;
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.CategoryVO;
 import com.demo.biz.product.MProductDAO;
 import com.demo.biz.product.ProductVO;
@@ -51,6 +52,18 @@ public class MProductDAOImpl implements MProductDAO {
 	public ProductVO getProduct(Integer pdNo) {
 		// TODO Auto-generated method stub
 		return session.selectOne(NAMESPACE + ".getProduct", pdNo);
+	}
+
+	@Override
+	public List<ProductVO> getAllProductList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getAllProductList", cri);
+	}
+
+	@Override
+	public int countAllProductList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".countAllProductList", cri);
 	}
 
 }

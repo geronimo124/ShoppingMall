@@ -1,6 +1,9 @@
 package com.demo.biz.member;
 
+import java.util.List;
+
 import com.demo.biz.common.LoginDTO;
+import com.demo.biz.common.SearchCriteria;
 
 public interface MemberDAO {
 
@@ -11,4 +14,8 @@ public interface MemberDAO {
 	public MemberVO getMember(String mbId);
 	public void insertMember(MemberVO vo);
 	public void updateConDate(LoginDTO dto);
+	
+	public List<MemberVO> getMemberList(SearchCriteria cri);
+	public int countMemberList(SearchCriteria cri);
+	public void deleteMember(String mbId);
 }
