@@ -17,6 +17,9 @@ select * from orders_tb;
 select * from order_detail_tb;
 select * from reviews_tb;
 
+
+
+
 CREATE TABLE ADMIN_TB(
     ADM_ID          VARCHAR2(15)        PRIMARY KEY,
     ADM_PW          VARCHAR2(60)        NOT NULL,
@@ -169,7 +172,7 @@ INSERT INTO CATEGORY_TB VALUES ('21', '6', '샌들');
 commit;
 
 -- 주문상세 INSERT -> 물품 재고 감소 트리거
-CREATE OR REPLACE TRIGGER trg_order
+CREATE OR REPLACE TRIGGER trg_orddt_insert
    AFTER INSERT 
    ON ORDER_DETAIL_TB
    FOR EACH ROW 
@@ -185,4 +188,40 @@ BEGIN
    IF v_pd_stock - v_orddt_qty <= 0 THEN
         UPDATE PRODUCTS_TB SET PD_STATUS = 'N' WHERE PD_NO = v_pd_no;
    END IF;
+END;
+
+-- 주문 DELETE -> 주문상세, 리뷰 DELETE 트리거
+CREATE OR REPLACE TRIGGER trg_ord_delete
+   BEFORE DELETE
+   ON ORDERS_TB
+   FOR EACH ROW 
+DECLARE
+   v_ord_no NUMBER;
+BEGIN
+   SELECT :OLD.ORD_NO INTO v_ord_no FROM DUAL;
+   DELETE FROM ORDER_DETAIL_TB WHERE ORD_NO = v_ord_no;
+   DELETE FROM REVIEWS_TB WHERE ORDDT_ORD_NO = v_ord_no;
+END;
+
+
+-- 새로운 주문 통계 프로시저
+CREATE OR REPLACE PROCEDURE proc_stat_new_order
+                ( p_adm_id IN ADMIN_TB.ADM_ID%TYPE,
+                  p_ord_count OUT NUMBER )
+IS
+v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
+BEGIN
+    SELECT ADM_CONDT INTO v_condt_date FROM ADMIN_TB WHERE ADM_ID = p_adm_id;
+    SELECT COUNT(*) INTO p_ord_count FROM ORDERS_TB WHERE v_condt_date <= ORD_DT;
+END;
+
+-- 새로운 멤버 통계 프로시저
+CREATE OR REPLACE PROCEDURE proc_stat_new_member
+                ( p_adm_id IN ADMIN_TB.ADM_ID%TYPE,
+                  p_member_count OUT NUMBER )
+IS
+v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
+BEGIN
+    SELECT ADM_CONDT INTO v_condt_date FROM ADMIN_TB WHERE ADM_ID = p_adm_id;
+    SELECT COUNT(*) INTO p_member_count FROM MEMBERS_TB WHERE v_condt_date <= MB_REGDT;
 END;

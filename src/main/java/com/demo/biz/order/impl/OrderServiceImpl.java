@@ -200,4 +200,18 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderList.size();
 	}
+
+	@Transactional
+	@Override
+	public void modifyCheckedOrders(List<OrderVO> orderList) {
+		// TODO Auto-generated method stub
+		for(OrderVO vo : orderList)
+			dao.modifyCheckedOrder(vo);
+	}
+
+	@Override
+	public void deleteOrders(List<Integer> orderList) {
+		// TODO Auto-generated method stub
+		dao.deleteOrders(orderList);
+	}
 }

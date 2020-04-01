@@ -23,5 +23,7 @@ public interface OrderDAO {
 	public List<OrderVO> getAllOrderList(SearchCriteria cri);
 	public List<OrderVO> countAllOrderList(SearchCriteria cri);
 	public int getStock(Integer pdNo);
+	public void modifyCheckedOrder(OrderVO order);
+	public void deleteOrders(List<Integer> orderList);
 	
 }

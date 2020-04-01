@@ -73,17 +73,23 @@
 											<td>${orderVO.ordPrice }</td>
 											<td><a href="/admin/order/detail?ordNo=${orderVO.ordNo }"><button type="button" class="btn">보기</button></a></td>
 											<td>
-												<c:choose>
-													<c:when test="${orderVO.ordStatus eq 'R' }">
-														배송 준비중
-													</c:when>
-													<c:when test="${orderVO.ordStatus eq 'D' }">
-														배송중
-													</c:when>
-													<c:when test="${orderVO.ordStatus eq 'S' }">
-														배송완료
-													</c:when>
-												</c:choose>
+												<select name="ordStatus" class="form-control select2 ordStatus" required>
+												<c:if test="${orderVO.ordStatus eq 'R' }">
+													<option value="R" selected="selected">배송 준비중</option>
+													<option value="D">배송중</option>
+													<option value="S">배송완료</option>
+												</c:if>
+												<c:if test="${orderVO.ordStatus eq 'D' }">
+													<option value="R">배송 준비중</option>
+													<option value="D" selected="selected">배송중</option>
+													<option value="S">배송완료</option>
+												</c:if>
+												<c:if test="${orderVO.ordStatus eq 'S' }">
+													<option value="R">배송 준비중</option>
+													<option value="D">배송중</option>
+													<option value="S" selected="selected">배송완료</option>
+												</c:if>
+												</select>	
 											</td>
 										</tr>
 
@@ -152,6 +158,39 @@
 
 			$('#checkAll').on('click', function () { $('.check').prop('checked', this.checked) });	
 
+			$('#btnCheckModify').on('click', function() {
+
+				let modifyArr = [];
+
+				$('tr .check:checked').each(function() {
+					
+			        let data = {ordNo	: $(this).val(),
+					        	ordStatus   : $(this).parent().parent().find('.ordStatus').val() 
+	                };
+
+	                modifyArr.push(data);
+				});
+
+				$.ajax({
+			        type		: "post",
+			        url 		: "modifyChecked",
+			        data		: JSON.stringify(modifyArr),
+			        contentType : "application/json",
+			        success 	: function(data) {
+
+						if(data == 'SUCCESS')
+							alert('선택한 주문이 수정되었습니다.');
+			        	
+						self.location = "list"
+							+ '${pageMaker.makeQuery(1)}'
+							+ "&searchType="
+							+ $("select option:selected").val()
+							+ "&keyword="
+							+ $('#keywordInput').val();
+			        }
+			  	});
+			});
+			
 			$('#btnCheckDelete').on('click', function() {
 
 				let checkArr = [];
@@ -163,9 +202,12 @@
 				$.ajax({
 			        type		: "POST",
 			        url 		: "deleteChecked",
-			        data		: {productList : checkArr},
+			        data		: {orderList : checkArr},
 			        success 	: function(data) {
 
+						if(data == 'SUCCESS')
+							alert('선택한 주문이 삭제되었습니다.');
+						
 						self.location = "list"
 							+ '${pageMaker.makeQuery(1)}'
 							+ "&searchType="

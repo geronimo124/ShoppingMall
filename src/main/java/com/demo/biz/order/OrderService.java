@@ -19,4 +19,6 @@ public interface OrderService {
 	public List<OrderVO> getAllOrderList(SearchCriteria cri);
 	public int countAllOrderList(SearchCriteria cri);
 	public boolean checkStock(List<BasketVO> basketList);
+	public void modifyCheckedOrders(List<OrderVO> orderList);
+	public void deleteOrders(List<Integer> orderList);
 }

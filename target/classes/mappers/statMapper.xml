@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.StatMapper">
+
+	<select id="getCountNewOrders" parameterType="map" statementType="CALLABLE">
+		{ call proc_stat_new_order(#{admId, mode=IN, jdbcType=VARCHAR, javaType=String},
+									#{count, mode=OUT, jdbcType=INTEGER, javaType=Integer})
+		}
+	</select>
+	
+	<select id="getCountNewMembers" parameterType="map" statementType="CALLABLE">
+		{ call proc_stat_new_member(#{admId, mode=IN, jdbcType=VARCHAR, javaType=String},
+									#{count, mode=OUT, jdbcType=INTEGER, javaType=Integer})
+		}
+	</select>
+
+</mapper>

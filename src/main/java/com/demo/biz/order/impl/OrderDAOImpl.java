@@ -109,5 +109,17 @@ public class OrderDAOImpl implements OrderDAO {
 		// TODO Auto-generated method stub
 		return session.selectList(NAMESPACE + ".countAllOrderList", cri);
 	}
+
+	@Override
+	public void modifyCheckedOrder(OrderVO order) {
+		// TODO Auto-generated method stub
+		session.update(NAMESPACE + ".modifyCheckedOrder", order);
+	}
+
+	@Override
+	public void deleteOrders(List<Integer> orderList) {
+		// TODO Auto-generated method stub
+		session.delete(NAMESPACE + ".deleteOrders", orderList);
+	}
 	
 }

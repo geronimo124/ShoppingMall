@@ -74,7 +74,15 @@
 					<li><a href="#" onclick="logout();"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
 					<form id="formLogout" action="/admin/logout" method="post"></form></li>
 				</ul></li>
-			<li><a href="/admin/order/list">주문조회</a></li>
+			<li class="treeview"><a href="#"> <i class="fa fa-link"></i>
+					<span>주문 관리</span> <span class="pull-right-container">
+					<i class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<ul class="treeview-menu">
+					<li><a href="/admin/order">주문 관리</a></li>
+					<li><a href="/admin/order/list">주문 조회</a></li>
+				</ul></li>
 		</ul>
 		<!-- /.sidebar-menu -->
 	</section>

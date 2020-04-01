@@ -129,4 +129,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		]]>	
 	</select>
+	
+	<update id="modifyCheckedOrder" parameterType="order">
+		<![CDATA[
+			UPDATE ORDERS_TB SET ORD_STATUS=#{ordStatus} WHERE ORD_NO=#{ordNo}
+		]]>	
+	</update>
+	
+	<delete id="deleteOrders" parameterType="list">
+		<![CDATA[
+			DELETE FROM ORDERS_TB WHERE ORD_NO IN 
+		]]>	
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 </mapper>
