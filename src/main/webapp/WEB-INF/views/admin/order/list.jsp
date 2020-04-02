@@ -48,11 +48,12 @@
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">LIST PAGING</h3>
+								<button type="button" id="excel" class="btn btn-sm btn-success" onclick="ReportToExcelConverter()" style="float: right;">엑셀 출력</button>
 								<button type="button" id="btnCheckDelete" class="btn btn-sm btn-danger" style="float: right;">체크 삭제</button>
 								<button type="button" id="btnCheckModify" class="btn btn-sm btn-info" style="float: right;">체크 수정</button>
 							</div>
 							<div class="box-body">
-								<table class="table table-bordered text-center">
+								<table class="table table-bordered text-center" id="orderList">
 									<tr>
 										<th><input type="checkbox" class="checkbox" id="checkAll"></th>
 										<th>번호</th>
@@ -219,6 +220,24 @@
 				
 			});
 		});
+	</script>
+	
+	<script src="/plugins/table2excel/jquery.table2excel.js"></script>
+	<script>
+	
+		function ReportToExcelConverter() { 
+			
+			$("#orderList").table2excel({ 
+				exclude: ".noExl", 
+				name: "Excel Document Name", 
+				filename: "orderList" +'.xls', 
+				fileext: ".xls", 
+				exclude_img: true, 
+				exclude_links: true, 
+				exclude_inputs: true 
+			}); 
+		};
+
 	</script>
 </body>
 </html>

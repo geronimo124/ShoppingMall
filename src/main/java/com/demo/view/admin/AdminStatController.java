@@ -1,6 +1,7 @@
 package com.demo.view.admin;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.biz.admin.AdminVO;
+import com.demo.biz.product.ProductVO;
 import com.demo.biz.stat.StatService;
 
 @RestController
@@ -55,6 +56,40 @@ public class AdminStatController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value = "/getSalesGraph", method = RequestMethod.GET)
+	public ResponseEntity<List<Map<String, Object>>> getSalesGraph() {
+		
+		ResponseEntity<List<Map<String, Object>>> entity = null;
+		
+		try {
+			List<Map<String, Object>> list = service.getSalesGraph();
+			logger.info(list.toString());
+			entity = new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<Map<String, Object>>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value = "/getBestSellers", method = RequestMethod.GET)
+	public ResponseEntity<List<ProductVO>> getBestSellers() {
+		
+		ResponseEntity<List<ProductVO>> entity = null;
+		
+		try {
+			List<ProductVO> list = service.getBestSellers();
+			logger.info(list.toString());
+			entity = new ResponseEntity<List<ProductVO>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<ProductVO>>(HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;

@@ -11,14 +11,12 @@ DROP TABLE CATEGORY_TB;
 
 select * from admin_tb;
 select * from members_tb;
+select * from category_tb;
 select * from products_tb order by pd_no desc;
 select * from baskets_tb;
 select * from orders_tb;
 select * from order_detail_tb;
 select * from reviews_tb;
-
-
-
 
 CREATE TABLE ADMIN_TB(
     ADM_ID          VARCHAR2(15)        PRIMARY KEY,
@@ -90,6 +88,7 @@ CREATE TABLE ORDERS_TB(
     ORD_PRICE       NUMBER              NOT NULL,
     ORD_MSG         VARCHAR2(500)       NULL,
     ORD_STATUS      CHAR(1)             DEFAULT 'R',
+    -- 'R' = 배송준비중 / 'D' = 배송중 / 'S' = 배송완료
     ORD_DT          DATE                DEFAULT SYSDATE,
     FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID)
 );
@@ -128,16 +127,18 @@ CREATE TABLE REVIEWS_TB(
 
 CREATE TABLE QNA_TB(
     QNA_NO          NUMBER              PRIMARY KEY,
+    QNA_GROUP       NUMBER              NOT NULL,
+    QNA_STEP        NUMBER              NOT NULL,
+    QNA_LEVEL       NUMBER              NOT NULL,
     MB_ID           VARCHAR2(15)        NOT NULL,
     PD_NO           NUMBER              NOT NULL,
     QNA_TITLE       VARCHAR2(100)       NOT NULL,
     QNA_CONTENT     VARCHAR2(4000)      NOT NULL,
-    QNA_ANSWER      VARCHAR2(4000),
     QNA_DT          DATE                DEFAULT SYSDATE,
-    QNA_STATUS      CHAR(1)             DEFAULT 'N',
     FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID),
     FOREIGN KEY (PD_NO) REFERENCES PRODUCTS_TB (PD_NO)
 );
+
 
 -- 관리자(pw:1234)
 INSERT INTO ADMIN_TB VALUES('admin', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '관리자', sysdate);
@@ -171,6 +172,8 @@ INSERT INTO CATEGORY_TB VALUES ('21', '6', '샌들');
 
 commit;
 
+
+
 -- 주문상세 INSERT -> 물품 재고 감소 트리거
 CREATE OR REPLACE TRIGGER trg_orddt_insert
    AFTER INSERT 
@@ -189,6 +192,27 @@ BEGIN
         UPDATE PRODUCTS_TB SET PD_STATUS = 'N' WHERE PD_NO = v_pd_no;
    END IF;
 END;
+
+-- 주문상세 DELETE -> 물품 재고 증가 트리거
+CREATE OR REPLACE TRIGGER trg_orddt_delete
+   AFTER DELETE
+   ON ORDER_DETAIL_TB
+   FOR EACH ROW 
+DECLARE
+   v_orddt_qty NUMBER;
+   v_pd_no NUMBER;
+   v_pd_stock NUMBER;
+BEGIN
+   SELECT :OLD.ORDDT_QTY INTO v_orddt_qty FROM DUAL;
+   SELECT :OLD.PD_NO INTO v_pd_no FROM DUAL;
+   SELECT PD_STOCK INTO v_pd_stock FROM PRODUCTS_TB WHERE PD_NO = v_pd_no;
+   UPDATE PRODUCTS_TB SET PD_STOCK = PD_STOCK + v_orddt_qty WHERE PD_NO = v_pd_no;
+   IF v_pd_stock + v_orddt_qty > 0 THEN
+        UPDATE PRODUCTS_TB SET PD_STATUS = 'Y' WHERE PD_NO = v_pd_no;
+   END IF;
+END;
+
+
 
 -- 주문 DELETE -> 주문상세, 리뷰 DELETE 트리거
 CREATE OR REPLACE TRIGGER trg_ord_delete
@@ -225,3 +249,58 @@ BEGIN
     SELECT ADM_CONDT INTO v_condt_date FROM ADMIN_TB WHERE ADM_ID = p_adm_id;
     SELECT COUNT(*) INTO p_member_count FROM MEMBERS_TB WHERE v_condt_date <= MB_REGDT;
 END;
+
+
+-- 부모 글 작성시 group = 0 / step = 0 / level = 0
+-- 자식 글 작성시 group = 부모 / step = 부모 / level = 부모
+CREATE OR REPLACE PROCEDURE proc_qna_insert 
+            ( p_qna_group IN QNA_TB.QNA_GROUP%TYPE,
+              p_qna_step IN QNA_TB.QNA_STEP%TYPE,
+              p_qna_level IN QNA_TB.QNA_LEVEL%TYPE,
+              p_mb_id IN QNA_TB.MB_ID%TYPE,
+              p_pd_no IN QNA_TB.PD_NO%TYPE,
+              p_qna_title IN QNA_TB.QNA_TITLE%TYPE,
+              p_qna_content IN QNA_TB.QNA_CONTENT%TYPE )
+IS
+    v_qna_no QNA_TB.QNA_NO%TYPE;
+    v_qna_group QNA_TB.QNA_GROUP%TYPE;
+    v_qna_level QNA_TB.QNA_LEVEL%TYPE;
+    v_list_qna QNA_TB%ROWTYPE;
+BEGIN
+    SELECT NVL(MAX(QNA_NO), 0)+1 INTO v_qna_no FROM QNA_TB;
+    
+    -- QNA_GROUP
+    IF p_qna_group = 0 THEN -- 부모 글이면
+        v_qna_group := v_qna_no; -- 그룹은 qna_no와 같게 준다
+    
+        INSERT INTO QNA_TB VALUES (v_qna_no, v_qna_group, p_qna_step, p_qna_level, p_mb_id, p_pd_no,
+            p_qna_title, p_qna_content, SYSDATE); 
+    ELSE
+        SELECT * INTO v_list_qna FROM QNA_TB WHERE QNA_GROUP = p_qna_group AND QNA_STEP > p_qna_step;
+        
+        
+        
+        v_qna_level := p_qna_level + 1;
+        
+        INSERT INTO FD VALUES FD;
+    END IF;
+    
+    -- QNA_STEP
+    -- 부모 글의 자식들중에(같은 그룹) STEP보다 큰놈들이 있으면 다 +1 UPDATE 해준다
+    
+    
+    -- QNA_LEVEL
+    -- 부모 글보다 +1 해준다
+     
+        
+END;
+
+SELECT * FROM QNA_TB WHERE QNA_GROUP = 1 AND QNA_STEP > 2;
+
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 0, 0, 0, 'helloman', 9, '좋아요', '아주좋아요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 2, 1, 'hello', 9, '좋아요', '답변일이요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 4, 2, 'hello', 9, '답변1의1', '답변일이요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 4, 0, 0, 'helloman', 9, '부모2', '답변일이요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 5, 0, 0, 'hello', 9, '부모3', '답변일이요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 1, 1, 'hello', 9, '1의답변2', '답변일이요', SYSDATE);
+INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 3, 2, 'hello', 9, '1의답변1의2', '답변일이요', SYSDATE);

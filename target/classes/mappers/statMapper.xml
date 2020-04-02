@@ -17,4 +17,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		}
 	</select>
 
+	<select id="getSalesGraph" resultType="map">
+		<![CDATA[
+			SELECT DIFF, SUM(ORD_PRICE) AS SUM FROM (
+			        SELECT ORD_PRICE, TO_CHAR(SYSDATE, 'DDD') - TO_CHAR(ORD_DT, 'DDD') AS DIFF FROM ORDERS_TB)
+			    GROUP BY DIFF HAVING DIFF < 7
+			ORDER BY DIFF
+		]]>	
+	</select>
+	
+	<select id="getBestSeller" resultType="product">
+		<![CDATA[
+			SELECT * FROM PRODUCTS_TB WHERE
+			PD_NO = (
+				SELECT PD_NO FROM
+				(
+				    SELECT PD_NO, SUM(ORDDT_QTY) AS SUM FROM (
+				            SELECT P.PD_NO, OD.ORDDT_QTY
+				            FROM ORDER_DETAIL_TB OD, PRODUCTS_TB P
+				            WHERE OD.PD_NO = P.PD_NO AND CTGY_PTCD=#{ctgyPtcd}
+				    ) 
+				    GROUP BY PD_NO ORDER BY SUM DESC
+				) WHERE ROWNUM = 1
+			)
+		]]>	
+	</select>
+	
+	<select id="getCategoryList" resultType="category">
+		<![CDATA[
+			SELECT * FROM CATEGORY_TB WHERE CTGY_PARENT=#{ctgyParent}
+		]]>
+	</select>
+
 </mapper>

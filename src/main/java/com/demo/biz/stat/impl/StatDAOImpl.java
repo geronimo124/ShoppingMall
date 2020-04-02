@@ -1,12 +1,15 @@
 package com.demo.biz.stat.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.demo.biz.product.CategoryVO;
+import com.demo.biz.product.ProductVO;
 import com.demo.biz.stat.StatDAO;
 
 @Repository
@@ -43,5 +46,25 @@ public class StatDAOImpl implements StatDAO {
 		session.selectOne(NAMESPACE + ".getCountNewMembers", map);
 		
 		return (int) map.get("count");
+	}
+
+	@Override
+	public List<Map<String, Object>> getSalesGraph() {
+		// TODO Auto-generated method stub
+		
+		return session.selectList(NAMESPACE + ".getSalesGraph");
+		
+	}
+
+	@Override
+	public ProductVO getBestSeller(Integer ctgyPtcd) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".getBestSeller", ctgyPtcd);
+	}
+
+	@Override
+	public List<CategoryVO> getCategoryList(Integer ctgyParent) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getCategoryList", ctgyParent);
 	}
 }
