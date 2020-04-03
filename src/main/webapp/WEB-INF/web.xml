@@ -18,6 +18,10 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>com.demo.view.common.CountManager</listener-class>
+	</listener>
 
 	<!-- Processes application requests -->
 	<servlet>

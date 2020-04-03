@@ -15,6 +15,7 @@
 		<typeAlias alias="product" type="com.demo.biz.product.ProductVO" />
 		<typeAlias alias="category" type="com.demo.biz.product.CategoryVO" />
 		<typeAlias alias="basket" type="com.demo.biz.product.BasketVO" />
+		<typeAlias alias="qna" type="com.demo.biz.product.QnaVO" />
 		<typeAlias alias="order" type="com.demo.biz.order.OrderVO" />
 		<typeAlias alias="orderDetail" type="com.demo.biz.order.OrderDetailVO" />
 		<typeAlias alias="review" type="com.demo.biz.order.ReviewVO" />

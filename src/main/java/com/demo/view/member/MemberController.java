@@ -53,6 +53,7 @@ public class MemberController {
 		MemberVO vo = service.loginMember(dto);
 
 		if(vo == null) {
+			model.addAttribute("msg", "FAIL");
 			return;
 		}
 

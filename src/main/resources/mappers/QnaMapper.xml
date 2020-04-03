@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.QnaMapper">
+
+	<insert id="insertQna" parameterType="qna" statementType="CALLABLE">
+		{ call proc_qna_insert(#{qnaGroup, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaStep, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaLevel, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{mbId, mode=IN, jdbcType=VARCHAR, javaType=String},
+							   #{pdNo, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaTitle, mode=IN, jdbcType=VARCHAR, javaType=String},
+							   #{qnaWriter, mode=IN, jdbcType=VARCHAR, javaType=String},
+							   #{qnaContent, mode=IN, jdbcType=VARCHAR, javaType=String})
+		}
+	</insert>
+	
+	<select id="listQna" parameterType="map" resultType="qna">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT Q.*, ROW_NUMBER() OVER(ORDER BY QNA_GROUP, QNA_STEP) AS RNUM
+				FROM QNA_TB Q WHERE PD_NO=#{pdNo}
+			)
+			WHERE RNUM BETWEEN #{cri.pageStart} AND (#{cri.pageStart} + #{cri.perPageNum} - 1)
+		]]>
+	</select>
+	
+	<select id="countQnaList" resultType="int">
+		<![CDATA[
+			SELECT COUNT(QNA_NO) FROM QNA_TB WHERE PD_NO=#{pdNo}
+		]]>
+	</select>
+
+</mapper>

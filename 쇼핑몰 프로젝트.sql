@@ -8,6 +8,7 @@ DROP TABLE ORDERS_TB;
 DROP TABLE MEMBERS_TB;
 DROP TABLE PRODUCTS_TB;
 DROP TABLE CATEGORY_TB;
+DROP TABLE QNA_TB;
 
 select * from admin_tb;
 select * from members_tb;
@@ -133,6 +134,7 @@ CREATE TABLE QNA_TB(
     MB_ID           VARCHAR2(15)        NOT NULL,
     PD_NO           NUMBER              NOT NULL,
     QNA_TITLE       VARCHAR2(100)       NOT NULL,
+    QNA_WRITER      VARCHAR2(20)        NOT NULL,
     QNA_CONTENT     VARCHAR2(4000)      NOT NULL,
     QNA_DT          DATE                DEFAULT SYSDATE,
     FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID),
@@ -187,7 +189,7 @@ BEGIN
    SELECT :NEW.ORDDT_QTY INTO v_orddt_qty FROM DUAL;
    SELECT :NEW.PD_NO INTO v_pd_no FROM DUAL;
    SELECT PD_STOCK INTO v_pd_stock FROM PRODUCTS_TB WHERE PD_NO = v_pd_no;
-   UPDATE PRODUCTS_TB SET PD_STOCK = PD_STOCK - v_orddt_qty WHERE PD_NO = v_pd_no;
+   UPDATE PRODUCTS_TB SET PD_STOCK = v_pd_stock - v_orddt_qty WHERE PD_NO = v_pd_no;
    IF v_pd_stock - v_orddt_qty <= 0 THEN
         UPDATE PRODUCTS_TB SET PD_STATUS = 'N' WHERE PD_NO = v_pd_no;
    END IF;
@@ -260,47 +262,27 @@ CREATE OR REPLACE PROCEDURE proc_qna_insert
               p_mb_id IN QNA_TB.MB_ID%TYPE,
               p_pd_no IN QNA_TB.PD_NO%TYPE,
               p_qna_title IN QNA_TB.QNA_TITLE%TYPE,
+              p_qna_writer  IN QNA_TB.QNA_WRITER%TYPE,
               p_qna_content IN QNA_TB.QNA_CONTENT%TYPE )
 IS
     v_qna_no QNA_TB.QNA_NO%TYPE;
     v_qna_group QNA_TB.QNA_GROUP%TYPE;
+    v_qna_step QNA_TB.QNA_STEP%TYPE;
     v_qna_level QNA_TB.QNA_LEVEL%TYPE;
-    v_list_qna QNA_TB%ROWTYPE;
 BEGIN
     SELECT NVL(MAX(QNA_NO), 0)+1 INTO v_qna_no FROM QNA_TB;
-    
+
     -- QNA_GROUP
     IF p_qna_group = 0 THEN -- 부모 글이면
         v_qna_group := v_qna_no; -- 그룹은 qna_no와 같게 준다
-    
         INSERT INTO QNA_TB VALUES (v_qna_no, v_qna_group, p_qna_step, p_qna_level, p_mb_id, p_pd_no,
-            p_qna_title, p_qna_content, SYSDATE); 
-    ELSE
-        SELECT * INTO v_list_qna FROM QNA_TB WHERE QNA_GROUP = p_qna_group AND QNA_STEP > p_qna_step;
-        
-        
-        
-        v_qna_level := p_qna_level + 1;
-        
-        INSERT INTO FD VALUES FD;
+            p_qna_title, p_qna_writer, p_qna_content, SYSDATE); 
+    ELSE -- 자식 글이면
+        -- QNA_STEP // 부모 글의 자식들중에(같은 그룹) STEP보다 큰놈들이 있으면 다 +1 UPDATE 해준다
+        UPDATE QNA_TB SET QNA_STEP = QNA_STEP + 1 WHERE QNA_GROUP = p_qna_group AND QNA_STEP > p_qna_step;
+        v_qna_step := p_qna_step + 1; -- QNA_STEP // 부모 글보다 +1
+        v_qna_level := p_qna_level + 1; -- QNA_LEVEL // 부모 글보다 +1
+        INSERT INTO QNA_TB VALUES (v_qna_no, p_qna_group, v_qna_step, v_qna_level, p_mb_id, p_pd_no,
+            p_qna_title, p_qna_writer, p_qna_content, SYSDATE);
     END IF;
-    
-    -- QNA_STEP
-    -- 부모 글의 자식들중에(같은 그룹) STEP보다 큰놈들이 있으면 다 +1 UPDATE 해준다
-    
-    
-    -- QNA_LEVEL
-    -- 부모 글보다 +1 해준다
-     
-        
 END;
-
-SELECT * FROM QNA_TB WHERE QNA_GROUP = 1 AND QNA_STEP > 2;
-
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 0, 0, 0, 'helloman', 9, '좋아요', '아주좋아요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 2, 1, 'hello', 9, '좋아요', '답변일이요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 4, 2, 'hello', 9, '답변1의1', '답변일이요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 4, 0, 0, 'helloman', 9, '부모2', '답변일이요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 5, 0, 0, 'hello', 9, '부모3', '답변일이요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 1, 1, 'hello', 9, '1의답변2', '답변일이요', SYSDATE);
-INSERT INTO QNA_TB VALUES ((SELECT NVL(MAX(QNA_NO), 0)+1 FROM QNA_TB), 1, 3, 2, 'hello', 9, '1의답변1의2', '답변일이요', SYSDATE);

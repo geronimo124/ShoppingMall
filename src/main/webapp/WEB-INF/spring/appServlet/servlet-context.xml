@@ -44,6 +44,7 @@
 		<interceptor>
 			<mapping path="/order/insert" />
 			<mapping path="/basket/insert" />
+			<mapping path="/qna/insert" />
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		<interceptor>

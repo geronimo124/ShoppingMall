@@ -133,13 +133,13 @@
 						<!-- The time line -->
 						<ul class="timeline">
 							<!-- timeline time label -->
-							<li class="time-label" id="reviewDiv"><span
-								class="bg-green"> 상품 리뷰 <small id='reviewcntSmall'></small>
+							<li class="time-label" id="reviewDiv"><span class="bg-green">
+									상품 리뷰 <small id='reviewcntSmall'></small>
 							</span></li>
 						</ul>
 
 						<div class='text-center'>
-							<ul id="pagination" class="pagination pagination-sm no-margin ">
+							<ul id="pagination" class="pagination pagination-sm no-margin revPagination ">
 
 							</ul>
 						</div>
@@ -151,7 +151,61 @@
 
 
 
-				<!-- Modal -->
+				<div class="row">
+					<!-- left column -->
+
+
+					<div class="col-md-12">
+
+						<div class="box">
+							<div class="box-header with-border">
+								<h3 class="box-title">상품 QNA</h3><small id='qnacntSmall'></small>
+								<c:if test="${member ne null }">
+									<button type="button" id="regQNA" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#qnaRegModal" style="float: right;">질문 등록</button>
+								</c:if>
+							</div>
+							<div class="box-body">
+								<table class="table table-bordered text-center" id="qnaList">
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th>제목</th>
+											<th>내용</th>
+											<th>작성자</th>
+											<th>날짜</th>
+											<th>버튼</th>
+										</tr>
+									</thead>
+									<tbody id="qnaDiv">
+									
+									</tbody>
+								
+
+								</table>
+								<div class='text-center'>
+								<ul id="qnaPagination" class="pagination pagination-sm no-margin qnaPagination ">
+								</ul>
+						</div>
+							</div>
+							<!-- /.box-body -->
+
+
+							<div class="box-footer">
+
+								<!-- page maker 들어가야 함 -->
+
+
+							</div>
+							<!-- /.box-footer-->
+						</div>
+					</div>
+					<!--/.col (left) -->
+
+				</div>
+
+
+
+				<!-- Review Modal -->
 				<div id="modifyModal" class="modal modal-default fade" role="dialog">
 					<div class="modal-dialog">
 						<!-- Modal content-->
@@ -160,7 +214,7 @@
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 								<h4 class="modal-title"></h4>
 							</div>
-							<div class="modal-body" data-rno>
+							<div class="modal-body" id="revModalBody" data-rno>
 								<p>
 									<select id="revGrade" name="revGrade" class="select2">
 										<option value="1">★</option>
@@ -170,7 +224,8 @@
 										<option value="5" selected="selected">★★★★★</option>
 									</select> <input type="text" id="revTitle" name="revTitle"
 										class="form-control"><br />
-									<textarea rows="10" id="revContent" name="revContent" class="form-control"></textarea>
+									<textarea rows="10" id="revContent" name="revContent"
+										class="form-control"></textarea>
 								</p>
 							</div>
 							<div class="modal-footer">
@@ -181,7 +236,59 @@
 						</div>
 					</div>
 				</div>
-				
+
+				<!-- QNA Register Modal -->
+				<div id="qnaRegModal" class="modal modal-default fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">QNA 등록</h4>
+							</div>
+							<div class="modal-body" id="qnaRegModalBody" data-level data-step data-group>
+								<p>
+									<input type="text" id="qnaRegTitle" name="qnaTitle"
+										class="form-control"><br />
+									<textarea rows="10" id="qnaRegContent" name="qnaContent"
+										class="form-control"></textarea>
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary" id="btnRegQna">등록</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">취소</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- QNA Modal -->
+				<div id="qnaModal" class="modal modal-default fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">QNA</h4>
+							</div>
+							<div class="modal-body" id="qnaModalBody" data-qno>
+								<p>
+									<input type="text" id="qnaTitle" name="qnaTitle"
+										class="form-control"><br />
+									<textarea rows="10" id="qnaContent" name="qnaContent"
+										class="form-control"></textarea>
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" id="btnModQna">수정</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">취소</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<!-- /.card -->
 			</section>
 
@@ -196,7 +303,8 @@
 		<%@include file="/WEB-INF/views/include/aside.jsp"%>
 	</div>
 	<!-- ./wrapper -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script id="template" type="text/x-handlebars-template">
 		{{#each .}}
 	         <li class="reviewLi" data-rno={{revNo}}>
@@ -219,7 +327,26 @@
 	            </div>			
            </li>
         {{/each}}
-	</script>  
+	</script>
+	<script id="qnaTemplate" type="text/x-handlebars-template">
+		{{#each .}}
+			<tr class="qnaTr", data-qno={{qnaNo}} data-group={{qnaGroup}} data-step={{qnaStep}} data-level={{qnaLevel}} >
+				<td>{{qnaNo}}</td>
+				<td style="text-align:left;"><a data-toggle="modal" data-target="#qnaModal">
+				<span class="qnaTitle">{{#times qnaLevel}}<i class="fa fa-arrow-right"></i>{{/times}}{{qnaTitle}}<span>
+				</a></td>
+				<td class="qnaContent">{{qnaContent}}</td>
+				<td>{{qnaWriter}}</td>
+				<td>{{prettifyDate qnaDt}}</td>
+				<td><a class="btn btn-success" data-toggle="modal" data-target="#qnaRegModal">답변</a>
+				{{#eqQuestioner mbId}}
+					<a class="btn btn-primary" data-toggle="modal" data-target="#qnaModal">수정</a>
+					<a class="btn btn-danger" onClick="btnDelQna(this)">삭제</a>
+				{{/eqQuestioner}}
+				</td>	
+           </tr>
+        {{/each}}
+	</script>
 
 	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
 	<script>
@@ -227,6 +354,14 @@
 	Handlebars.registerHelper("eqReviewer", function(reviewer, block) {
 		var accum = '';
 		if (reviewer == '${member.mbNick}') {
+			accum += block.fn();
+		}
+		return accum;
+	});
+
+	Handlebars.registerHelper("eqQuestioner", function(questioner, block) {
+		var accum = '';
+		if (questioner == '${member.mbId}') {
 			accum += block.fn();
 		}
 		return accum;
@@ -239,6 +374,13 @@
 		var month = dateObj.getMonth() + 1;
 		var date = dateObj.getDate();
 		return year + "/" + month + "/" + date;
+	});
+
+	Handlebars.registerHelper('times', function(n, block) {
+	    var accum = '';
+	    for(var i = 0; i < n; ++i)
+	        accum += block.fn(i);
+	    return accum;
 	});
 	
 	Handlebars.registerHelper("grade", function(grade) {
@@ -267,6 +409,16 @@
 	});
 
 	var reviewPage = 1;
+	var qnaPage = 1;
+
+	var printQnaData = function(qnaArr, target, templateObject) {
+
+		let template = Handlebars.compile(templateObject.html());
+
+		let html = template(qnaArr);
+		$('.qnaTr').remove();
+		target.after(html);
+	}
 	
 	var printData = function(replyArr, target, templateObject) {
 
@@ -278,11 +430,22 @@
 
 	}
 
+	function getQnaPage(pageInfo) {
+
+		$.getJSON(pageInfo, function(data) {
+			printQnaData(data.list, $("#qnaDiv"), $('#qnaTemplate'));
+			printPaging(data.pageMaker, $(".qnaPagination"));
+
+			$("#qnacntSmall").html("[ " + data.pageMaker.totalCount + " ]");
+
+		});
+	}
+
 	function getPage(pageInfo) {
 
 		$.getJSON(pageInfo, function(data) {
 			printData(data.list, $("#reviewDiv"), $('#template'));
-			printPaging(data.pageMaker, $(".pagination"));
+			printPaging(data.pageMaker, $(".revPagination"));
 
 			$("#reviewcntSmall").html("[ " + data.pageMaker.totalCount + " ]");
 
@@ -310,6 +473,33 @@
 			}
 		});
 	}
+	
+	function btnDelQna(button) {
+
+		let qnaTitle = button.parentNode.parentNode.getAttribute('data-qno');
+
+		// 삭제 로직 생각해봐야함..
+		
+		
+		/*
+		$.ajax({
+			type : 'delete',
+			url : '/review/' + revNo,
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "DELETE"
+			},
+			dataType : 'text',
+			success : function(result) {
+				console.log("result: " + result);
+				if (result == 'SUCCESS') {
+					alert("리뷰가 삭제 되었습니다.");
+					getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+				}
+			}
+		});
+		*/
+	}
 
 	var printPaging = function(pageMaker, target) {
 
@@ -336,6 +526,8 @@
 		$(() => {
 
 			getPage("/review/" + '${productVO.pdNo}' + "/1");
+
+			getQnaPage('/qna/' + '${productVO.pdNo}' + '/1');
 
 			$.ajaxSetup({
 
@@ -385,7 +577,7 @@
 
 			});
 
-			$(".pagination").on("click", "li a", function(event) {
+			$(".revPagination").on("click", "li a", function(event) {
 
 				event.preventDefault();
 
@@ -395,19 +587,51 @@
 
 			});
 
+			$(".qnaPagination").on("click", "li a", function(event) {
+
+				event.preventDefault();
+
+				qnaPage = $(this).attr("href");
+
+				getQnaPage("/qna/" + '${productVO.pdNo}' + "/" + qnaPage);
+
+			});
+
 			$(".timeline").on("click", ".reviewLi", function(event) {
 
 				var review = $(this);
 
 				$("#revTitle").val(review.find('.revTitle').text());
 				$("#revContent").val(review.find('.timeline-body').text());
-				$('.modal-body').attr('data-rno', review.attr('data-rno'));
+				$('#revModalBody').attr('data-rno', review.attr('data-rno'));
 
+			});
+
+			$("#qnaList").on("click", ".qnaTr", function(event) {
+
+				var qna = $(this);
+
+				$("#qnaTitle").val(qna.find('.qnaTitle').text());
+				$("#qnaContent").val(qna.find('.qnaContent').text());
+				$('#qnaModalBody').attr('data-qno', qna.attr('data-qno'));
+
+				$('#qnaRegModalBody').attr('data-group', qna.attr('data-group'));
+				$('#qnaRegModalBody').attr('data-step', qna.attr('data-step'));
+				$('#qnaRegModalBody').attr('data-level', qna.attr('data-level'));
+
+			});
+
+			$('#regQNA').on('click', function() {
+
+				$('#qnaRegModalBody').attr('data-group', '0');
+				$('#qnaRegModalBody').attr('data-step', '0');
+				$('#qnaRegModalBody').attr('data-level', '0');
+				$('#qnaRegModalBody').attr('data-qno', '0');
 			});
 
 			$('#btnModRev').on('click', function() {
 
-				let revNo = $('.modal-body').attr('data-rno');
+				let revNo = $('#revModalBody').attr('data-rno');
 
 				$.ajax({
 					type : 'put',
@@ -431,6 +655,40 @@
 						getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
 					}
 				});
+			});
+
+			$('#btnRegQna').on('click', () => {
+
+				
+				$.ajax({
+					type : 'post',
+					url : '/qna/insert',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "post"
+					},
+					data : JSON.stringify({
+						qnaGroup : $('#qnaRegModalBody').attr('data-group'),
+						qnaStep : $('#qnaRegModalBody').attr('data-step'),
+						qnaLevel : $('#qnaRegModalBody').attr('data-level'),
+						mbId : '${member.mbId}',
+						pdNo : '${productVO.pdNo}',
+						qnaTitle : $('#qnaRegTitle').val(),
+						qnaWriter : '${member.mbNick}',
+						qnaContent : $('#qnaRegContent').val(),
+					}),
+					dataType : 'text',
+					success : function(data) {
+						if (data == 'SUCCESS') {
+							alert("상품 질문이 등록 되었습니다.");
+						}
+						$("#qnaRegModal").modal('hide');
+						$("#qnaRegTitle").val('');
+						$("#qnaRegContent").val('');
+						getQnaPage("/qna/" + '${productVO.pdNo}' + "/" + qnaPage);
+					}
+				});
+				
 			});
 		});
 	
