@@ -25,6 +25,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 		ModelMap modelMap = mav.getModelMap();
 		MemberVO memberVO = (MemberVO) modelMap.get("member");
+		SessionListener listener = SessionListener.getInstance();
 		
 		if (memberVO != null) {
 
@@ -36,6 +37,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			} else {
 			
 				session.setAttribute("member", memberVO);
+				listener.setSession(session, memberVO.getMbId());
 				Object dest = session.getAttribute("dest");
 	
 				response.sendRedirect(dest != null ? (String) dest : "/");

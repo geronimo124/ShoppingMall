@@ -34,4 +34,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 
+	<select id="getQnaList" resultType="qna">
+		<![CDATA[
+			SELECT * FROM
+			(
+				SELECT Q.*, P.PD_NM, ROW_NUMBER() OVER(ORDER BY QNA_GROUP, QNA_STEP) AS RNUM
+				FROM QNA_TB Q, PRODUCTS_TB P WHERE Q.PD_NO = P.PD_NO
+		]]>
+				<include refid="search"></include>		
+		<![CDATA[
+			)
+			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
+		]]>
+	</select>
+	
+	<select id="countQnaListCri" resultType="int">
+		<![CDATA[
+			SELECT COUNT(Q.QNA_NO) FROM QNA_TB Q, PRODUCTS_TB P WHERE Q.PD_NO = P.PD_NO
+		]]>
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'n'.toString()">
+				AND P.PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'i'.toString()">
+				AND MB_ID LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 't'.toString()">
+				AND QNA_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'w'.toString()">
+				AND QNA_WRITER LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'd'.toString()">
+				AND QNA_CONTENT LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
 </mapper>

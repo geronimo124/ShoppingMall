@@ -42,7 +42,7 @@
 											</c:forEach>
 										</select> <select id="subCategory" name="ctgyCd"
 											class="form-control select2"
-											style="width: 49.8%;; display: inline-block;" required>
+											style="width: 49.8%; display: inline-block;" required>
 
 										</select> <input type="hidden" id="ctgyNm" name="ctgyNm" />
 										<input type="hidden" id="ctgyPtnm" name="ctgyPtnm" />

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.demo.biz.admin.AdminService;
 import com.demo.biz.admin.AdminVO;
 import com.demo.biz.common.LoginDTO;
+import com.demo.view.common.SessionListener;
 
 @Controller
 @RequestMapping("/admin")
@@ -56,11 +57,19 @@ public class AdminController {
 		
 		AdminVO vo = service.loginAdmin(dto);
 		
+		SessionListener listener = SessionListener.getInstance();
+		
 		if(vo == null) {
 			rttr.addFlashAttribute("msg", "FAIL");
 			return "redirect:login";
 		}
+		
+		if(listener.isUsing(dto.getId())) {
+			rttr.addFlashAttribute("msg", "DUPLICATE");
+			return "redirect:login";
+		}
 
+		listener.setSession(session, dto.getId());
 		session.setAttribute("admin", vo);
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		rttr.addFlashAttribute("msg", "SUCCESS");

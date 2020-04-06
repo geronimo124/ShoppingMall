@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.biz.common.Criteria;
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.QnaDAO;
 import com.demo.biz.product.QnaVO;
 
@@ -46,4 +47,17 @@ public class QnaDAOImpl implements QnaDAO {
 		// TODO Auto-generated method stub
 		return session.selectOne(NAMESPACE + ".countQnaList", pdNo);
 	}
+
+	@Override
+	public List<QnaVO> getQnaList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getQnaList", cri);
+	}
+
+	@Override
+	public int countQnaList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".countQnaListCri", cri);
+	}
+	
 }

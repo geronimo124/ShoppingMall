@@ -80,6 +80,11 @@
 		alert('회원가입이 완료되었습니다');
 		location.replace(self.location);
 	}
+
+	if(result == 'DUPLICATE') {
+		alert('이미 접속중인 아이디입니다');
+		location.replace(self.location);
+	}
 	</script>
 </body>
 </html>

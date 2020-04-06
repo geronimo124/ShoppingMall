@@ -40,11 +40,9 @@
 						<!-- small box -->
 						<div class="small-box bg-green">
 							<div class="inner">
-								<h3>
-									53<sup style="font-size: 20px">%</sup>
-								</h3>
+								<h3 id="connectedMember">0</h3>
 
-								<p>Bounce Rate</p>
+								<p>Connected Members</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-stats-bars"></i>
@@ -236,6 +234,10 @@
 
 			$.get( "/admin/stat/getCountNewOrders/" + '${admin.admId}', function(data) {
 				  $( "#newOrder" ).html( data );
+			});
+
+			$.get( "/admin/stat/getConnectedMembers", function(data) {
+				  $( "#connectedMember" ).html( data );
 			});
 			
 			$.get( "/admin/stat/getCountNewMembers/" + '${admin.admId}', function(data) {

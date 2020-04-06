@@ -16,6 +16,7 @@ public interface MemberDAO {
 	public void updateConDate(LoginDTO dto);
 	
 	public List<MemberVO> getMemberList(SearchCriteria cri);
+	public List<MemberVO> getAllMembers();
 	public int countMemberList(SearchCriteria cri);
 	public void deleteMember(String mbId);
 }

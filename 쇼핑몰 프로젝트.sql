@@ -10,6 +10,7 @@ DROP TABLE PRODUCTS_TB;
 DROP TABLE CATEGORY_TB;
 DROP TABLE QNA_TB;
 
+
 select * from admin_tb;
 select * from members_tb;
 select * from category_tb;

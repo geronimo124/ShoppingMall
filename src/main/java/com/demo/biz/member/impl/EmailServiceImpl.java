@@ -1,5 +1,7 @@
 package com.demo.biz.member.impl;
 
+import java.util.List;
+
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -10,15 +12,20 @@ import org.springframework.stereotype.Service;
 
 import com.demo.biz.common.EmailDTO;
 import com.demo.biz.member.EmailService;
+import com.demo.biz.member.MemberDAO;
+import com.demo.biz.member.MemberVO;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
 	private final JavaMailSender mailSender;
 	
+	private final MemberDAO dao;
+	
 	@Autowired
-	public EmailServiceImpl(JavaMailSender mailSender) {
+	public EmailServiceImpl(JavaMailSender mailSender, MemberDAO dao) {
 		this.mailSender = mailSender;
+		this.dao = dao;
 	}
 	
 	@Override
@@ -40,5 +47,13 @@ public class EmailServiceImpl implements EmailService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public MemberVO getMember(String mbId) {
+		return dao.getMember(mbId);
+	}
+	
+	public List<MemberVO> getAllMembers() {
+		return dao.getAllMembers();
 	}
 }

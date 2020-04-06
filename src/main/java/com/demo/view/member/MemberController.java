@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.demo.biz.common.LoginDTO;
 import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
+import com.demo.view.common.SessionListener;
 
 @Controller
 @RequestMapping("/member")
@@ -52,8 +53,15 @@ public class MemberController {
 		
 		MemberVO vo = service.loginMember(dto);
 
+		SessionListener listener = SessionListener.getInstance();
+		
 		if(vo == null) {
 			model.addAttribute("msg", "FAIL");
+			return;
+		}
+		
+		if(listener.isUsing(dto.getId())) {
+			model.addAttribute("msg", "DUPLICATE");
 			return;
 		}
 
@@ -84,8 +92,6 @@ public class MemberController {
 	public String signup(MemberVO vo, HttpSession session) {
 		
 		logger.info(vo.toString());
-		
-		System.out.println(vo.toString());
 		
 		service.insertMember(vo);
 		

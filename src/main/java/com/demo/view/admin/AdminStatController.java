@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.biz.product.ProductVO;
 import com.demo.biz.stat.StatService;
+import com.demo.view.common.SessionListener;
 
 @RestController
 @RequestMapping("/admin/stat")
@@ -90,6 +91,23 @@ public class AdminStatController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<List<ProductVO>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value = "/getConnectedMembers", method = RequestMethod.GET)
+	public ResponseEntity<Integer> getConnectedMembers() {
+		
+		ResponseEntity<Integer> entity = null;
+		
+		SessionListener listener = SessionListener.getInstance();
+		
+		try {
+			entity = new ResponseEntity<Integer>(listener.getUserCount(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;

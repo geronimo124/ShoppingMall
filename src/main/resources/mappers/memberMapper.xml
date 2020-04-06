@@ -89,5 +89,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			DELETE FROM MEMBERS_TB WHERE MB_ID=#{mbId}
 		]]>	
 	</delete>
+	
+	<select id="getAllMembers" resultType="member">
+		<![CDATA[
+			SELECT * FROM MEMBERS_TB
+		]]>	
+	</select>
 
 </mapper>

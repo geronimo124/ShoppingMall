@@ -8,13 +8,13 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import com.demo.biz.admin.AdminVO;
+
 public class SessionListener implements HttpSessionBindingListener {
 
 	private static Hashtable<HttpSession, String> loginUsers = new Hashtable<HttpSession, String>();
 	
 	private static SessionListener sessionListener = null;
-	
-	private SessionListener() {}
 	
     public static synchronized SessionListener getInstance() {
         if(sessionListener == null) {
@@ -69,8 +69,7 @@ public class SessionListener implements HttpSessionBindingListener {
        //name값으로 userId, value값으로 자기자신(HttpSessionBindingListener를 구현하는 Object)
        session.setAttribute(userId, this);//login에 자기자신을 집어넣는다.
    }
-    
-    
+   
    /*
      * 입력받은 세션Object로 아이디를 리턴한다.
      * @param session : 접속한 사용자의 session Object

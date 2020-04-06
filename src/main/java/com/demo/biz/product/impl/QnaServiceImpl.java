@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.biz.common.Criteria;
+import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.QnaDAO;
 import com.demo.biz.product.QnaService;
 import com.demo.biz.product.QnaVO;
@@ -36,5 +37,17 @@ public class QnaServiceImpl implements QnaService {
 	public int countQnaList(Integer pdNo) {
 		// TODO Auto-generated method stub
 		return dao.countQnaList(pdNo);
+	}
+
+	@Override
+	public List<QnaVO> getQnaList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return dao.getQnaList(cri);
+	}
+
+	@Override
+	public int countQnaList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return dao.countQnaList(cri);
 	}
 }

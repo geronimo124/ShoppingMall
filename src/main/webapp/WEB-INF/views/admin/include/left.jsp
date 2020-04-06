@@ -63,6 +63,7 @@
 				<ul class="treeview-menu">
 					<li><a href="/admin/product/register">상품 등록</a></li>
 					<li><a href="/admin/product/list">상품 목록</a></li>
+					<li><a href="/admin/product/qna">상품 QNA</a></li>
 				</ul></li>
 			<li class="treeview"><a href="#"> <i class="fa fa-link"></i>
 					<span>회원 관리</span> <span class="pull-right-container">
@@ -71,6 +72,7 @@
 			</a>
 				<ul class="treeview-menu">
 					<li><a href="/admin/member/list">회원 목록</a></li>
+					<li><a href="/admin/email/send">메일 전송</a></li>
 					<li><a href="#" onclick="logout();"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
 					<form id="formLogout" action="/admin/logout" method="post"></form></li>
 				</ul></li>

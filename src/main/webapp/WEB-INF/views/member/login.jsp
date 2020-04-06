@@ -75,6 +75,11 @@
 		alert('아이디 또는 비밀번호가 다릅니다');
 		location.replace(self.location);
 	}
+
+	if(result == 'DUPLICATE') {
+		alert('이미 접속중인 아이디입니다.');
+		location.replace(self.location);
+	}
 	</script>
 </body>
 </html>

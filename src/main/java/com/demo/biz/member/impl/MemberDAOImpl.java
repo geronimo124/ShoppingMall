@@ -82,4 +82,10 @@ public class MemberDAOImpl implements MemberDAO {
 		// TODO Auto-generated method stub
 		session.delete(NAMESPACE + ".deleteMember", mbId);
 	}
+
+	@Override
+	public List<MemberVO> getAllMembers() {
+		// TODO Auto-generated method stub
+		return session.selectList(NAMESPACE + ".getAllMembers");
+	}
 }
