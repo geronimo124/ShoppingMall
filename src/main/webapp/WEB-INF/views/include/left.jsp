@@ -56,6 +56,7 @@
 					<span>Another Link</span>
 				</a>
 			</li> -->
+			<li><a href="/notice"><i class="fa fa-list-alt"></i><span>공지 사항</span></a>
 			<c:forEach items="${mainCateList}" var="categoryVO">
 				<li class="treeview mainCate">
 					<a href="#"> <i class="fa fa-tags"></i> <span>${categoryVO.ctgyNm }</span>

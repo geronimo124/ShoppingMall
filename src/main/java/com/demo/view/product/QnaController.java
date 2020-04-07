@@ -90,4 +90,46 @@ public class QnaController {
 		}
 		return entity;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteQna(@RequestBody QnaVO vo) {
+		
+		ResponseEntity<String> entity = null;
+		
+		logger.info(vo.toString());
+		
+		try {
+			if(service.deleteQnaCheck(vo))
+				entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			else
+				entity = new ResponseEntity<String>("FAIL", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/modify", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyQna(@RequestBody QnaVO vo) {
+		
+		ResponseEntity<String> entity = null;
+		
+		logger.info(vo.toString());
+		
+		try {
+			service.modifyQna(vo);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+		
+	}
 }

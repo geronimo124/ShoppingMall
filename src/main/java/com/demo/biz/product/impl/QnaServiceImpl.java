@@ -50,4 +50,30 @@ public class QnaServiceImpl implements QnaService {
 		// TODO Auto-generated method stub
 		return dao.countQnaList(cri);
 	}
+
+	@Override
+	public void deleteQna(QnaVO vo) {
+		// TODO Auto-generated method stub
+		dao.deleteQna(vo);
+	}
+
+	@Override
+	public boolean deleteQnaCheck(QnaVO vo) {
+		// TODO Auto-generated method stub
+		
+		QnaVO child = dao.checkChild(vo);
+
+		if(child != null)
+			return false;
+		
+		dao.deleteQna(vo);
+		
+		return true;
+	}
+
+	@Override
+	public void modifyQna(QnaVO vo) {
+		// TODO Auto-generated method stub
+		dao.modifyQna(vo);
+	}
 }

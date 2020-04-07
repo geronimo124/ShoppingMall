@@ -1,25 +1,7 @@
-DROP TABLE ADMIN_TB;
-DROP TABLE QNA_TB;
-DROP TABLE BASKETS_TB;
-DROP TABLE BOARD_TB;
-DROP TABLE REVIEWS_TB;
-DROP TABLE ORDER_DETAIL_TB;
-DROP TABLE ORDERS_TB;
-DROP TABLE MEMBERS_TB;
-DROP TABLE PRODUCTS_TB;
-DROP TABLE CATEGORY_TB;
-DROP TABLE QNA_TB;
-
-
-select * from admin_tb;
-select * from members_tb;
-select * from category_tb;
-select * from products_tb order by pd_no desc;
-select * from baskets_tb;
-select * from orders_tb;
-select * from order_detail_tb;
-select * from reviews_tb;
-
+/*
+    프로젝트 : 쇼핑몰
+    작성자 : 전일배
+*/
 CREATE TABLE ADMIN_TB(
     ADM_ID          VARCHAR2(15)        PRIMARY KEY,
     ADM_PW          VARCHAR2(60)        NOT NULL,
@@ -105,13 +87,14 @@ CREATE TABLE ORDER_DETAIL_TB(
     FOREIGN KEY (PD_NO) REFERENCES PRODUCTS_TB (PD_NO)
 );
 
-CREATE TABLE BOARD_TB(
-    BD_NO           NUMBER              PRIMARY KEY,
-    MB_ID           VARCHAR2(15)        NOT NULL,
-    BD_TITLE        VARCHAR2(100)       NOT NULL,
-    BD_CONTENT      VARCHAR2(4000)      NOT NULL,
-    BD_DT           DATE                DEFAULT SYSDATE,
-    FOREIGN KEY (MB_ID) REFERENCES MEMBERS_TB (MB_ID)
+CREATE TABLE NOTICE_TB(
+    NT_NO           NUMBER              PRIMARY KEY,
+    ADM_ID          VARCHAR2(15)        NOT NULL,
+    ADM_NM          VARCHAR2(30)        NOT NULL,
+    NT_TITLE        VARCHAR2(100)       NOT NULL,
+    NT_CONTENT      VARCHAR2(4000)      NOT NULL,
+    NT_DT           DATE                DEFAULT SYSDATE,
+    FOREIGN KEY (ADM_ID) REFERENCES ADMIN_TB (ADM_ID)
 );
 
 CREATE TABLE REVIEWS_TB(
@@ -236,7 +219,7 @@ CREATE OR REPLACE PROCEDURE proc_stat_new_order
                 ( p_adm_id IN ADMIN_TB.ADM_ID%TYPE,
                   p_ord_count OUT NUMBER )
 IS
-v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
+    v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
 BEGIN
     SELECT ADM_CONDT INTO v_condt_date FROM ADMIN_TB WHERE ADM_ID = p_adm_id;
     SELECT COUNT(*) INTO p_ord_count FROM ORDERS_TB WHERE v_condt_date <= ORD_DT;
@@ -247,13 +230,14 @@ CREATE OR REPLACE PROCEDURE proc_stat_new_member
                 ( p_adm_id IN ADMIN_TB.ADM_ID%TYPE,
                   p_member_count OUT NUMBER )
 IS
-v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
+    v_condt_date ADMIN_TB.ADM_CONDT%TYPE := SYSDATE;
 BEGIN
     SELECT ADM_CONDT INTO v_condt_date FROM ADMIN_TB WHERE ADM_ID = p_adm_id;
     SELECT COUNT(*) INTO p_member_count FROM MEMBERS_TB WHERE v_condt_date <= MB_REGDT;
 END;
 
 
+-- QNA INSERT 프로시저
 -- 부모 글 작성시 group = 0 / step = 0 / level = 0
 -- 자식 글 작성시 group = 부모 / step = 부모 / level = 부모
 CREATE OR REPLACE PROCEDURE proc_qna_insert 
@@ -286,4 +270,35 @@ BEGIN
         INSERT INTO QNA_TB VALUES (v_qna_no, p_qna_group, v_qna_step, v_qna_level, p_mb_id, p_pd_no,
             p_qna_title, p_qna_writer, p_qna_content, SYSDATE);
     END IF;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+END;
+
+-- QNA DELETE 프로시저
+CREATE OR REPLACE PROCEDURE proc_qna_delete
+            ( p_qna_group IN QNA_TB.QNA_GROUP%TYPE,
+              p_qna_step IN QNA_TB.QNA_STEP%TYPE,
+              p_qna_level IN QNA_TB.QNA_LEVEL%TYPE )
+IS
+    v_count NUMBER := 1;
+BEGIN
+    FOR r IN (SELECT * FROM QNA_TB WHERE QNA_GROUP = p_qna_group AND QNA_STEP > p_qna_step ORDER BY QNA_STEP) LOOP
+        IF r.QNA_LEVEL = p_qna_level THEN
+            EXIT;
+        END IF;
+        DELETE FROM QNA_TB WHERE QNA_NO = r.QNA_NO;
+        v_count := v_count + 1;
+    END LOOP;
+    
+    DELETE FROM QNA_TB WHERE QNA_GROUP = p_qna_group AND QNA_STEP = p_qna_step;
+    
+    FOR r IN (SELECT * FROM QNA_TB WHERE QNA_GROUP = p_qna_group AND QNA_STEP > p_qna_step ORDER BY QNA_STEP) LOOP
+        UPDATE QNA_TB SET QNA_STEP = QNA_STEP - v_count WHERE QNA_NO = r.QNA_NO; 
+    END LOOP;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
 END;

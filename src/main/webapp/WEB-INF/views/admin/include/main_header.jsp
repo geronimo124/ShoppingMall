@@ -114,8 +114,9 @@
 						<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${admin.admCondt}" /></span>
 				</a></li>
 				<li class="dropdown user user-menu"><a href="#" onclick="logout();">
-						<span class="hidden-xs">로그아웃</span>
-				</a></li>
+						<span class="hidden-xs">로그아웃</span></a>
+				<form id="formLogout" action="/admin/logout" method="post"></form>
+				</li>
 				<li class="dropdown user user-menu"><a href="/admin/order/list">
 						<span class="hidden-xs">주문조회</span>
 				</a></li>
@@ -166,3 +167,8 @@
 		</div>
 	</nav>
 </header>
+<script>
+		function logout() {
+			$('#formLogout').submit();
+		}
+</script>

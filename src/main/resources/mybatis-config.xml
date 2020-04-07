@@ -19,6 +19,7 @@
 		<typeAlias alias="order" type="com.demo.biz.order.OrderVO" />
 		<typeAlias alias="orderDetail" type="com.demo.biz.order.OrderDetailVO" />
 		<typeAlias alias="review" type="com.demo.biz.order.ReviewVO" />
+		<typeAlias alias="notice" type="com.demo.biz.notice.NoticeVO" />
 	</typeAliases>
 
 </configuration>

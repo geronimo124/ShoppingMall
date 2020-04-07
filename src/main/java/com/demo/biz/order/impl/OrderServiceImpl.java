@@ -61,6 +61,8 @@ public class OrderServiceImpl implements OrderService {
 			orderDetail.setOrddtQty(bskQty);
 			orderDetail.setOrddtPrice((basketVO.getPdTag() * bskQty) * (100 - basketVO.getPdSale()) / 100);
 			
+			System.out.println(orderDetail.toString());
+			
 			dao.insertOrderDetail(orderDetail);
 
 		}

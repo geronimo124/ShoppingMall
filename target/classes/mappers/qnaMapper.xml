@@ -74,4 +74,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 	</sql>
+	
+	<delete id="deleteQna" parameterType="qna" statementType="CALLABLE">
+		{ call proc_qna_delete(#{qnaGroup, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaStep, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaLevel, mode=IN, jdbcType=INTEGER, javaType=Integer})
+		}
+	</delete>
+	
+	<select id="checkChild" parameterType="qna" resultType="qna">
+		<![CDATA[
+			SELECT * FROM QNA_TB WHERE QNA_GROUP=#{qnaGroup} AND QNA_STEP=#{qnaStep}+1 AND QNA_LEVEL=#{qnaLevel}+1
+		]]>
+	</select>
+	
+	<update id="modifyQna" parameterType="qna">
+		<![CDATA[
+			UPDATE QNA_TB SET QNA_TITLE=#{qnaTitle}, QNA_CONTENT=#{qnaContent} WHERE QNA_NO=#{qnaNo}
+		]]>
+	</update>
 </mapper>

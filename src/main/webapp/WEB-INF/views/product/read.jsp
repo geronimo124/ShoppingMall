@@ -173,7 +173,9 @@
 											<th>내용</th>
 											<th>작성자</th>
 											<th>날짜</th>
-											<th>버튼</th>
+											<th>답변</th>
+											<th>수정</th>
+											<th>삭제</th>
 										</tr>
 									</thead>
 									<tbody id="qnaDiv">
@@ -276,7 +278,7 @@
 							<div class="modal-body" id="qnaModalBody" data-qno>
 								<p>
 									<input type="text" id="qnaTitle" name="qnaTitle"
-										class="form-control"><br />
+										class="form-control" /><br />
 									<textarea rows="10" id="qnaContent" name="qnaContent"
 										class="form-control"></textarea>
 								</p>
@@ -319,9 +321,9 @@
                 <div class="timeline-body">{{revContent}} </div>
 								<div class="timeline-footer">
 								{{#eqReviewer revWriter }}
-				<a class="btn btn-primary" 
+				<a class="btn btn-sm btn-primary" 
 									data-toggle="modal" data-target="#modifyModal">수정</a>
-				<a class="btn btn-danger" onClick="btnDelRev(this)">삭제</a>				
+				<a class="btn btn-sm btn-danger" onClick="btnDelRev(this)">삭제</a>				
 								{{/eqReviewer}}
 							  </div>
 	            </div>			
@@ -333,17 +335,16 @@
 			<tr class="qnaTr", data-qno={{qnaNo}} data-group={{qnaGroup}} data-step={{qnaStep}} data-level={{qnaLevel}} >
 				<td>{{qnaNo}}</td>
 				<td style="text-align:left;"><a data-toggle="modal" data-target="#qnaModal">
-				<span class="qnaTitle">{{#times qnaLevel}}<i class="fa fa-arrow-right"></i>{{/times}}{{qnaTitle}}<span>
+				{{#times qnaLevel}}<i class="fa fa-arrow-right"></i>{{/times}}<span class="qnaTitle">{{qnaTitle}}</span>
 				</a></td>
 				<td class="qnaContent">{{qnaContent}}</td>
 				<td>{{qnaWriter}}</td>
 				<td>{{prettifyDate qnaDt}}</td>
-				<td><a class="btn btn-success" data-toggle="modal" data-target="#qnaRegModal">답변</a>
+				<td><a class="btn btn-sm btn-success" data-toggle="modal" data-target="#qnaRegModal">답변</a></td>
 				{{#eqQuestioner mbId}}
-					<a class="btn btn-primary" data-toggle="modal" data-target="#qnaModal">수정</a>
-					<a class="btn btn-danger" onClick="btnDelQna(this)">삭제</a>
+					<td><a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#qnaModal">수정</a></td>
+					<td><a class="btn btn-sm btn-danger" onClick="btnDelQna(this)">삭제</a></td>
 				{{/eqQuestioner}}
-				</td>	
            </tr>
         {{/each}}
 	</script>
@@ -465,7 +466,6 @@
 			},
 			dataType : 'text',
 			success : function(result) {
-				console.log("result: " + result);
 				if (result == 'SUCCESS') {
 					alert("리뷰가 삭제 되었습니다.");
 					getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
@@ -476,29 +476,30 @@
 	
 	function btnDelQna(button) {
 
-		let qnaTitle = button.parentNode.parentNode.getAttribute('data-qno');
+		let that = button.parentNode.parentNode;
 
-		// 삭제 로직 생각해봐야함..
-		
-		
-		/*
 		$.ajax({
 			type : 'delete',
-			url : '/review/' + revNo,
+			url : '/qna/delete',
 			headers : {
 				"Content-Type" : "application/json",
-				"X-HTTP-Method-Override" : "DELETE"
+				"X-HTTP-Method-Override" : "delete"
 			},
+			data : JSON.stringify({ qnaGroup : that.getAttribute('data-group'),
+									qnaStep : that.getAttribute('data-step'),
+									qnaLevel : that.getAttribute('data-level')}),
 			dataType : 'text',
-			success : function(result) {
-				console.log("result: " + result);
-				if (result == 'SUCCESS') {
-					alert("리뷰가 삭제 되었습니다.");
-					getPage("/review/" + '${productVO.pdNo}' + "/" + reviewPage);
+			success : function(data) {
+				if(data == 'SUCCESS') {
+					alert('QNA가 삭제되었습니다.');
+					getQnaPage("/qna/" + '${productVO.pdNo}' + "/" + qnaPage);
 				}
+				else if(data == 'FAIL')
+					alert('답변으로 인해 삭제가 불가능합니다.');
+				else
+					alert('일시적 오류가 발생하였습니다.');
 			}
 		});
-		*/
 	}
 
 	var printPaging = function(pageMaker, target) {
@@ -675,7 +676,7 @@
 						pdNo : '${productVO.pdNo}',
 						qnaTitle : $('#qnaRegTitle').val(),
 						qnaWriter : '${member.mbNick}',
-						qnaContent : $('#qnaRegContent').val(),
+						qnaContent : $('#qnaRegContent').val()
 					}),
 					dataType : 'text',
 					success : function(data) {
@@ -689,6 +690,32 @@
 					}
 				});
 				
+			});
+
+			$('#btnModQna').on('click', () => {
+
+				$.ajax({
+					type : 'put',
+					url : '/qna/modify',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "put"
+					},
+					data : JSON.stringify({
+						qnaNo : $('#qnaModalBody').attr('data-qno'),
+						qnaTitle : $('#qnaTitle').val(),
+						qnaContent : $('#qnaContent').val()}),
+					dataType : 'text',
+					success : function(data) {
+						if (data == 'SUCCESS') {
+							alert("상품 질문이 수정 되었습니다.");
+						}
+						$("#qnaModal").modal('hide');
+						
+						getQnaPage("/qna/" + '${productVO.pdNo}' + "/" + qnaPage);
+					}
+				});
+
 			});
 		});
 	

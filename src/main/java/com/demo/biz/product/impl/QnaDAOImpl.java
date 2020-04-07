@@ -59,5 +59,23 @@ public class QnaDAOImpl implements QnaDAO {
 		// TODO Auto-generated method stub
 		return session.selectOne(NAMESPACE + ".countQnaListCri", cri);
 	}
+
+	@Override
+	public void deleteQna(QnaVO vo) {
+		// TODO Auto-generated method stub
+		session.delete(NAMESPACE + ".deleteQna", vo);
+	}
+
+	@Override
+	public QnaVO checkChild(QnaVO vo) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".checkChild", vo);
+	}
+
+	@Override
+	public void modifyQna(QnaVO vo) {
+		// TODO Auto-generated method stub
+		session.update(NAMESPACE + ".modifyQna", vo);
+	}
 	
 }

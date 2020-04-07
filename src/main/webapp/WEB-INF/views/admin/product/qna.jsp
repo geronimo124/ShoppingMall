@@ -60,12 +60,6 @@
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">LIST PAGING</h3>
-								<button type="button" id="btnCheckDelete"
-									class="btn btn-sm btn-danger" style="float: right;">체크
-									삭제</button>
-								<button type="button" id="btnCheckModify"
-									class="btn btn-sm btn-info" style="float: right;">체크
-									수정</button>
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered text-center" id="qnaList">
@@ -84,19 +78,26 @@
 
 										<tr class="qnaTr" data-level=${qnaVO.qnaLevel }
 									data-step=${qnaVO.qnaStep } data-group=${qnaVO.qnaGroup } data-pdNo=${qnaVO.pdNo }>
-											<td>${qnaVO.qnaNo }</td>
+											<td><span class="qnaNo">${qnaVO.qnaNo }</span></td>
 											<td>${qnaVO.mbId }</td>
 											<td>${qnaVO.pdNm }</td>
 											<td style="text-align: left;"><c:forEach begin="1"
 													end="${qnaVO.qnaLevel }" step="1">
 													<i class="fa fa-arrow-right"></i>
-												</c:forEach> ${qnaVO.qnaTitle }</td>
+												</c:forEach><span class="qnaTitle">${qnaVO.qnaTitle }</span></td>
 											<td>${qnaVO.qnaWriter }</td>
-											<td>${qnaVO.qnaContent }</td>
+											<td><span class="qnaContent">${qnaVO.qnaContent }</span></td>
 											<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
 													value="${qnaVO.qnaDt}" /></td>
 											<td><button type="button" class="btn btn-sm btn-success"
 													data-toggle="modal" data-target="#qnaModal">답변</button>
+											<button type="button" class="btn btn-sm btn-danger btnDelete">삭제</button>
+											<c:set var="id" value="${admin.admId }" />
+											<c:if test="${qnaVO.mbId eq id}">
+												<button type="button" class="btn btn-sm btn-info btnModify"
+												data-toggle="modal" data-target="#qnaModModal">수정</button>											
+											</c:if>
+											</td>
 										</tr>
 
 									</c:forEach>
@@ -164,6 +165,32 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- QNA Modify Modal -->
+					<div id="qnaModModal" class="modal modal-default fade" role="dialog">
+						<div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">QNA 수정</h4>
+								</div>
+								<div class="modal-body" id="qnqModModalBody" data-qno>
+									<p>
+										<input type="text" id="qnaModTitle" name="qnaTitle"
+											class="form-control"><br />
+										<textarea rows="10" id="qnaModContent" name="qnaContent"
+											class="form-control"></textarea>
+									</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" id="btnModQna">수정</button>
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">취소</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<!-- /.row -->
 			</section>
@@ -222,7 +249,7 @@
 					dataType : 'text',
 					success : function(data) {
 						if (data == 'SUCCESS') {
-							alert("상품 질문이 등록 되었습니다.");
+							alert("상품 답변이 등록 되었습니다.");
 						}
 						$("#qnaRegModal").modal('hide');
 						$("#qnaRegTitle").val('');
@@ -239,6 +266,70 @@
 				
 			});
 
+			$('.btnModify').on('click', function() {
+
+				let that = $(this).parent().parent();
+
+				$("#qnaModTitle").val(that.find('.qnaTitle').text());
+				$("#qnaModContent").val(that.find('.qnaContent').text());
+				$('#qnqModModalBody').attr('data-qno', that.find('.qnaNo').text());
+			});
+
+			$('#btnModQna').on('click', () => {
+
+				$.ajax({
+					type : 'put',
+					url : '/admin/product/qna/modify',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "put"
+					},
+					data : JSON.stringify({qnaNo : $('#qnqModModalBody').attr('data-qno'),
+										   qnaTitle : $('#qnaModTitle').val(),
+										   qnaContent : $('#qnaModContent').val()}),
+					dataType : 'text',
+					success : function(data) {
+
+						alert('QNA가 수정되었습니다.');
+						self.location = "qna"
+							+ '${pageMaker.makeQuery(1)}'
+							+ "&searchType="
+							+ $("select option:selected").val()
+							+ "&keyword="
+							+ $('#keywordInput').val();
+					}
+				});
+
+			});
+
+
+			$('.btnDelete').on('click', function() {
+
+				let that = $(this).parent().parent();
+				
+				$.ajax({
+					type : 'delete',
+					url : '/admin/product/qna/delete',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "delete"
+					},
+					data : JSON.stringify({qnaGroup : that.attr('data-group'),
+							qnaStep : that.attr('data-step'),
+							qnaLevel : that.attr('data-level')}),
+					dataType : 'text',
+					success : function(data) {
+
+						alert('QNA가 삭제되었습니다.');
+						self.location = "qna"
+							+ '${pageMaker.makeQuery(1)}'
+							+ "&searchType="
+							+ $("select option:selected").val()
+							+ "&keyword="
+							+ $('#keywordInput').val();
+					}
+				});
+			});
 		});
 	</script>
 </body>

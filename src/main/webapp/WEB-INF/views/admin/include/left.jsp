@@ -73,8 +73,6 @@
 				<ul class="treeview-menu">
 					<li><a href="/admin/member/list">회원 목록</a></li>
 					<li><a href="/admin/email/send">메일 전송</a></li>
-					<li><a href="#" onclick="logout();"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
-					<form id="formLogout" action="/admin/logout" method="post"></form></li>
 				</ul></li>
 			<li class="treeview"><a href="#"> <i class="fa fa-link"></i>
 					<span>주문 관리</span> <span class="pull-right-container">
@@ -85,13 +83,17 @@
 					<li><a href="/admin/order">주문 관리</a></li>
 					<li><a href="/admin/order/list">주문 조회</a></li>
 				</ul></li>
+			<li class="treeview"><a href="#"> <i class="fa fa-link"></i>
+					<span>공지사항 관리</span> <span class="pull-right-container">
+					<i class="fa fa-angle-left pull-right"></i>
+				</span>
+			</a>
+				<ul class="treeview-menu">
+					<li><a href="/admin/notice">공지사항 목록</a></li>
+					<li><a href="/admin/notice/write">공지사항 등록</a></li>
+				</ul></li>
 		</ul>
 		<!-- /.sidebar-menu -->
 	</section>
 	<!-- /.sidebar -->
 </aside>
-<script>
-		function logout() {
-			$('#formLogout').submit();
-		}
-</script>
