@@ -80,7 +80,7 @@
 				</span>
 			</a>
 				<ul class="treeview-menu">
-					<li><a href="/admin/order">주문 관리</a></li>
+					<li><a href="#">주문 관리</a></li>
 					<li><a href="/admin/order/list">주문 조회</a></li>
 				</ul></li>
 			<li class="treeview"><a href="#"> <i class="fa fa-link"></i>

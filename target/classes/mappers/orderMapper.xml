@@ -106,6 +106,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="searchType == 'n'.toString()">
 				AND P.PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
 			</if>
+			<if test="searchType == 's'.toString()">
+				<choose>
+					<when test="keyword == '배송 준비중'.toString()">
+						AND O.ORD_STATUS='R'
+					</when>
+					<when test="keyword == '배송중'.toString()">
+						AND O.ORD_STATUS='D'
+					</when>
+					<when test="keyword == '배송완료'.toString()">
+						AND O.ORD_STATUS='S'
+					</when>
+				</choose>
+			</if>
 		</if>
 	</sql>
 	

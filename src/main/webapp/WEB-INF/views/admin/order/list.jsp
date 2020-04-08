@@ -38,8 +38,11 @@
 									<option value="n"
 										<c:out value="${cri.searchType eq 'n'?'selected':''}"/>>
 										상품 이름</option>
-								</select> <input type="text" name='keyword' id="keywordInput"
-									value='${cri.keyword }'>
+									<option value="s"
+										<c:out value="${cri.searchType eq 's'?'selected':''}"/>>
+										배송 현황</option>
+								</select>
+									<input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
 								<button id='btnSearch'>검색</button>
 							</div>
 						</div>
@@ -145,7 +148,7 @@
 
 	<script>
 		$(() => {
-			
+
 			$('#btnSearch').on('click', () => {
 
 				self.location = "list"
