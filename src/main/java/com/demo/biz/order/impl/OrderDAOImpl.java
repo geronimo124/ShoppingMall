@@ -11,6 +11,7 @@ import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.order.OrderDAO;
 import com.demo.biz.order.OrderDetailVO;
+import com.demo.biz.order.OrderSearchCriteria;
 import com.demo.biz.order.OrderVO;
 import com.demo.biz.product.BasketVO;
 
@@ -93,7 +94,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public List<OrderVO> getAllOrderList(SearchCriteria cri) {
+	public List<OrderVO> getAllOrderList(OrderSearchCriteria cri) {
 		// TODO Auto-generated method stub
 		return session.selectList(NAMESPACE + ".getAllOrderList", cri);
 	}
@@ -105,7 +106,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public List<OrderVO> countAllOrderList(SearchCriteria cri) {
+	public List<OrderVO> countAllOrderList(OrderSearchCriteria cri) {
 		// TODO Auto-generated method stub
 		return session.selectList(NAMESPACE + ".countAllOrderList", cri);
 	}

@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.order.OrderDAO;
 import com.demo.biz.order.OrderDetailVO;
+import com.demo.biz.order.OrderSearchCriteria;
 import com.demo.biz.order.OrderService;
 import com.demo.biz.order.OrderVO;
 import com.demo.biz.product.BasketVO;
@@ -140,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderVO> getAllOrderList(SearchCriteria cri) {
+	public List<OrderVO> getAllOrderList(OrderSearchCriteria cri) {
 		// TODO Auto-generated method stub
 		List<OrderVO> list = dao.getAllOrderList(cri);
 		List<OrderVO> orderList = new ArrayList<>();
@@ -177,7 +177,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int countAllOrderList(SearchCriteria cri) {
+	public int countAllOrderList(OrderSearchCriteria cri) {
 		// TODO Auto-generated method stub
 		List<OrderVO> list = dao.countAllOrderList(cri);
 		List<OrderVO> orderList = new ArrayList<>();

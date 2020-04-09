@@ -6,6 +6,9 @@
 <!DOCTYPE html>
 <html>
 <%@include file="/WEB-INF/views/admin/include/header.jsp"%>
+<!-- daterange picker -->
+<link rel="stylesheet"
+	href="/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!-- Main Header -->
@@ -16,7 +19,7 @@
 
 		<div class="content-wrapper">
 			<!-- Main content -->
-			<section class="content">
+			<section class="conten	t">
 				<div class="row">
 					<!-- left column -->
 
@@ -29,31 +32,131 @@
 							</div>
 
 
+
+
+							<!-- /.box-header -->
+							<!-- form start -->
+							<form class="form-horizontal" id="formSearch" action="/admin/order/list" method="post">
+								<div class="box-body">
+									<div class="form-group">
+										<label for="searchNum" class="col-sm-1 control-label">검색어</label>
+
+										<div class="col-sm-11 row">
+											<select id="searchNum" name="searchNum"
+												class="form-control select col-sm-1"
+												style="width: 150px; display: inline-block;">
+												<option value="x"
+													<c:out value="${cri.getValue('searchNum') == null?'selected':''}"/>>---</option>
+												<option value="ordNo"
+													<c:out value="${cri.getValue('searchNum') == 'ordNo'?'selected':''}"/>>주문번호</option>
+												<option value="ordPriceUp"
+													<c:out value="${cri.getValue('searchNum') == 'ordPriceUp'?'selected':''}"/>>결제금액(이상)</option>
+												<option value="ordPriceDown"
+													<c:out value="${cri.getValue('searchNum') == 'ordPriceDown'?'selected':''}"/>>결제금액(이하)</option>
+											</select> <input type="text" name="searchNumKey" class="form-control col-sm-5"
+												style="width: 500px; display: inline-block;" value="${cri.getValue('searchNumKey') }">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="orderDate" class="col-sm-1 control-label">기간</label>
+
+										<div class="col-sm-11">
+											<div class="form-group">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													</div>
+													<input type="text" class="form-control" name="orderDate" id="orderDate"
+														style="width: 1000px;" value="${cri.getValue('orderDate') }">
+												</div>
+												<!-- /.input group -->
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="searchProduct" class="col-sm-1 control-label">상품</label>
+
+										<div class="col-sm-11 row">
+											<select id="searchProduct" name="searchProduct"
+												class="form-control select col-sm-1"
+												style="width: 150px; display: inline-block;">
+												<option value="x"
+													<c:out value="${cri.getValue('searchProduct') == null?'selected':''}"/>>---</option>
+												<option value="pdNm"
+													<c:out value="${cri.getValue('searchProduct') == 'pdNm'?'selected':''}"/>>상품명</option>
+												<option value="ctgyNm"
+													<c:out value="${cri.getValue('searchProduct') == 'ctgyNm'?'selected':''}"/>>카테고리</option>
+											</select> <input type="text" class="form-control col-sm-5" name="searchProductKey"
+												style="width: 500px; display: inline-block;" value="${cri.getValue('searchProductKey') }">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="orderStatus" class="col-sm-1 control-label">주문상태</label>
+										<div class="col-sm-11 row">
+											<div class="checkbox" style="width:200px; display:inline-block;">
+												<label style="width:150px;"><input type="checkbox" id="checkAllStatus" name="orderStatus" value="A"
+												<c:out value="${cri.getValue('searchOrderStatus') == null || cri.getValue('searchOrderStatus') == 'A' ?'checked':''}"/>> 전체</label>
+											</div>
+											<div class="checkbox" style="width:200px; display:inline-block;">
+												<label style="width:150px;"><input type="checkbox" class="status" value="R" name="orderStatus"
+												<c:out value="${cri.getValue('searchOrderStatus') == null || cri.getValue('searchOrderStatus').indexOf('R') > -1 ?'checked':''}"/>> 배송 준비중</label>
+											</div>
+											<div class="checkbox" style="width:200px; display:inline-block;">
+												<label style="width:150px;"><input type="checkbox" class="status" value="D" name="orderStatus"
+												<c:out value="${cri.getValue('searchOrderStatus') == null || cri.getValue('searchOrderStatus').indexOf('D') > -1 ?'checked':''}"/>> 배송중</label>
+											</div>
+											<div class="checkbox" style="width:200px; display:inline-block;">
+												<label style="width:150px;"><input type="checkbox" class="status" value="S" name="orderStatus"
+												<c:out value="${cri.getValue('searchOrderStatus') == null || cri.getValue('searchOrderStatus').indexOf('S') > -1 ?'checked':''}"/>> 배송완료</label>
+											</div>
+										</div>
+										<input type="hidden" id="searchOrderStatus" name="searchOrderStatus" value="A">
+									</div>
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer text-center">
+									<button id="btnSearch" type="button" class="btn btn-primary">검색</button>
+								</div>
+								<!-- /.box-footer -->
+							</form>
+
+
+
+<!-- 
 							<div class='box-body'>
 
-								<select name="searchType">
-									<option value="x"
-										<c:out value="${cri.searchType == null?'selected':''}"/>>
-										---</option>
-									<option value="n"
-										<c:out value="${cri.searchType eq 'n'?'selected':''}"/>>
-										상품 이름</option>
-									<option value="s"
-										<c:out value="${cri.searchType eq 's'?'selected':''}"/>>
-										배송 현황</option>
-								</select>
-									<input type="text" name='keyword' id="keywordInput" value='${cri.keyword }'>
+								<form id="formSearch" action="/admin/order/list" method="post">
+									<select name="searchType">
+										<option value="x"
+											<c:out value="${cri.getValue('searchType') == null?'selected':''}"/>>
+											---</option>
+										<option value="n"
+											<c:out value="${cri.getValue('searchType') eq 'n'?'selected':''}"/>>
+											상품 이름</option>
+										<option value="s"
+											<c:out value="${cri.getValue('searchType') eq 's'?'selected':''}"/>>
+											배송 현황</option>
+									</select> <input type="text" name='keyword' id="keywordInput"
+										value="${cri.getValue('keyword') }">
+								</form>
 								<button id='btnSearch'>검색</button>
 							</div>
+ -->
 						</div>
 
 
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">LIST PAGING</h3>
-								<button type="button" id="excel" class="btn btn-sm btn-success" onclick="ReportToExcelConverter()" style="float: right;">엑셀 출력</button>
-								<button type="button" id="btnCheckDelete" class="btn btn-sm btn-danger" style="float: right;">체크 삭제</button>
-								<button type="button" id="btnCheckModify" class="btn btn-sm btn-info" style="float: right;">체크 수정</button>
+								<button type="button" id="excel" class="btn btn-sm btn-success"
+									onclick="ReportToExcelConverter()" style="float: right;">엑셀
+									출력</button>
+								<button type="button" id="btnCheckDelete"
+									class="btn btn-sm btn-danger" style="float: right;">체크
+									삭제</button>
+								<button type="button" id="btnCheckModify"
+									class="btn btn-sm btn-info" style="float: right;">체크
+									수정</button>
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered text-center" id="orderList">
@@ -70,31 +173,33 @@
 									<c:forEach items="${orderList}" var="orderVO">
 
 										<tr>
-											<td><input type="checkbox" class="checkbox check" name="checkbox" value="${orderVO.ordNo }"></td>
+											<td><input type="checkbox" class="checkbox check"
+												name="checkbox" value="${orderVO.ordNo }"></td>
 											<td>${orderVO.ordNo }</td>
 											<td>${orderVO.ordDt }</td>
 											<td>${orderVO.pdNm }</td>
 											<td>${orderVO.ordPrice }</td>
-											<td><a href="/admin/order/detail?ordNo=${orderVO.ordNo }"><button type="button" class="btn">보기</button></a></td>
-											<td>
-												<select name="ordStatus" class="form-control select2 ordStatus" required>
-												<c:if test="${orderVO.ordStatus eq 'R' }">
-													<option value="R" selected="selected">배송 준비중</option>
-													<option value="D">배송중</option>
-													<option value="S">배송완료</option>
-												</c:if>
-												<c:if test="${orderVO.ordStatus eq 'D' }">
-													<option value="R">배송 준비중</option>
-													<option value="D" selected="selected">배송중</option>
-													<option value="S">배송완료</option>
-												</c:if>
-												<c:if test="${orderVO.ordStatus eq 'S' }">
-													<option value="R">배송 준비중</option>
-													<option value="D">배송중</option>
-													<option value="S" selected="selected">배송완료</option>
-												</c:if>
-												</select>	
-											</td>
+											<td><a
+												href="/admin/order/detail?ordNo=${orderVO.ordNo }"><button
+														type="button" class="btn">보기</button></a></td>
+											<td><select name="ordStatus"
+												class="form-control select2 ordStatus" required>
+													<c:if test="${orderVO.ordStatus eq 'R' }">
+														<option value="R" selected="selected">배송 준비중</option>
+														<option value="D">배송중</option>
+														<option value="S">배송완료</option>
+													</c:if>
+													<c:if test="${orderVO.ordStatus eq 'D' }">
+														<option value="R">배송 준비중</option>
+														<option value="D" selected="selected">배송중</option>
+														<option value="S">배송완료</option>
+													</c:if>
+													<c:if test="${orderVO.ordStatus eq 'S' }">
+														<option value="R">배송 준비중</option>
+														<option value="D">배송중</option>
+														<option value="S" selected="selected">배송완료</option>
+													</c:if>
+											</select></td>
 										</tr>
 
 									</c:forEach>
@@ -146,19 +251,58 @@
 	<%@include file="/WEB-INF/views/admin/include/aside.jsp"%>
 	<%@include file="/WEB-INF/views/admin/include/plugin_js.jsp"%>
 
+
+	<!-- date-range-picker -->
+	<script src="/bower_components/moment/min/moment.min.js"></script>
+	<script
+		src="/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 	<script>
 		$(() => {
 
+			$('#orderDate').daterangepicker({
+				locale : {
+					format : 'YYYY/MM/DD',
+					startDate : '',
+ 	        		endDate : ''
+				}
+			});
+
+			
 			$('#btnSearch').on('click', () => {
 
+				// 페이지 정보 넘기기... 페이지메이커에서는 a href 를 주지말고 form submit;
+				let formObj = $('#formSearch');
+
+				let status = '';
+				
+				$('.status:checked').each(function() {
+					status += $(this).val();
+				});
+
+				if(status == 'RDS')
+					$('#searchOrderStatus').val('A');
+				else
+					$('#searchOrderStatus').val(status);
+
+				formObj.submit();
+
+				
+				/*
 				self.location = "list"
 					+ '${pageMaker.makeQuery(1)}'
 					+ "&searchType="
 					+ $("select option:selected").val()
 					+ "&keyword="
 					+ $('#keywordInput').val();
+				*/
 
 			});
+
+			if($('#checkAllStatus').is(':checked'))
+				$('.status').each(function() { $(this).prop('checked', true);});
+
+
+		    $('#checkAllStatus').on('click', function () { $('.status').prop('checked', this.checked) });
 
 			$('#checkAll').on('click', function () { $('.check').prop('checked', this.checked) });	
 
@@ -224,7 +368,7 @@
 			});
 		});
 	</script>
-	
+
 	<script src="/plugins/table2excel/jquery.table2excel.js"></script>
 	<script>
 	

@@ -102,22 +102,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<sql id="search">
-		<if test="searchType != null">
-			<if test="searchType == 'n'.toString()">
-				AND P.PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+		<if test="searchMap.get('searchNumKey'.toString()) != null">
+			<if test="searchMap.get('searchNum') == 'ordNo'.toString()">
+				AND O.ORD_NO = ${searchMap.get("searchNumKey")}
 			</if>
-			<if test="searchType == 's'.toString()">
-				<choose>
-					<when test="keyword == '배송 준비중'.toString()">
-						AND O.ORD_STATUS='R'
-					</when>
-					<when test="keyword == '배송중'.toString()">
-						AND O.ORD_STATUS='D'
-					</when>
-					<when test="keyword == '배송완료'.toString()">
-						AND O.ORD_STATUS='S'
-					</when>
-				</choose>
+			<if test="searchMap.get('searchNum') == 'ordPriceUp'.toString()">
+				<![CDATA[ AND O.ORD_PRICE >= ${@java.lang.Integer@parseInt(searchMap.get("searchNumKey"))} ]]>
+			</if>
+			<if test="searchMap.get('searchNum') == 'ordPriceDown'.toString()">
+				<![CDATA[ AND O.ORD_PRICE <= ${@java.lang.Integer@parseInt(searchMap.get("searchNumKey"))} ]]>
+			</if>
+		</if>
+		<if test="searchMap.get('searchProductKey'.toString()) != null">
+			<if test="searchMap.get('searchProduct') == 'pdNm'.toString()">
+				AND P.PD_NM LIKE CONCAT('%', CONCAT('${searchMap.get("searchProductKey")}', '%'))
+			</if>
+			<if test="searchMap.get('searchProduct') == 'ctgyNm'.toString()">
+				AND P.CTGY_NM LIKE CONCAT('%', CONCAT('${searchMap.get("searchProductKey")}', '%'))
+			</if>
+		</if>
+		<if test="searchMap.get('orderDate'.toString()) != null">
+			<![CDATA[ AND O.ORD_DT >= #{minDate} AND O.ORD_DT <= #{maxDate} ]]>
+		</if>
+		<if test="searchMap.get('searchOrderStatus'.toString()) != 'A'.toString()">
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'R'.toString()">
+				AND O.ORD_STATUS = 'R'
+			</if>
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'D'.toString()">
+				AND O.ORD_STATUS = 'D'
+			</if>
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'S'.toString()">
+				AND O.ORD_STATUS = 'S'
+			</if>
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'RD'.toString()">
+				AND (O.ORD_STATUS = 'R' OR O.ORD_STATUS = 'D')
+			</if>
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'RS'.toString()">
+				AND (O.ORD_STATUS = 'R' OR O.ORD_STATUS = 'S')
+			</if>
+			<if test="searchMap.get('searchOrderStatus'.toString()) == 'DS'.toString()">
+				AND (O.ORD_STATUS = 'D' OR O.ORD_STATUS = 'S')
 			</if>
 		</if>
 	</sql>
