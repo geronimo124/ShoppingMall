@@ -1,7 +1,5 @@
 package com.demo.view.admin;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.biz.common.PageMaker;
 import com.demo.biz.order.OrderSearchCriteria;
 import com.demo.biz.order.OrderService;
 import com.demo.biz.order.OrderVO;
@@ -49,17 +48,20 @@ public class AdminOrderController {
 		
 		cri.setSearchMap(paramMap);
 		
-		System.out.println(cri.toString());
-
+		if(paramMap.get("page") != null)
+			cri.setPage(Integer.parseInt(paramMap.get("page")));
+		if(paramMap.get("perPageNum") != null)
+			cri.setPerPageNum(Integer.parseInt(paramMap.get("perPageNum")));
+		
 		model.addAttribute("cri", cri);
 		model.addAttribute("orderList", service.getAllOrderList(cri));
-//		
-//		PageMaker pageMaker = new PageMaker();
-//		pageMaker.setCri(cri);
-//
-//		pageMaker.setTotalCount(service.countAllOrderList(cri));
-//
-//		model.addAttribute("pageMaker", pageMaker);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(service.countAllOrderList(cri));
+
+		model.addAttribute("pageMaker", pageMaker);
 		
 	}
 

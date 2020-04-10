@@ -118,30 +118,9 @@
 									<button id="btnSearch" type="button" class="btn btn-primary">검색</button>
 								</div>
 								<!-- /.box-footer -->
+								<input type="hidden" id="page" name="page" value="${cri.page }">
+								<input type="hidden" name="perPageNum" value="${cri.perPageNum }">
 							</form>
-
-
-
-<!-- 
-							<div class='box-body'>
-
-								<form id="formSearch" action="/admin/order/list" method="post">
-									<select name="searchType">
-										<option value="x"
-											<c:out value="${cri.getValue('searchType') == null?'selected':''}"/>>
-											---</option>
-										<option value="n"
-											<c:out value="${cri.getValue('searchType') eq 'n'?'selected':''}"/>>
-											상품 이름</option>
-										<option value="s"
-											<c:out value="${cri.getValue('searchType') eq 's'?'selected':''}"/>>
-											배송 현황</option>
-									</select> <input type="text" name='keyword' id="keywordInput"
-										value="${cri.getValue('keyword') }">
-								</form>
-								<button id='btnSearch'>검색</button>
-							</div>
- -->
 						</div>
 
 
@@ -215,21 +194,19 @@
 									<ul class="pagination">
 
 										<c:if test="${pageMaker.prev}">
-											<li><a
-												href="list${pageMaker.makeSearch(pageMaker.startPage - 1) }">&laquo;</a></li>
+											<li><a id="prev">&laquo;</a></li>
 										</c:if>
 
 										<c:forEach begin="${pageMaker.startPage }"
 											end="${pageMaker.endPage }" var="idx">
 											<li
 												<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-												<a href="list${pageMaker.makeSearch(idx)}">${idx}</a>
+												<a class="idx">${idx }</a>
 											</li>
 										</c:forEach>
 
 										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-											<li><a
-												href="list${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+											<li><a id="next">&raquo;</a></li>
 										</c:if>
 
 									</ul>
@@ -257,44 +234,61 @@
 	<script
 		src="/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 	<script>
+
+		var formObj = $('#formSearch');
+
+		function formSearchSubmit() {
+	
+			let status = '';
+			
+			$('.status:checked').each(function() {
+				status += $(this).val();
+			});
+	
+			if(status == 'RDS')
+				$('#searchOrderStatus').val('A');
+			else
+				$('#searchOrderStatus').val(status);
+	
+			formObj.submit();
+		}
+		
 		$(() => {
 
 			$('#orderDate').daterangepicker({
+				startDate : '1990/01/01',
 				locale : {
-					format : 'YYYY/MM/DD',
-					startDate : '',
- 	        		endDate : ''
+					format : 'YYYY/MM/DD'
 				}
+			});
+
+			$('.idx').on('click', function() {
+
+				$('#page').val($(this).text());
+				formObj.submit();
+				
+			});
+
+			$('#prev').on('click', () => {
+
+				$('#page').val('${pageMaker.startPage - 1}');
+				formSearchSubmit();
+				
+			});
+			
+			$('#next').on('click', () => {
+
+				$('#page').val('${pageMaker.endPage + 1}');
+				
+				formSearchSubmit();
+				
 			});
 
 			
 			$('#btnSearch').on('click', () => {
-
-				// 페이지 정보 넘기기... 페이지메이커에서는 a href 를 주지말고 form submit;
-				let formObj = $('#formSearch');
-
-				let status = '';
 				
-				$('.status:checked').each(function() {
-					status += $(this).val();
-				});
-
-				if(status == 'RDS')
-					$('#searchOrderStatus').val('A');
-				else
-					$('#searchOrderStatus').val(status);
-
-				formObj.submit();
-
-				
-				/*
-				self.location = "list"
-					+ '${pageMaker.makeQuery(1)}'
-					+ "&searchType="
-					+ $("select option:selected").val()
-					+ "&keyword="
-					+ $('#keywordInput').val();
-				*/
+				$('#page').val('1');
+				formSearchSubmit();
 
 			});
 

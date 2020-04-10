@@ -34,7 +34,7 @@ public class OrderSearchCriteria extends Criteria {
 	}
 	
 	public String getMaxDate() {
-		return searchMap.get("orderDate").split("-")[1];
+		return searchMap.get("orderDate").split("-")[1].split(" ")[1];
 	}
 
 	@Override

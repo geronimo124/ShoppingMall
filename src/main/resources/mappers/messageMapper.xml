@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mapper.MessageMapper">
+
+	<insert id="sendMsg" parameterType="message">
+		<![CDATA[
+			INSERT INTO MESSAGE_TB VALUES ((SELECT NVL(MAX(MSG_NO), 0)+1 FROM MESSAGE_TB),
+				#{msgTarget}, #{msgSender}, #{msgContent}, 'N', NULL, SYSDATE)
+		]]>
+	</insert>
+
+	<select id="getMember" resultType="member">
+		<![CDATA[
+			SELECT * FROM MEMBERS_TB WHERE MB_ID=#{mbId}
+		]]>
+	</select>
+
+</mapper>
