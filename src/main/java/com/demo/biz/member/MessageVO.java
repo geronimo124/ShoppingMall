@@ -12,7 +12,7 @@ public class MessageVO implements Serializable {
 	private String msgContent;
 	private String msgStatus;
 	private Date msgOpdt;
-	private Date smgSddt;
+	private Date msgSddt;
 	
 	public Integer getMsgNo() {
 		return msgNo;
@@ -50,16 +50,16 @@ public class MessageVO implements Serializable {
 	public void setMsgOpdt(Date msgOpdt) {
 		this.msgOpdt = msgOpdt;
 	}
-	public Date getSmgSddt() {
-		return smgSddt;
+	public Date getMsgSddt() {
+		return msgSddt;
 	}
-	public void setSmgSddt(Date smgSddt) {
-		this.smgSddt = smgSddt;
+	public void setMsgSddt(Date msgSddt) {
+		this.msgSddt = msgSddt;
 	}
 	
 	@Override
 	public String toString() {
 		return "MessageVO [msgNo=" + msgNo + ", msgTarget=" + msgTarget + ", msgSender=" + msgSender + ", msgContent="
-				+ msgContent + ", msgStatus=" + msgStatus + ", msgOpdt=" + msgOpdt + ", smgSddt=" + smgSddt + "]";
+				+ msgContent + ", msgStatus=" + msgStatus + ", msgOpdt=" + msgOpdt + ", msgSddt=" + msgSddt + "]";
 	}
 }

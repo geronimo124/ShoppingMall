@@ -1,5 +1,7 @@
 package com.demo.biz.member.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,18 @@ public class MessageServiceImpl implements MessageService {
 		
 		dao.sendMsg(vo);
 		return true;
+	}
+
+	@Override
+	public List<MessageVO> getMsgs(String mbId) {
+		// TODO Auto-generated method stub
+		return dao.getMsgs(mbId);
+	}
+
+	@Override
+	public MessageVO getMsg(Integer msgNo) {
+		// TODO Auto-generated method stub
+		dao.updateStatus(msgNo);
+		return dao.getMsg(msgNo);
 	}
 }

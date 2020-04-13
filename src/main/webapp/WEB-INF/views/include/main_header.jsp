@@ -148,10 +148,10 @@
 				<!-- Messages: style can be found in dropdown.less-->
 				<li class="dropdown messages-menu"><a href="#" id="btnMsg"
 					class="dropdown-toggle" data-toggle="dropdown"> <i
-						class="fa fa-envelope-o"></i> <span class="label label-success">4</span>
+						class="fa fa-envelope-o"></i> <span class="label label-success" id="msgCountNum"></span>
 				</a>
 					<ul class="dropdown-menu">
-						<li class="header" id="msgCount">You have 4 messages</li>
+						<li class="header" id="msgCount"></li>
 						<div id="msgDiv">
 						
 						
@@ -167,12 +167,12 @@
 		</div>
 	</nav>
 </header>
-<!-- Message modal -->
+<!-- New Message modal -->
 <div class="modal fade" id="modalNewMsg">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button type="button" class="close btnClose" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -183,9 +183,34 @@
 				<input type="text" id="msgContent" class="form-control" name="msgContent">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left"
-					data-dismiss="modal" id="btnClose">Close</button>
+				<button type="button" class="btn btn-default pull-left btnClose"
+					data-dismiss="modal">Close</button>
 				<button type="button" id="btnSend" class="btn btn-primary">Send</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- Read Message modal -->
+<div class="modal fade" id="modalReadMsg">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close btnClose" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Read a message</h4>
+				From : <input type="text" id="readMsgSender" class="form-control" readonly="readonly">
+			</div>
+			<div class="modal-body">
+				<input type="text" id="readMsgContent" class="form-control" readonly="readonly">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left btnClose"
+					data-dismiss="modal">Close</button>
+				<button type="button" id="btnReply" class="btn btn-primary">Reply</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -198,11 +223,12 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script id="template" type="text/x-handlebars-template">
 		{{#each .}}
-			<li class="msgLi">
+			<li class="msgLi" data-mno={{msgNo}} onclick="clickMsg(this)" data-toggle="modal"
+							data-target="#modalReadMsg">
 				<ul class="menu">
 					<li><a href="#">
 						<div class="pull-left">
-							<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+							<img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 						</div>
 						<h4>{{msgSender}}<small><i class="fa fa-clock-o"></i>{{prettifyDate msgSddt}}</small></h4>
 						<p>{{msgContent}}</p>
@@ -212,46 +238,98 @@
         {{/each}}
 	</script>
 	<script>
-			Handlebars.registerHelper("prettifyDate", function(timeValue) {
-				var dateObj = new Date(timeValue);
-				var year = dateObj.getFullYear();
-				var month = dateObj.getMonth() + 1;
-				var date = dateObj.getDate();
-				return year + "/" + month + "/" + date;
+
+			$.ajax({
+				type : 'post',
+				url : 'https://openapi.naver.com/v1/datalab/shopping/categories',
+				headers : {
+					"Access-Control-Allow-Origin" : "*",
+					"X-Naver-Client-Id" : "rD9HMUHFlI40eg948HHo",
+					"X-Naver-Client-Secret" : "wMC5hT3cyq",
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "post"
+				},
+				contentType : 'application/x-www-form-urlencoded',
+				data : {
+					"startDate": "2017-08-01",
+					"endDate": "2017-09-30",
+					"timeUnit": "month",
+					"category": [
+					      {"name": "패션의류", "param": [ "50000000"]},
+					      {"name": "화장품/미용", "param": [ "50000002"]}
+					],
+					"device": "pc",
+					"gender": "f",
+					"ages": [ "20",  "30"]
+				},
+				dataType : 'text',
+				success : function(data) {
+					alert(data);
+				}
 			});
+
+			var clickMsg = function(msg) {
+
+				$.getJSON('/msg/' + msg.getAttribute('data-mno'), function(data) {
+
+					$('#readMsgSender').val(data.msgSender);
+					$('#readMsgContent').val(data.msgContent);
+
+				});
+				
+			}
 
 			var printMsgData = function(msgArr, target, templateObject) {
 
 				let template = Handlebars.compile(templateObject.html());
 
+				Handlebars.registerHelper("prettifyDate", function(timeValue) {
+					var dateObj = new Date(timeValue);
+					var year = dateObj.getFullYear();
+					var month = dateObj.getMonth() + 1;
+					var date = dateObj.getDate();
+					return year + "/" + month + "/" + date;
+				});
+					
+
 				let html = template(msgArr);
 				$('.msgLi').remove();
 				target.after(html);
 			}
-	
+
 			function logout() {
 				$('#formLogout').submit();
 			}
 	
 			$(() => {
 
-				$('#btnMsg').on('click', () => {
+				$.getJSON('/msg/list/' + '${member.mbId}', function(data) {
+					printMsgData(data, $("#msgDiv"), $('#template'));
 
-					/*
-					$.getJSON(function(data) {
-						printMsgData(data.list, $("#msgDiv"), $('#template'));
+					$("#msgCount").html('You have ' + data.length + ' messages');
+					$('#msgCountNum').html(data.length);
+				});
 
-						$("#msgCount").html('You have ' + data.list.size + ' messages');
-					});
-					*/
+				$('#btnReply').on('click', function() {
+
+					$('#modalReadMsg').modal('hide');
+					$("#msgTarget").val($('#readMsgSender').val());
+					$('#modalNewMsg').modal('show');
+
 
 				});
 				
 				
-				
-				$('#btnClose').on('click', () => {
+				$('.btnClose').on('click', () => {
 					$('#msgTarget').val('');
 					$('#msgContent').val('');
+
+					$.getJSON('/msg/list/' + '${member.mbId}', function(data) {
+						printMsgData(data, $("#msgDiv"), $('#template'));
+
+						$("#msgCount").html('You have ' + data.length + ' messages');
+						$('#msgCountNum').html(data.length);
+					});
 				});
 	
 				$('#btnSend').on('click', () => {
