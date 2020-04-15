@@ -221,7 +221,7 @@
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-	<script id="template" type="text/x-handlebars-template">
+	<script id="msgTemplate" type="text/x-handlebars-template">
 		{{#each .}}
 			<li class="msgLi" data-mno={{msgNo}} onclick="clickMsg(this)" data-toggle="modal"
 							data-target="#modalReadMsg">
@@ -239,6 +239,7 @@
 	</script>
 	<script>
 
+			/*
 			$.ajax({
 				type : 'post',
 				url : 'https://openapi.naver.com/v1/datalab/shopping/categories',
@@ -267,6 +268,7 @@
 					alert(data);
 				}
 			});
+			*/
 
 			var clickMsg = function(msg) {
 
@@ -304,7 +306,7 @@
 			$(() => {
 
 				$.getJSON('/msg/list/' + '${member.mbId}', function(data) {
-					printMsgData(data, $("#msgDiv"), $('#template'));
+					printMsgData(data, $("#msgDiv"), $('#msgTemplate'));
 
 					$("#msgCount").html('You have ' + data.length + ' messages');
 					$('#msgCountNum').html(data.length);
@@ -325,7 +327,7 @@
 					$('#msgContent').val('');
 
 					$.getJSON('/msg/list/' + '${member.mbId}', function(data) {
-						printMsgData(data, $("#msgDiv"), $('#template'));
+						printMsgData(data, $("#msgDiv"), $('#msgTemplate'));
 
 						$("#msgCount").html('You have ' + data.length + ' messages');
 						$('#msgCountNum').html(data.length);

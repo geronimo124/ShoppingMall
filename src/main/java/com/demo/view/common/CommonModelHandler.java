@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.demo.biz.common.WebCrawler;
 import com.demo.biz.product.ProductService;
 
 @ControllerAdvice("com.demo.view")
@@ -20,5 +21,10 @@ public class CommonModelHandler {
 	@ModelAttribute
 	public void categoryList(Model model) throws Exception {
 		model.addAttribute("mainCateList", service.getCategoryList(1)); // left - 상위 카테고리 목록 출력
+	}
+	
+	@ModelAttribute
+	public void keywordList(Model model) throws Exception {
+		model.addAttribute("keywordList", WebCrawler.crawling());
 	}
 }

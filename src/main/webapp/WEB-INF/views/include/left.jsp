@@ -28,11 +28,12 @@
 		</div>
 
 		<!-- search form (Optional) -->
-		<form action="/" method="get" class="sidebar-form">
+		<form action="" method="get" class="sidebar-form">
 			<div class="input-group">
+				<input type="hidden" name="searchType" value="n">
 				<input type="text" name="keyword" class="form-control"
 					placeholder="Search..."> <span class="input-group-btn">
-					<button type="submit" name="searchType" id="search-btn"
+					<button type="submit" id="search-btn"
 						class="btn btn-flat">
 						<i class="fa fa-search"></i>
 					</button>
@@ -56,7 +57,7 @@
 					<span>Another Link</span>
 				</a>
 			</li> -->
-			<li><a href="/notice"><i class="fa fa-list-alt"></i><span>공지 사항</span></a>
+			
 			<c:forEach items="${mainCateList}" var="categoryVO">
 				<li class="treeview mainCate">
 					<a href="#"> <i class="fa fa-tags"></i> <span>${categoryVO.ctgyNm }</span>
@@ -74,19 +75,41 @@
 			<c:choose>
 				<c:when test="${sessionScope.member == null}">
 					<!-- 로그인 X -->
-					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원
-								가입</span></a>
-					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a>
+					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원가입</span></a></li>
+					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a></li>
 				</c:when>
 				<c:otherwise>
 					<!-- 일반 회원 -->
 
-					<li><a href="/basket/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a>
-					</li>
-					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a>
-					</li>
+					<li><a href="/basket/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a></li>
+					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a></li>
 				</c:otherwise>
 			</c:choose>
+			
+			<li class="treeview"><a href="#"><i class="fa fa-group"></i> 
+					<span>고객센터</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="/notice"><i class="fa fa-list-alt"></i><span>공지 사항</span></a>
+					<li><a href="/notice/company"><i class="fa fa-exclamation-circle"></i><span>회사 소개</span></a>
+				</ul>
+			</li>
+
+			<li class="treeview"><a href="#"><i class="fa fa-heart-o"></i> 
+					<span>오늘의 NAVER 패션 키워드</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<c:forEach items="${keywordList}" var="keyword" varStatus="status">
+							<li><a href="/?searchType=n&keyword=${keyword}"><span>${status.count } ${keyword }</span></a></li>
+					</c:forEach>
+				</ul>
+			</li>
 		</ul>
 		<!-- /.sidebar-menu -->
 	</section>

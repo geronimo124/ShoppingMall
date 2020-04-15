@@ -32,7 +32,7 @@ public class HomeController {
 		this.service = service;
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String home(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
 		logger.info(cri.toString());

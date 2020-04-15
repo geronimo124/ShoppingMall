@@ -52,4 +52,9 @@ public class NoticeController {
 		model.addAttribute("noticeVO", service.getNotice(ntNo));
 		
 	}
+	
+	@RequestMapping(value = "/company", method = RequestMethod.GET)
+	public void company() {
+		
+	}
 }
