@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.order.OrderDAO;
 import com.demo.biz.order.OrderDetailVO;

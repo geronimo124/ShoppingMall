@@ -1,5 +1,12 @@
 package com.demo.biz.common;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 public class Criteria {
 
 	private int page;	
@@ -30,25 +37,11 @@ public class Criteria {
 		this.perPageNum = perPageNum;
 	}
 	
-	public int getPage() {
-		return page;
-	}	
-	
 	//method for MyBatis SQL Mapper - 
 	public int getPageStart() {
 		
 		return (this.page -1)* perPageNum + 1;
-	}
-	
-	//method for MyBatis SQL Mapper 
-	public int getPerPageNum(){
 		
-		return this.perPageNum;
-	}
-
-	@Override
-	public String toString() {
-		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + "]";
 	}
 }
 

@@ -9,4 +9,5 @@ public interface EmailService {
 	public void sendMail(EmailDTO dto);
 	public MemberVO getMember(String mbId);
 	public List<MemberVO> getAllMembers();
+	
 }

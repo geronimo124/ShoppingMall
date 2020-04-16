@@ -112,15 +112,14 @@ public class ReviewController {
 		return entity;
 	}
 
-	@RequestMapping(value = "/{revNo}", method = { RequestMethod.PUT, RequestMethod.PATCH })
-	public ResponseEntity<String> updateReview(@PathVariable("revNo") Integer revNo, @RequestBody ReviewVO vo) {
+	@RequestMapping(value = "", method = { RequestMethod.PUT, RequestMethod.PATCH })
+	public ResponseEntity<String> updateReview(@RequestBody ReviewVO vo) {
 
 		logger.info(vo.toString());
 		
 		ResponseEntity<String> entity = null;
 		
 		try {
-			vo.setRevNo(revNo);
 			service.modifyReview(vo);
 
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);

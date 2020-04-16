@@ -12,4 +12,5 @@ public interface ReviewService {
 	public void deleteReview(Integer revNo);
 	public void modifyReview(ReviewVO vo);
 	public ReviewVO getReview(Integer ordNo, Integer pdNo);
+	
 }

@@ -53,27 +53,28 @@ public class OrderServiceImpl implements OrderService {
 		
 		// 즉시구매를 눌렀을 경우 장바구니에서 가져올 수 없음
 		if(basketList.size() == 0) {
-			OrderDetailVO orderDetail = new OrderDetailVO();
+			
 			BasketVO basketVO = dao.getProduct(productList.get(0));
 			
-			orderDetail.setOrdNo(ordNo);
-			orderDetail.setPdNo(basketVO.getPdNo());
-			orderDetail.setOrddtQty(bskQty);
-			orderDetail.setOrddtPrice((basketVO.getPdTag() * bskQty) * (100 - basketVO.getPdSale()) / 100);
-			
-			System.out.println(orderDetail.toString());
+			OrderDetailVO orderDetail = OrderDetailVO.builder()
+					.ordNo(ordNo)
+					.pdNo(basketVO.getPdNo())
+					.orddtQty(bskQty)
+					.orddtPrice((basketVO.getPdTag() * bskQty) * (100 - basketVO.getPdSale()) / 100)
+					.build();
 			
 			dao.insertOrderDetail(orderDetail);
 
 		}
 		
 		for(BasketVO basketVO : basketList) {
-			OrderDetailVO orderDetail = new OrderDetailVO();
 			
-			orderDetail.setOrdNo(ordNo);
-			orderDetail.setPdNo(basketVO.getPdNo());
-			orderDetail.setOrddtQty(basketVO.getBskQty());
-			orderDetail.setOrddtPrice((basketVO.getPdTag() * basketVO.getBskQty()) * (100 - basketVO.getPdSale()) / 100);
+			OrderDetailVO orderDetail = OrderDetailVO.builder()
+					.ordNo(ordNo)
+					.pdNo(basketVO.getPdNo())
+					.orddtQty(basketVO.getBskQty())
+					.orddtPrice((basketVO.getPdTag() * basketVO.getBskQty()) * (100 - basketVO.getPdSale()) / 100)
+					.build();
 			
 			dao.insertOrderDetail(orderDetail);
 		}
@@ -103,10 +104,14 @@ public class OrderServiceImpl implements OrderService {
 		
 		for (int i = 1; i < list.size(); i++) {
 			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				
 				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+				
 			} else {
+				
 				orderList.add(vo);
 				vo = list.get(i);
+				
 			}
 			if(i == list.size() - 1)
 				orderList.add(vo);
@@ -151,11 +156,16 @@ public class OrderServiceImpl implements OrderService {
 		OrderVO vo = list.get(0);
 		
 		for (int i = 1; i < list.size(); i++) {
+			
 			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				
 				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+				
 			} else {
+				
 				orderList.add(vo);
 				vo = list.get(i);
+				
 			}
 			if(i == list.size() - 1)
 				orderList.add(vo);
@@ -169,7 +179,9 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		
 		for(BasketVO basket : basketList) {
+			
 			int stock = dao.getStock(basket.getPdNo());
+			
 			if(basket.getBskQty() > stock)
 				return false;
 		}
@@ -190,11 +202,16 @@ public class OrderServiceImpl implements OrderService {
 		OrderVO vo = list.get(0);
 		
 		for (int i = 1; i < list.size(); i++) {
+			
 			if(vo.getOrdNo() == list.get(i).getOrdNo()) {
+				
 				vo.setPdNm(vo.getPdNm() + "<br />" + list.get(i).getPdNm());
+				
 			} else {
+				
 				orderList.add(vo);
 				vo = list.get(i);
+				
 			}
 			if(i == list.size() - 1)
 				orderList.add(vo);

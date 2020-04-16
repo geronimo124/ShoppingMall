@@ -19,4 +19,5 @@ public interface MemberDAO {
 	public List<MemberVO> getAllMembers();
 	public int countMemberList(SearchCriteria cri);
 	public void deleteMember(String mbId);
+	
 }

@@ -29,6 +29,7 @@ public class MessageServiceImpl implements MessageService {
 			return false;
 		
 		dao.sendMsg(vo);
+		
 		return true;
 	}
 

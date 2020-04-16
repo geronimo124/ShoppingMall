@@ -38,9 +38,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO loginMember(LoginDTO dto) {
 		// TODO Auto-generated method stub
+		System.out.println("여기" + dto.toString());
 		MemberVO vo = dao.loginMember(dto);
+		System.out.println("로그인멤버serviceimpl 첫번째");
 		
 		if(vo != null) {
+			
 			if(crptPassEnc.matches(dto.getPassword(), vo.getMbPw()))
 				dao.updateConDate(dto);
 			else
@@ -78,7 +81,9 @@ public class MemberServiceImpl implements MemberService {
 			mailSender.send(msg);
 			
 		} catch (Exception e) {
+			
 			e.printStackTrace();
+			
 		}
 		
 		dao.insertMember(vo);

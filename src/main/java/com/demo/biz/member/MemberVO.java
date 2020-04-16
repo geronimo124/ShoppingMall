@@ -3,7 +3,14 @@ package com.demo.biz.member;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @SuppressWarnings("serial")
+@Getter
+@Setter
+@ToString
 public class MemberVO implements Serializable {
 
 	private String mbId;
@@ -21,96 +28,4 @@ public class MemberVO implements Serializable {
 	private String mbAuthkey;
 	private String mbAuth;
 	
-	public String getMbId() {
-		return mbId;
-	}
-	public void setMbId(String mbId) {
-		this.mbId = mbId;
-	}
-	public String getMbPw() {
-		return mbPw;
-	}
-	public void setMbPw(String mbPw) {
-		this.mbPw = mbPw;
-	}
-	public String getMbNm() {
-		return mbNm;
-	}
-	public void setMbNm(String mbNm) {
-		this.mbNm = mbNm;
-	}
-	public String getMbNick() {
-		return mbNick;
-	}
-	public void setMbNick(String mbNick) {
-		this.mbNick = mbNick;
-	}
-	public String getMbPhone() {
-		return mbPhone;
-	}
-	public void setMbPhone(String mbPhone) {
-		this.mbPhone = mbPhone;
-	}
-	public String getMbEmail() {
-		return mbEmail;
-	}
-	public void setMbEmail(String mbEmail) {
-		this.mbEmail = mbEmail;
-	}
-	public String getMbZip() {
-		return mbZip;
-	}
-	public void setMbZip(String mbZip) {
-		this.mbZip = mbZip;
-	}
-	public String getMbAddr() {
-		return mbAddr;
-	}
-	public void setMbAddr(String mbAddr) {
-		this.mbAddr = mbAddr;
-	}
-	public String getMbDeaddr() {
-		return mbDeaddr;
-	}
-	public void setMbDeaddr(String mbDeaddr) {
-		this.mbDeaddr = mbDeaddr;
-	}
-	public Integer getMbMile() {
-		return mbMile;
-	}
-	public void setMbMile(Integer mbMile) {
-		this.mbMile = mbMile;
-	}
-	public Date getMbRegdt() {
-		return mbRegdt;
-	}
-	public void setMbRegdt(Date mbRegdt) {
-		this.mbRegdt = mbRegdt;
-	}
-	public Date getMbCondt() {
-		return mbCondt;
-	}
-	public void setMbCondt(Date mbCondt) {
-		this.mbCondt = mbCondt;
-	}
-	public String getMbAuthkey() {
-		return mbAuthkey;
-	}
-	public void setMbAuthkey(String mbAuthkey) {
-		this.mbAuthkey = mbAuthkey;
-	}
-	public String getMbAuth() {
-		return mbAuth;
-	}
-	public void setMbAuth(String mbAuth) {
-		this.mbAuth = mbAuth;
-	}
-	
-	@Override
-	public String toString() {
-		return "MemberVO [mbId=" + mbId + ", mbPw=" + mbPw + ", mbNm=" + mbNm + ", mbNick=" + mbNick + ", mbPhone="
-				+ mbPhone + ", mbEmail=" + mbEmail + ", mbZip=" + mbZip + ", mbAddr=" + mbAddr + ", mbDeaddr="
-				+ mbDeaddr + ", mbMile=" + mbMile + ", mbRegdt=" + mbRegdt + ", mbCondt=" + mbCondt + ", mbAuthkey="
-				+ mbAuthkey + ", mbAuth=" + mbAuth + "]";
-	}
 }

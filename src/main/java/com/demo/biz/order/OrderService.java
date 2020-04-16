@@ -20,4 +20,5 @@ public interface OrderService {
 	public boolean checkStock(List<BasketVO> basketList);
 	public void modifyCheckedOrders(List<OrderVO> orderList);
 	public void deleteOrders(List<Integer> orderList);
+	
 }

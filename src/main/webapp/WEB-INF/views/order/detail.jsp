@@ -276,16 +276,15 @@
 
 			$('#btnModRev').on('click', function() {
 
-				let revNo = $('.modal-body').attr('data-rno');
-
 				$.ajax({
 					type : 'put',
-					url : '/review/' + revNo,
+					url : '/review',
 					headers : {
 						"Content-Type" : "application/json",
 						"X-HTTP-Method-Override" : "PUT"
 					},
 					data : JSON.stringify({
+						revNo : $('.modal-body').attr('data-rno'),
 						revTitle : $('#revTitle').val(),
 						revWriter : '${member.mbNick}',
 						revContent : $('#revContent').val(),

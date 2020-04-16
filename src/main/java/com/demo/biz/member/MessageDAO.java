@@ -9,4 +9,5 @@ public interface MessageDAO {
 	public List<MessageVO> getMsgs(String mbId);
 	public MessageVO getMsg(Integer msgNo);
 	public void updateStatus(Integer msgNo);
+	
 }

@@ -3,7 +3,13 @@ package com.demo.biz.common;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
 public class PageMaker {
 
 	private int totalCount;
@@ -14,12 +20,8 @@ public class PageMaker {
 	
 	private int displayPageNum = 10;
 	
+	@Setter
 	private Criteria cri;
-
-
-	public void setCri(Criteria cri) {
-		this.cri = cri;
-	}
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
@@ -43,34 +45,6 @@ public class PageMaker {
 		
 		next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
 		
-	}
-
-	public int getTotalCount() {
-		return totalCount;
-	}
-
-	public int getStartPage() {
-		return startPage;
-	}
-
-	public int getEndPage() {
-		return endPage;
-	}
-
-	public boolean isPrev() {
-		return prev;
-	}
-
-	public boolean isNext() {
-		return next;
-	}
-
-	public int getDisplayPageNum() {
-		return displayPageNum;
-	}
-
-	public Criteria getCri() {
-		return cri;
 	}
 	
 	public String makeQuery(int page){
@@ -96,14 +70,5 @@ public class PageMaker {
 		
 		return uriComponents.toUriString();
 	}	
-	
-	@Override
-	public String toString() {
-		return "PageMaker [totalCount=" + totalCount + ", startPage="
-				+ startPage + ", endPage=" + endPage + ", prev=" + prev
-				+ ", next=" + next + ", displayPageNum=" + displayPageNum
-				+ ", cri=" + cri + "]";
-	}
-	
 	
 }

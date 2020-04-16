@@ -12,4 +12,5 @@ public interface ReviewDAO {
 	public void deleteReview(Integer revNo);
 	public void modifyReview(ReviewVO vo);
 	public ReviewVO getReview(Integer ordNo, Integer pdNo);
+	
 }

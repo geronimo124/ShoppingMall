@@ -25,13 +25,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminVO loginAdmin(LoginDTO dto) {
 		// TODO Auto-generated method stub
+		
 		AdminVO vo = dao.loginAdmin(dto);
 		
 		if(vo != null) {
+			
 			if(crptPassEnc.matches(dto.getPassword(), vo.getAdmPw()))
 				dao.updateConDate(dto);
 			else
 				vo = null;
+			
 		}
 
 		return vo;

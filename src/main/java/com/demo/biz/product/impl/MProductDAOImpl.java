@@ -31,8 +31,10 @@ public class MProductDAOImpl implements MProductDAO {
 	public List<ProductVO> getProductList(@Param("ctgyCd") String ctgyCd, @Param("cri") Criteria cri) {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<>();
+		
 		map.put("ctgyCd", ctgyCd);
 		map.put("cri", cri);
+		
 		return session.selectList(NAMESPACE + ".getProductList", map);
 	}
 

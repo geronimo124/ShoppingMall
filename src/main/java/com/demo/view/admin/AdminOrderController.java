@@ -44,9 +44,7 @@ public class AdminOrderController {
 	@RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public void listOrder(@RequestParam Map<String, String> paramMap, Model model) {
 		
-		OrderSearchCriteria cri = new OrderSearchCriteria();
-		
-		cri.setSearchMap(paramMap);
+		OrderSearchCriteria cri = new OrderSearchCriteria(paramMap);
 		
 		if(paramMap.get("page") != null)
 			cri.setPage(Integer.parseInt(paramMap.get("page")));

@@ -7,4 +7,5 @@ public interface MessageService {
 	public boolean sendMsg(MessageVO vo);
 	public List<MessageVO> getMsgs(String mbId);
 	public MessageVO getMsg(Integer msgNo);
+	
 }

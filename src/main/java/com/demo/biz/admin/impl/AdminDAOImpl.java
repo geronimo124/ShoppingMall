@@ -32,5 +32,4 @@ public class AdminDAOImpl implements AdminDAO {
 		session.update(NAMESPACE + ".updateConDate", dto);
 	}
 
-	
 }

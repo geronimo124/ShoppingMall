@@ -32,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendMail(EmailDTO dto) {
 		// TODO Auto-generated method stub
 		try {
+			
 			MimeMessage msg = mailSender.createMimeMessage();
 			
 			msg.addRecipient(RecipientType.TO, new InternetAddress(dto.getReceiveMail()));
@@ -45,7 +46,9 @@ public class EmailServiceImpl implements EmailService {
 			mailSender.send(msg);
 			
 		} catch (Exception e) {
+			
 			e.printStackTrace();
+			
 		}
 	}
 	

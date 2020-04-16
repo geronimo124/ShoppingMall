@@ -50,9 +50,10 @@ public class MemberController {
 	public void login(LoginDTO dto, Model model) {
 		
 		logger.info(dto.toString());
-		
+		System.out.println(dto.toString());
 		MemberVO vo = service.loginMember(dto);
-
+		System.out.println(vo.toString());
+		
 		SessionListener listener = SessionListener.getInstance();
 		
 		if(vo == null) {
