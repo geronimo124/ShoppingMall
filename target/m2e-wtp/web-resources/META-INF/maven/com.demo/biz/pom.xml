@@ -32,6 +32,7 @@
 		<com.sun.mail-version>1.5.6</com.sun.mail-version>
 		<org.jsoup-version>1.8.3</org.jsoup-version>
 		<org.projectlombok-version>1.18.10</org.projectlombok-version>
+		<org.springframework.social-version>2.0.3.RELEASE</org.springframework.social-version>
 	</properties>
 	<repositories>
 		<repository>
@@ -286,7 +287,13 @@
 			<version>${org.projectlombok-version}</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<!-- facebook API -->
+		<dependency>
+		    <groupId>org.springframework.social</groupId>
+		    <artifactId>spring-social-facebook</artifactId>
+		    <version>${org.springframework.social-version}</version>
+		</dependency>
 
 	</dependencies>
 	<build>
