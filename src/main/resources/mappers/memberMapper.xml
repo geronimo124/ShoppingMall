@@ -11,6 +11,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
+	<select id="loginFacebook" resultType="member">
+		<![CDATA[
+			SELECT * FROM MEMBERS_TB WHERE MB_EMAIL=#{mbEmail}
+		]]>
+	</select>
+	
 	<select id="getMember" resultType="member">
 		<![CDATA[
 			SELECT * FROM MEMBERS_TB WHERE MB_ID=#{mbId}

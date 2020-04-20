@@ -8,6 +8,7 @@ import com.demo.biz.common.SearchCriteria;
 public interface MemberService {
 
 	public MemberVO loginMember(LoginDTO dto);
+	public MemberVO loginMember(String mbEmail);
 	public MemberVO getMember(String mbId);
 	public void updateAuth(String mbId);
 	public void updateMember(MemberVO vo);

@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.demo.biz.member.MemberVO;
 import com.demo.biz.product.BasketService;
 import com.demo.biz.product.BasketVO;
-import com.demo.biz.product.ProductVO;
 
 @Controller
 @RequestMapping("/basket")

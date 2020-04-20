@@ -15,7 +15,7 @@ CREATE TABLE MEMBERS_TB(
     MB_NM         VARCHAR2(30)        NOT NULL,
     MB_NICK       VARCHAR2(20)        NOT NULL UNIQUE,
     MB_PHONE      VARCHAR2(15)        NOT NULL,
-    MB_EMAIL      VARCHAR2(50)        NOT NULL,
+    MB_EMAIL      VARCHAR2(50)        NOT NULL UNIQUE,
     MB_ZIP        CHAR(5)             NOT NULL,
     MB_ADDR       VARCHAR2(50)        NOT NULL,
     MB_DEADDR     VARCHAR2(50)        NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE MEMBERS_TB(
     MB_CONDT      DATE                NULL,
     MB_AUTHKEY    VARCHAR2(60)        NOT NULL,
     MB_AUTH       CHAR(1)             DEFAULT 'N'
-);
+); 
 
 CREATE TABLE CATEGORY_TB(
     CTGY_CD         NUMBER        PRIMARY KEY,

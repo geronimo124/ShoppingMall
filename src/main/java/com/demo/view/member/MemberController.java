@@ -7,6 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.social.MissingAuthorizationException;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.User;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +39,27 @@ public class MemberController {
 	
 	private final MemberService service;
 	
+	// Facebook OAuth
+	@Autowired
+	private FacebookConnectionFactory connectionFactory;
+	
+	@Autowired
+	private OAuth2Parameters oAuth2Parameters;
+	
 	@Autowired
 	public MemberController(MemberService service) {
 		this.service = service;
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpSession session) {
+	public String login(HttpSession session, Model model) {
 		
 		logger.info("login page");
+		
+		OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
+		String facebook_url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);
+
+		model.addAttribute("facebook_url", facebook_url);
 		
 		if(session.getAttribute("member") == null)
 			return "member/login";
@@ -50,9 +72,8 @@ public class MemberController {
 	public void login(LoginDTO dto, Model model) {
 		
 		logger.info(dto.toString());
-		System.out.println(dto.toString());
+		
 		MemberVO vo = service.loginMember(dto);
-		System.out.println(vo.toString());
 		
 		SessionListener listener = SessionListener.getInstance();
 		
@@ -67,6 +88,69 @@ public class MemberController {
 		}
 
 		model.addAttribute("member", vo);
+	}
+	
+	@RequestMapping(value = "/facebookSignInCallback", method = { RequestMethod.GET, RequestMethod.POST })
+	public String facebookSignInCallback(@RequestParam String code, Model model) throws Exception {
+
+		SessionListener listener = SessionListener.getInstance();
+		
+		try {
+			
+			String redirectUri = oAuth2Parameters.getRedirectUri();
+			System.out.println("Redirect URI : " + redirectUri);
+			System.out.println("Code : " + code);
+
+			OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
+			AccessGrant accessGrant = oauthOperations.exchangeForAccess(code, redirectUri, null);
+			String accessToken = accessGrant.getAccessToken();
+			System.out.println("AccessToken: " + accessToken);
+			Long expireTime = accessGrant.getExpireTime();
+
+
+			if (expireTime != null && expireTime < System.currentTimeMillis()) {
+				accessToken = accessGrant.getRefreshToken();
+				logger.info("accessToken is expired. refresh token = {}", accessToken);
+			};
+
+
+			Connection<Facebook> connection = connectionFactory.createConnection(accessGrant);
+			Facebook facebook = connection == null ? new FacebookTemplate(accessToken) : connection.getApi();
+			//UserOperations userOperations = facebook.userOperations();
+
+			try
+
+			{            
+				String [] fields = { "id", "email",  "name"};
+				User userProfile = facebook.fetchObject("me", User.class, fields);
+				
+				MemberVO vo = service.loginMember(userProfile.getEmail());
+				
+				if(vo == null) {
+					model.addAttribute("msg", "FAIL");
+					return "login";
+				}
+				
+				if(listener.isUsing(vo.getMbId())) {
+					model.addAttribute("msg", "DUPLICATE");
+					return "login";
+				}
+				
+				model.addAttribute("member", vo);
+
+			} catch (MissingAuthorizationException e) {
+				e.printStackTrace();
+			}
+
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+		return "home";
+
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -90,11 +174,17 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String signup(MemberVO vo, HttpSession session) {
+	public String signup(MemberVO vo, HttpSession session, RedirectAttributes rttr) {
 		
 		logger.info(vo.toString());
 		
-		service.insertMember(vo);
+		try {
+			service.insertMember(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			rttr.addFlashAttribute("msg", "FAIL");
+			return "redirect:register";
+		}
 		
 		session.setAttribute("temp", vo.getMbId());
 		

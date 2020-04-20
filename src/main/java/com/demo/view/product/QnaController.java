@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.biz.common.Criteria;
 import com.demo.biz.common.PageMaker;
-import com.demo.biz.order.ReviewVO;
 import com.demo.biz.product.QnaService;
 import com.demo.biz.product.QnaVO;
 

@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import com.demo.biz.admin.AdminVO;
-
 public class SessionListener implements HttpSessionBindingListener {
 
 	private static Hashtable<HttpSession, String> loginUsers = new Hashtable<HttpSession, String>();

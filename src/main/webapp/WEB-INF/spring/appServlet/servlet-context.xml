@@ -61,6 +61,7 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/member/login" />
+			<mapping path="/member/facebookSignInCallback" />
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
 	</interceptors>

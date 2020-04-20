@@ -162,7 +162,7 @@
 							data-target="#modalNewMsg">Send a Message</a></li>
 					</ul></li>
 				<li><a href="#" data-toggle="control-sidebar"><i
-						class="fa fa-gears"></i></a></li>
+						class="fa fa-wechat"></i></a></li>
 			</ul>
 		</div>
 	</nav>
@@ -177,10 +177,10 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title">Send a message</h4>
-				To : <input type="text" id="msgTarget" class="form-control" name="msgTarget">
+				To : <input type="text" id="msgTarget" class="form-control" name="msgTarget" placeholder="id...">
 			</div>
 			<div class="modal-body">
-				<input type="text" id="msgContent" class="form-control" name="msgContent">
+				<input type="text" id="msgContent" class="form-control" name="msgContent" placeholder="content...">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left btnClose"

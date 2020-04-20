@@ -17,7 +17,6 @@ import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberDAO;
 import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
-import com.demo.biz.product.ProductVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -38,9 +37,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO loginMember(LoginDTO dto) {
 		// TODO Auto-generated method stub
-		System.out.println("여기" + dto.toString());
 		MemberVO vo = dao.loginMember(dto);
-		System.out.println("로그인멤버serviceimpl 첫번째");
 		
 		if(vo != null) {
 			
@@ -53,6 +50,12 @@ public class MemberServiceImpl implements MemberService {
 		return vo;
 	}
 
+	@Override
+	public MemberVO loginMember(String mbEmail) {
+		// TODO Auto-generated method stub
+		return dao.loginMember(mbEmail);
+	}
+	
 	@Override
 	public int checkId(String mbId) {
 		// TODO Auto-generated method stub
@@ -128,4 +131,5 @@ public class MemberServiceImpl implements MemberService {
 			dao.deleteMember(mbId);
 		
 	}
+
 }

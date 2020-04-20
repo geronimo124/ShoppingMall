@@ -122,6 +122,13 @@
 	
 	<script>
 
+		var result = '${msg}';
+	
+		if(result == 'FAIL') {
+			alert('닉네임 또는 이메일이 중복됩니다.');
+			location.replace(self.location);
+		}
+	
 		$(() => {
 
 			$('#btnCheckId').on('click', () => {

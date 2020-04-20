@@ -30,6 +30,12 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
+	public MemberVO loginMember(String mbEmail) {
+		// TODO Auto-generated method stub
+		return session.selectOne(NAMESPACE + ".loginFacebook", mbEmail);
+	}
+	
+	@Override
 	public int checkId(String mbId) {
 		// TODO Auto-generated method stub
 		return session.selectOne(NAMESPACE + ".checkId", mbId);
