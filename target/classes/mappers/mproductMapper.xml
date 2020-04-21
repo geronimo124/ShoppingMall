@@ -7,10 +7,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getProductList" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM
+			SELECT *
+			FROM
 			(
 				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
-				FROM PRODUCTS_TB P WHERE CTGY_CD=#{ctgyCd} AND PD_STATUS='Y'
+				FROM PRODUCTS_TB P
+				WHERE
+						CTGY_CD=#{ctgyCd}
+						AND PD_STATUS='Y'
 			)
 			WHERE RNUM BETWEEN #{cri.pageStart} AND (#{cri.pageStart} + #{cri.perPageNum} - 1)
 		]]>
@@ -18,10 +22,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getAllProductList" resultType="product">
 		<![CDATA[
-			SELECT * FROM
+			SELECT *
+			FROM
 			(
 				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
-				FROM PRODUCTS_TB P WHERE PD_STATUS='Y'
+				FROM PRODUCTS_TB P
+				WHERE PD_STATUS='Y'
 		]]>
 			<include refid="search"></include>	
 		<![CDATA[	
@@ -49,28 +55,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="countProductList" resultType="int">
 		<![CDATA[
-			SELECT COUNT(PD_NO) FROM PRODUCTS_TB WHERE CTGY_CD=#{ctgyCd} AND PD_STATUS='Y'
+			SELECT COUNT(*)
+			FROM PRODUCTS_TB
+			WHERE 
+					CTGY_CD=#{ctgyCd}
+					AND PD_STATUS='Y'
 		]]>
 	</select>
 	
 	<select id="countAllProductList" resultType="int">
 		<![CDATA[
-			SELECT COUNT(PD_NO) FROM PRODUCTS_TB WHERE PD_STATUS='Y'
+			SELECT COUNT(*)
+			FROM PRODUCTS_TB
+			WHERE PD_STATUS='Y'
 		]]>
 		<include refid="search"></include>
 	</select>
 	
 	<select id="getCategoryList" resultType="category">
 		<![CDATA[
-			SELECT * FROM CATEGORY_TB WHERE CTGY_PARENT=#{ctgyParent}
+			SELECT
+					CTGY_CD,
+					CTGY_PARENT,
+					CTGY_NM
+			FROM CATEGORY_TB
+			WHERE CTGY_PARENT=#{ctgyParent}
 		]]>
 	</select>
 
 	<select id="getProduct" parameterType="Integer" resultType="product">
 		<![CDATA[
-			SELECT * FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+			SELECT
+					PD_NO,
+					CTGY_PTCD,
+					CTGY_PTNM,
+					CTGY_CD,
+					CTGY_NM,
+					PD_NM,
+					PD_TAG,
+					PD_SALE,
+					PD_STATUS,
+					PD_IMG,
+					PD_DETL,
+					PD_STOCK,
+					PD_ENLDT,
+					PD_UPDDT
+			FROM PRODUCTS_TB
+			WHERE PD_NO=#{pdNo}
 		]]>
 	</select>
-
 
 </mapper>

@@ -7,39 +7,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getBaskets" resultType="basket">
 		<![CDATA[
-			SELECT B.PD_NO, P.PD_IMG, P.PD_NM, P.PD_TAG, P.PD_SALE, B.BSK_QTY
+			SELECT
+					B.PD_NO,
+					P.PD_IMG,
+					P.PD_NM,
+					P.PD_TAG,
+					P.PD_SALE,
+					B.BSK_QTY
 			FROM PRODUCTS_TB P, BASKETS_TB B
-			WHERE P.PD_NO = B.PD_NO AND B.MB_ID=#{mbId}
+			WHERE 
+					P.PD_NO = B.PD_NO 
+					AND B.MB_ID=#{mbId}
 		]]>
 	</select>
 	
 	<insert id="insertBasket">
 		<![CDATA[
-			INSERT INTO BASKETS_TB VALUES (#{mbId}, #{pdNo}, #{bskQty})
+			INSERT INTO BASKETS_TB (
+					MB_ID, 
+					PD_NO,
+					BSK_QTY
+			)
+			VALUES (#{mbId}, #{pdNo}, #{bskQty})
 		]]>
 	</insert>
 	
 	<select id="getBasket" parameterType="basket" resultType="basket">
 		<![CDATA[
-			SELECT * FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO=#{pdNo}
+			SELECT
+					MB_ID,
+					PD_NO,
+					BSK_QTY
+			FROM BASKETS_TB
+			WHERE
+					MB_ID=#{mbId}
+					AND PD_NO=#{pdNo}
 		]]>	
 	</select>
 	
 	<delete id="deleteBasket" parameterType="basket">
 		<![CDATA[
-			DELETE FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO=#{pdNo}
+			DELETE FROM BASKETS_TB
+			WHERE
+					MB_ID=#{mbId}
+					AND PD_NO=#{pdNo}
 		]]>			
 	</delete>
 	
 	<update id="updateBasket" parameterType="basket">
 		<![CDATA[
-			UPDATE BASKETS_TB SET BSK_QTY=#{bskQty} WHERE MB_ID=#{mbId} AND PD_NO=#{pdNo}
+			UPDATE BASKETS_TB
+			SET BSK_QTY=#{bskQty}
+			WHERE
+					MB_ID=#{mbId}
+					AND PD_NO=#{pdNo}
 		]]>		
 	</update>
 	
 	<delete id="deleteBaskets" parameterType="map">
 		<![CDATA[
-			DELETE FROM BASKETS_TB WHERE MB_ID=#{mbId} AND PD_NO IN
+			DELETE FROM BASKETS_TB
+			WHERE
+					MB_ID=#{mbId}
+					AND
+						PD_NO
+						IN
 		]]>
 		<foreach item="item" index="index" collection="basketList" open="(" separator="," close=")">
 			#{item}
