@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <header class="main-header">
 	<!-- Logo -->
@@ -76,32 +77,38 @@
 					</ul>
 				</li> -->
 				<!-- User Account Menu -->
+				<li class="dropdown user user-menu"><a href="/?lang=en">
+								<span class="hidden-xs"><spring:message code="message.include.main_header.language.en"/></span>
+						</a></li>
+				<li class="dropdown user user-menu"><a href="/?lang=ko">
+								<span class="hidden-xs"><spring:message code="message.include.main_header.language.ko"/></span>
+						</a></li>
 				<c:choose>
 					<c:when test="${sessionScope.member == null}">
 						<!-- 로그인 X -->
 						<li class="dropdown user user-menu">
 							<!-- Menu Toggle Button --> <a href="/member/register"> <!-- class="dropdown-toggle" data-toggle="dropdown" -->
-								<span class="hidden-xs">회원가입</span>
+								<span class="hidden-xs"><spring:message code="message.include.main_header.register"/></span>
 						</a>
 						</li>
 						<li class="dropdown user user-menu"><a href="/member/login">
-								<span class="hidden-xs">로그인</span>
+								<span class="hidden-xs"><spring:message code="message.include.main_header.login"/></span>
 						</a></li>
 					</c:when>
 					<c:otherwise>
 						<!-- 일반회원 -->
 						<li class="dropdown user user-menu"><a href="#"
-							onclick="logout();"> <span class="hidden-xs">로그아웃</span>
+							onclick="logout();"> <span class="hidden-xs"><spring:message code="message.include.main_header.logout"/></span>
 						</a>
 							<form id="formLogout" action="/member/logout" method="post"></form></li>
 						<li class="dropdown user user-menu"><a href="/member/modify">
-								<span class="hidden-xs">회원 정보 수정</span>
+								<span class="hidden-xs"><spring:message code="message.include.main_header.modify"/></span>
 						</a></li>
 						<li class="dropdown user user-menu"><a href="/basket/list">
-								<span class="hidden-xs">장바구니</span>
+								<span class="hidden-xs"><spring:message code="message.include.main_header.basket"/></span>
 						</a></li>
 						<li class="dropdown user user-menu"><a href="/order/list">
-								<span class="hidden-xs">주문조회</span>
+								<span class="hidden-xs"><spring:message code="message.include.main_header.order"/></span>
 						</a></li>
 					</c:otherwise>
 				</c:choose>
@@ -159,7 +166,7 @@
 						
 						</div>
 						<li class="footer"><a href="#modalNewMsg" data-toggle="modal"
-							data-target="#modalNewMsg">Send a Message</a></li>
+							data-target="#modalNewMsg"><spring:message code="message.include.main_header.btnMessage"/></a></li>
 					</ul></li>
 				<li><a href="#" data-toggle="control-sidebar"><i
 						class="fa fa-wechat"></i></a></li>
@@ -176,16 +183,16 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Send a message</h4>
-				To : <input type="text" id="msgTarget" class="form-control" name="msgTarget" placeholder="id...">
+				<h4 class="modal-title"><spring:message code="message.include.main_header.sendTitle"/></h4><br>
+				<input type="text" id="msgTarget" class="form-control" name="msgTarget" placeholder="id...">
 			</div>
 			<div class="modal-body">
 				<input type="text" id="msgContent" class="form-control" name="msgContent" placeholder="content...">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left btnClose"
-					data-dismiss="modal">Close</button>
-				<button type="button" id="btnSend" class="btn btn-primary">Send</button>
+					data-dismiss="modal"><spring:message code="message.include.main_header.btnClose"/></button>
+				<button type="button" id="btnSend" class="btn btn-primary"><spring:message code="message.include.main_header.btnSendMessage"/></button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -201,16 +208,16 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Read a message</h4>
-				From : <input type="text" id="readMsgSender" class="form-control" readonly="readonly">
+				<h4 class="modal-title"><spring:message code="message.include.main_header.readTitle"/></h4><br>
+				<input type="text" id="readMsgSender" class="form-control" readonly="readonly">
 			</div>
 			<div class="modal-body">
 				<input type="text" id="readMsgContent" class="form-control" readonly="readonly">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left btnClose"
-					data-dismiss="modal">Close</button>
-				<button type="button" id="btnReply" class="btn btn-primary">Reply</button>
+					data-dismiss="modal"><spring:message code="message.include.main_header.btnClose"/></button>
+				<button type="button" id="btnReply" class="btn btn-primary"><spring:message code="message.include.main_header.btnReplyMessage"/></button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

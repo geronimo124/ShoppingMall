@@ -7,17 +7,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="registerProduct">
 		<![CDATA[
-			INSERT INTO PRODUCTS_TB VALUES((SELECT NVL(MAX(PD_NO), 0)+1 FROM PRODUCTS_TB),
-			#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm}, #{pdTag}, #{pdSale}, #{pdStatus}, #{pdImg}, #{pdDetl}, #{pdStock}, SYSDATE, SYSDATE)
+			INSERT INTO PRODUCTS_TB (
+					PD_NO,
+					CTGY_PTCD,
+					CTGY_PTNM,
+					CTGY_CD,
+					CTGY_NM,
+					PD_NM,
+					PD_TAG,
+					PD_SALE,
+					PD_STATUS,
+					PD_IMG,
+					PD_DETL,
+					PD_STOCK
+			)
+			VALUES (
+					( SELECT NVL(MAX(PD_NO), 0)+1 
+					  FROM PRODUCTS_TB ),
+					#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm},
+					#{pdTag}, #{pdSale}, #{pdStatus}, #{pdImg}, #{pdDetl}, #{pdStock})
 		]]>
 	</insert>
 
 	<select id="getProductList" resultType="product">
 		<![CDATA[
-			SELECT * FROM
+			SELECT *
+			FROM
 			(
 				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
-				FROM PRODUCTS_TB P WHERE 1=1
+				FROM PRODUCTS_TB P
+				WHERE 1=1
 		]]>
 				<include refid="search"></include>		
 		<![CDATA[
@@ -28,7 +47,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="countProductList" resultType="int">
 		<![CDATA[
-			SELECT COUNT(PD_NO) FROM PRODUCTS_TB WHERE 1=1
+			SELECT COUNT(*)
+			FROM PRODUCTS_TB
+			WHERE 1=1
 		]]>
 		<include refid="search"></include>
 	</select>
@@ -52,25 +73,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getCategoryList" resultType="category">
 		<![CDATA[
-			SELECT * FROM CATEGORY_TB WHERE CTGY_PARENT=#{ctgyParent}
+			SELECT
+					CTGY_CD,
+					CTGY_PARENT,
+					CTGY_NM
+			FROM CATEGORY_TB
+			WHERE CTGY_PARENT=#{ctgyParent}
 		]]>
 	</select>
 	
 	<select id="getProduct" parameterType="Integer" resultType="product">
 		<![CDATA[
-			SELECT * FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+			SELECT
+					PD_NO,
+					CTGY_PTCD,
+					CTGY_PTNM,
+					CTGY_CD,
+					CTGY_NM,
+					PD_NM,
+					PD_TAG,
+					PD_SALE,
+					PD_STATUS,
+					PD_IMG,
+					PD_DETL,
+					PD_STOCK,
+					PD_ENLDT,
+					PD_UPDDT
+			FROM PRODUCTS_TB
+			WHERE PD_NO=#{pdNo}
 		]]>
 	</select>
 	
 	<delete id="deleteProduct" parameterType="Integer">
 		<![CDATA[
-			DELETE FROM PRODUCTS_TB WHERE PD_NO=#{pdNo}
+			DELETE FROM PRODUCTS_TB
+			WHERE PD_NO=#{pdNo}
 		]]>
 	</delete>
 	
 	<delete id="deleteProducts" parameterType="list">
 		<![CDATA[
-			DELETE FROM PRODUCTS_TB WHERE PD_NO IN
+			DELETE FROM PRODUCTS_TB
+			WHERE 
+					PD_NO
+					IN
 		]]>
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
 			#{item}
@@ -79,19 +125,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="modifyProduct" parameterType="product">
 		<![CDATA[
-			UPDATE PRODUCTS_TB SET CTGY_PTCD=#{ctgyPtcd}, CTGY_PTNM=#{ctgyPtnm}, CTGY_CD=#{ctgyCd}, CTGY_NM=#{ctgyNm}, 
-			PD_NM=#{pdNm}, PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_IMG=#{pdImg}, PD_DETL=#{pdDetl}, PD_STOCK=#{pdStock}, PD_UPDDT=SYSDATE
+			UPDATE PRODUCTS_TB
+			SET
+					CTGY_PTCD=#{ctgyPtcd},
+					CTGY_PTNM=#{ctgyPtnm},
+					CTGY_CD=#{ctgyCd},
+					CTGY_NM=#{ctgyNm}, 
+					PD_NM=#{pdNm},
+					PD_TAG=#{pdTag},
+					PD_SALE=#{pdSale},
+					PD_STATUS=#{pdStatus},
+					PD_IMG=#{pdImg},
+					PD_DETL=#{pdDetl},
+					PD_STOCK=#{pdStock},
+					PD_UPDDT = SYSDATE
 			WHERE PD_NO=#{pdNo}
 		]]>
 	</update>
 	
 	<update id="modifyCheckedProduct" parameterType="product">
 		<![CDATA[
-			UPDATE PRODUCTS_TB SET
-			PD_TAG=#{pdTag}, PD_SALE=#{pdSale}, PD_STATUS=#{pdStatus}, PD_STOCK=#{pdStock}
+			UPDATE PRODUCTS_TB
+			SET
+					PD_TAG=#{pdTag},
+					PD_SALE=#{pdSale},
+					PD_STATUS=#{pdStatus},
+					PD_STOCK=#{pdStock}
 			WHERE PD_NO=#{pdNo}
 		]]>
 	</update>
-	
 
 </mapper>

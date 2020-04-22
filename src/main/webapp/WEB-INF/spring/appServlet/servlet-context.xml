@@ -37,6 +37,17 @@
 	
 	<context:component-scan base-package="com.demo.view" />
 	
+	<!-- Languages -->
+	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<beans:property name="basenames">
+			<beans:list>
+				<beans:value>message.messageSource</beans:value>
+			</beans:list>		
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"></beans:bean>
+	
 	<!-- Websocket -->
 	<websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo"/>
@@ -64,6 +75,9 @@
 			<mapping path="/member/facebookSignInCallback" />
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="lang"></beans:property>
+		</beans:bean>
 	</interceptors>
 		
 	

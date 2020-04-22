@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <aside class="main-sidebar">
 	<!-- sidebar: style can be found in sidebar.less -->
@@ -15,14 +16,14 @@
 			<div class="pull-left info">
 				<c:choose>
 					<c:when test="${member == null}">
-						<p>로그인하세요</p>
+						<p><spring:message code="message.include.left.pleaseLogin"/></p>
 					</c:when>
 					<c:otherwise>
 						<p>${member.mbNick }</p>
 					</c:otherwise>
 				</c:choose>
 				<!-- Status -->
-				<a href="#"> <i class="fa fa-circle text-success"></i> Online
+				<a href="#"> <i class="fa fa-circle text-success"></i> <spring:message code="message.include.left.online"/>
 				</a>
 			</div>
 		</div>
@@ -44,7 +45,7 @@
 
 		<!-- Sidebar Menu -->
 		<ul class="sidebar-menu" data-widget="tree">
-			<li class="header">MENU</li>
+			<li class="header"><spring:message code="message.include.left.menu"/></li>
 			<!-- <li class="active">
 				<a href="#">
 					<i class="fa fa-link"></i>
@@ -75,31 +76,31 @@
 			<c:choose>
 				<c:when test="${sessionScope.member == null}">
 					<!-- 로그인 X -->
-					<li><a href="/member/register"><i class="fa fa-user"></i><span>회원가입</span></a></li>
-					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span>로그인</span></a></li>
+					<li><a href="/member/register"><i class="fa fa-user"></i><span><spring:message code="message.include.left.register"/></span></a></li>
+					<li><a href="/member/login"><i class="fa fa-sign-in"></i><span><spring:message code="message.include.left.login"/></span></a></li>
 				</c:when>
 				<c:otherwise>
 					<!-- 일반 회원 -->
 
-					<li><a href="/basket/list"><i class="fa fa-suitcase"></i><span>장바구니</span></a></li>
-					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span>주문조회</span></a></li>
+					<li><a href="/basket/list"><i class="fa fa-suitcase"></i><span><spring:message code="message.include.left.basket"/></span></a></li>
+					<li><a href="/order/list"><i class="fa fa-shopping-cart"></i><span><spring:message code="message.include.left.order"/></span></a></li>
 				</c:otherwise>
 			</c:choose>
 			
 			<li class="treeview"><a href="#"><i class="fa fa-group"></i> 
-					<span>고객센터</span>
+					<span><spring:message code="message.include.left.csCenter"/></span>
 					<span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i>
 					</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="/notice"><i class="fa fa-list-alt"></i><span>공지 사항</span></a>
-					<li><a href="/notice/company"><i class="fa fa-exclamation-circle"></i><span>회사 소개</span></a>
+					<li><a href="/notice"><i class="fa fa-list-alt"></i><span><spring:message code="message.include.left.notice"/></span></a>
+					<li><a href="/notice/company"><i class="fa fa-exclamation-circle"></i><span><spring:message code="message.include.left.info"/></span></a>
 				</ul>
 			</li>
 
 			<li class="treeview"><a href="#"><i class="fa fa-heart-o"></i> 
-					<span>오늘의 NAVER 패션 키워드</span>
+					<span><spring:message code="message.include.left.naverKeyword"/></span>
 					<span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i>
 					</span>

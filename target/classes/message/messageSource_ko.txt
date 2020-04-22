@@ -1,0 +1,31 @@
+# aside.jsp
+message.include.aside.title=채팅방
+
+# left.jsp
+message.include.left.pleaseLogin=로그인하세요
+message.include.left.online=온라인
+message.include.left.menu=메뉴
+message.include.left.register=회원가입
+message.include.left.login=로그인
+message.include.left.basket=장바구니
+message.include.left.order=주문조회
+message.include.left.csCenter=고객센터
+message.include.left.notice=공지사항
+message.include.left.info=회사 소개
+message.include.left.naverKeyword=오늘의 NAVER 패션 키워드
+
+# main_header.jsp
+message.include.main_header.language.en=영어
+message.include.main_header.language.ko=한국어
+message.include.main_header.register=회원가입
+message.include.main_header.login=로그인
+message.include.main_header.logout=로그아웃
+message.include.main_header.modify=회원 정보 수정
+message.include.main_header.basket=장바구니
+message.include.main_header.order=주문조회
+message.include.main_header.btnMessage=새로운 메시지 전송
+message.include.main_header.sendTitle=메시지 전송
+message.include.main_header.btnClose=닫기
+message.include.main_header.btnSendMessage=전송
+message.include.main_header.readTitle=메시지 읽기
+message.include.main_header.btnReplyMessage=답장
