@@ -3,114 +3,76 @@ package com.demo.biz.product;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * @ClassName : QnaVO.java
+ * @Description : QNA 정보 VO 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
+@Getter
+@Setter
+@ToString
 @SuppressWarnings("serial")
 public class QnaVO implements Serializable {
 
+	/**
+	 * QNA 고유번호
+	 */
 	private Integer qnaNo;
+	/**
+	 * QNA group
+	 */
 	private Integer qnaGroup;
+	/**
+	 * QNA step
+	 */
 	private Integer qnaStep;
+	/**
+	 * QNA level
+	 */
 	private Integer qnaLevel;
+	/**
+	 * 회원 ID
+	 */
 	private String mbId;
+	/**
+	 * 상품 고유번호
+	 */
 	private Integer pdNo;
+	/**
+	 * QNA 제목
+	 */
 	private String qnaTitle;
+	/**
+	 * QNA 작성자
+	 */
 	private String qnaWriter;
+	/**
+	 * QNA 내용
+	 */
 	private String qnaContent;
+	/**
+	 * QNA 등록일자
+	 */
 	private Date qnaDt;
 	
+	
+	/**
+	 * 상품 이름
+	 */
 	private String pdNm;
-
-	public Integer getQnaNo() {
-		return qnaNo;
-	}
-
-	public void setQnaNo(Integer qnaNo) {
-		this.qnaNo = qnaNo;
-	}
-
-	public Integer getQnaGroup() {
-		return qnaGroup;
-	}
-
-	public void setQnaGroup(Integer qnaGroup) {
-		this.qnaGroup = qnaGroup;
-	}
-
-	public Integer getQnaStep() {
-		return qnaStep;
-	}
-
-	public void setQnaStep(Integer qnaStep) {
-		this.qnaStep = qnaStep;
-	}
-
-	public Integer getQnaLevel() {
-		return qnaLevel;
-	}
-
-	public void setQnaLevel(Integer qnaLevel) {
-		this.qnaLevel = qnaLevel;
-	}
-
-	public String getMbId() {
-		return mbId;
-	}
-
-	public void setMbId(String mbId) {
-		this.mbId = mbId;
-	}
-
-	public Integer getPdNo() {
-		return pdNo;
-	}
-
-	public void setPdNo(Integer pdNo) {
-		this.pdNo = pdNo;
-	}
-
-	public String getQnaTitle() {
-		return qnaTitle;
-	}
-
-	public void setQnaTitle(String qnaTitle) {
-		this.qnaTitle = qnaTitle;
-	}
-
-	public String getQnaWriter() {
-		return qnaWriter;
-	}
-
-	public void setQnaWriter(String qnaWriter) {
-		this.qnaWriter = qnaWriter;
-	}
-
-	public String getQnaContent() {
-		return qnaContent;
-	}
-
-	public void setQnaContent(String qnaContent) {
-		this.qnaContent = qnaContent;
-	}
-
-	public Date getQnaDt() {
-		return qnaDt;
-	}
-
-	public void setQnaDt(Date qnaDt) {
-		this.qnaDt = qnaDt;
-	}
-
-	public String getPdNm() {
-		return pdNm;
-	}
-
-	public void setPdNm(String pdNm) {
-		this.pdNm = pdNm;
-	}
-
-	@Override
-	public String toString() {
-		return "QnaVO [qnaNo=" + qnaNo + ", qnaGroup=" + qnaGroup + ", qnaStep=" + qnaStep + ", qnaLevel=" + qnaLevel
-				+ ", mbId=" + mbId + ", pdNo=" + pdNo + ", qnaTitle=" + qnaTitle + ", qnaWriter=" + qnaWriter
-				+ ", qnaContent=" + qnaContent + ", qnaDt=" + qnaDt + ", pdNm=" + pdNm + "]";
-	}
+	
 }

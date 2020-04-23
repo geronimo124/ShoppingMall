@@ -5,151 +5,92 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * @ClassName : ProductVO.java
+ * @Description : 상품 정보 VO 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
+@Getter
+@Setter
+@ToString
 @SuppressWarnings("serial")
 public class ProductVO implements Serializable {
 
+	/**
+	 * 상품 고유번호
+	 */
 	private Integer pdNo;
+	/**
+	 * 부모 카테고리 고유코드
+	 */
 	private Integer ctgyPtcd;
+	/**
+	 * 부모 카테고리 이름
+	 */
 	private String ctgyPtnm;
+	/**
+	 * 상품 카테고리 고유코드
+	 */
 	private Integer ctgyCd;
+	/**
+	 * 상품 카테고리 이름
+	 */
 	private String ctgyNm;
+	/**
+	 * 상품 이름
+	 */
 	private String pdNm;
+	/**
+	 * 상품 가격
+	 */
 	private Integer pdTag;
+	/**
+	 * 상품 할인율
+	 */
 	private Integer pdSale;
+	/**
+	 * 상품 진열상태
+	 */
 	private String pdStatus;
+	/**
+	 * 상품 이미지
+	 */
 	private String pdImg;
+	/**
+	 * 상품 상세설명
+	 */
 	private String pdDetl;
+	/**
+	 * 상품 재고
+	 */
 	private Integer pdStock;
+	/**
+	 * 상품 등록일자
+	 */
 	private Date pdEnldt;
+	/**
+	 * 상품 업데이트일자
+	 */
 	private Date pdUpddt;
 	
+	
+	/**
+	 * 상품 파일 업로드
+	 */
 	private MultipartFile file;
 
-	public Integer getPdNo() {
-		return pdNo;
-	}
-
-	public void setPdNo(Integer pdNo) {
-		this.pdNo = pdNo;
-	}
-
-	public Integer getCtgyPtcd() {
-		return ctgyPtcd;
-	}
-
-	public void setCtgyPtcd(Integer ctgyPtcd) {
-		this.ctgyPtcd = ctgyPtcd;
-	}
-
-	public String getCtgyPtnm() {
-		return ctgyPtnm;
-	}
-
-	public void setCtgyPtnm(String ctgyPtnm) {
-		this.ctgyPtnm = ctgyPtnm;
-	}
-
-	public Integer getCtgyCd() {
-		return ctgyCd;
-	}
-
-	public void setCtgyCd(Integer ctgyCd) {
-		this.ctgyCd = ctgyCd;
-	}
-
-	public String getCtgyNm() {
-		return ctgyNm;
-	}
-
-	public void setCtgyNm(String ctgyNm) {
-		this.ctgyNm = ctgyNm;
-	}
-
-	public String getPdNm() {
-		return pdNm;
-	}
-
-	public void setPdNm(String pdNm) {
-		this.pdNm = pdNm;
-	}
-
-	public Integer getPdTag() {
-		return pdTag;
-	}
-
-	public void setPdTag(Integer pdTag) {
-		this.pdTag = pdTag;
-	}
-
-	public Integer getPdSale() {
-		return pdSale;
-	}
-
-	public void setPdSale(Integer pdSale) {
-		this.pdSale = pdSale;
-	}
-
-	public String getPdStatus() {
-		return pdStatus;
-	}
-
-	public void setPdStatus(String pdStatus) {
-		this.pdStatus = pdStatus;
-	}
-
-	public String getPdImg() {
-		return pdImg;
-	}
-
-	public void setPdImg(String pdImg) {
-		this.pdImg = pdImg;
-	}
-
-	public String getPdDetl() {
-		return pdDetl;
-	}
-
-	public void setPdDetl(String pdDetl) {
-		this.pdDetl = pdDetl;
-	}
-
-	public Integer getPdStock() {
-		return pdStock;
-	}
-
-	public void setPdStock(Integer pdStock) {
-		this.pdStock = pdStock;
-	}
-
-	public Date getPdEnldt() {
-		return pdEnldt;
-	}
-
-	public void setPdEnldt(Date pdEnldt) {
-		this.pdEnldt = pdEnldt;
-	}
-
-	public Date getPdUpddt() {
-		return pdUpddt;
-	}
-
-	public void setPdUpddt(Date pdUpddt) {
-		this.pdUpddt = pdUpddt;
-	}
-
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
-
-	@Override
-	public String toString() {
-		return "ProductVO [pdNo=" + pdNo + ", ctgyPtcd=" + ctgyPtcd + ", ctgyPtnm=" + ctgyPtnm + ", ctgyCd=" + ctgyCd
-				+ ", ctgyNm=" + ctgyNm + ", pdNm=" + pdNm + ", pdTag=" + pdTag + ", pdSale=" + pdSale + ", pdStatus="
-				+ pdStatus + ", pdImg=" + pdImg + ", pdDetl=" + pdDetl + ", pdStock=" + pdStock + ", pdEnldt=" + pdEnldt
-				+ ", pdUpddt=" + pdUpddt + ", file=" + file + "]";
-	}
 }

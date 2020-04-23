@@ -17,6 +17,21 @@ import com.demo.biz.order.OrderService;
 import com.demo.biz.order.OrderVO;
 import com.demo.biz.product.BasketVO;
 
+/**
+ * @ClassName : OrderServiceImpl.java
+ * @Description : 주문 정보의 관리를 위한 서비스 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -27,31 +42,45 @@ public class OrderServiceImpl implements OrderService {
 		this.dao = dao;
 	}
 
+    /**
+     * 주문할 상품을 장바구니 목록에서 가져온다.
+     *
+     * @param Map<String, Object> - 아이디와 주문할 상품 목록
+     * @return List<BasketVO> - 주문할 장바구니 상품 목록
+     */
 	@Override
 	public List<BasketVO> getBaskets(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return dao.getBaskets(map);
 	}
 
+    /**
+     * 즉시구매 또는 장바구니 목록의 구매를 통해 상품들을 주문한다.
+     *
+     * @param OrderVO - 주문 정보
+     * @param List<Integer> - 주문 상품 고유번호 목록
+     * @param mile - 총 적립금
+     * @param bskQty - 즉시구매 했을 시의 상품 개수
+     * @return
+     */
 	@Transactional
 	@Override
 	public void insertOrder(OrderVO vo, List<Integer> productList, Integer mile, Integer bskQty) {
-		// TODO Auto-generated method stub
 		
-		// 주문테이블 삽입(ordervo)
+		// 주문테이블 삽입
 		dao.insertOrder(vo);
 		
-		// 방금 등록한 주문번호 가져오기
+		// 주문 번호 가져오기
 		Integer ordNo = dao.getOrderNo(vo);
 		
-		// 주문상세 테이블 삽입(위에서 가져온 주문번호, productList, basketvo안에서 mbId,pdNo 사용하여 알아낸 qty, price 넣기)
 		Map<String, Object> map = new HashMap<>();
 		map.put("mbId", vo.getMbId());
 		map.put("productList", productList);
 		
 		List<BasketVO> basketList = dao.getBaskets(map);
 		
-		// 즉시구매를 눌렀을 경우 장바구니에서 가져올 수 없음
+		// 주문상세 테이블 삽입
+		
+		// 즉시구매를 눌렀을 경우
 		if(basketList.size() == 0) {
 			
 			BasketVO basketVO = dao.getProduct(productList.get(0));
@@ -79,10 +108,10 @@ public class OrderServiceImpl implements OrderService {
 			dao.insertOrderDetail(orderDetail);
 		}
 		
-		// 장바구니 삭제(productList, mbId 사용)
+		// 장바구니 삭제
 		dao.deleteBaskets(map);
-		
-		// 적립금 초기화하기
+
+		// 적립금 초기화
 		MemberVO member = new MemberVO();
 		member.setMbId(vo.getMbId());
 		member.setMbMile(mile);
@@ -90,9 +119,14 @@ public class OrderServiceImpl implements OrderService {
 		
 	}
 
+    /**
+     * 주문한 모든 주문 목록을 가져온다.
+     *
+     * @param mbId - 회원 ID
+     * @return List<OrderVO> - 주문 목록
+     */
 	@Override
 	public List<OrderVO> getOrderList(String mbId) {
-		// TODO Auto-generated method stub
 		
 		List<OrderVO> list = dao.getOrderList(mbId);
 		List<OrderVO> orderList = new ArrayList<>();
@@ -120,33 +154,59 @@ public class OrderServiceImpl implements OrderService {
 		return orderList;
 	}
 
+    /**
+     * 회원 정보를 가져온다.
+     *
+     * @param mbId - 회원 ID
+     * @return MemberVO - 회원 정보
+     */
 	@Override
 	public MemberVO getMember(String mbId) {
-		// TODO Auto-generated method stub
 		return dao.getMember(mbId);
 	}
 
+    /**
+     * 상품 정보를 가져온다.
+     *
+     * @param pdNo - 상품 고유번호
+     * @return BasketVO - 상품 정보
+     */
 	@Override
 	public BasketVO getProduct(Integer pdNo) {
-		// TODO Auto-generated method stub
 		return dao.getProduct(pdNo);
 	}
 
+    /**
+     * 주문한 모든 주문상세 목록을 가져온다.
+     *
+     * @param ordNo - 주문 고유번호
+     * @return List<BasketVO> - 주문한 주문상세 목록
+     */
 	@Override
 	public List<BasketVO> getOrderDetail(Integer ordNo) {
-		// TODO Auto-generated method stub
 		return dao.getOrderDetail(ordNo);
 	}
 
+    /**
+     * 주문한 주문 정보를 가져온다.
+     *
+     * @param ordNo - 주문 고유번호
+     * @return OrderVO - 주문 정보
+     */
 	@Override
 	public OrderVO getOrder(Integer ordNo) {
-		// TODO Auto-generated method stub
 		return dao.getOrder(ordNo);
 	}
 
+    /**
+     * 검색된 모든 주문 목록을 가져온다.
+     *
+     * @param OrderSearchCriteria - 검색 정보
+     * @return List<OrderVO> - 검색된 주문 목록
+     */
 	@Override
 	public List<OrderVO> getAllOrderList(OrderSearchCriteria cri) {
-		// TODO Auto-generated method stub
+		
 		List<OrderVO> list = dao.getAllOrderList(cri);
 		List<OrderVO> orderList = new ArrayList<>();
 		
@@ -174,9 +234,14 @@ public class OrderServiceImpl implements OrderService {
 		return orderList;
 	}
 
+    /**
+     * 주문한 상품들의 재고가 충분한지 판단한다.
+     *
+     * @param List<BasketVO> - 주문한 상품 목록
+     * @return 재고 충분 및 불충분 판단
+     */
 	@Override
 	public boolean checkStock(List<BasketVO> basketList) {
-		// TODO Auto-generated method stub
 		
 		for(BasketVO basket : basketList) {
 			
@@ -188,9 +253,15 @@ public class OrderServiceImpl implements OrderService {
 		return true;
 	}
 
+    /**
+     * 검색된 주문의 총 개수를 가져온다.
+     *
+     * @param OrderSearchCriteria - 검색 정보
+     * @return 검색된 주문의 총 개수
+     */
 	@Override
 	public int countAllOrderList(OrderSearchCriteria cri) {
-		// TODO Auto-generated method stub
+		
 		List<OrderVO> list = dao.countAllOrderList(cri);
 		List<OrderVO> orderList = new ArrayList<>();
 		
@@ -220,17 +291,29 @@ public class OrderServiceImpl implements OrderService {
 		return orderList.size();
 	}
 
+    /**
+     * 선택된 주문의 정보를 수정한다.
+     *
+     * @param OrderVO - 주문 정보
+     * @return
+     */
 	@Transactional
 	@Override
 	public void modifyCheckedOrders(List<OrderVO> orderList) {
-		// TODO Auto-generated method stub
+		
 		for(OrderVO vo : orderList)
 			dao.modifyCheckedOrder(vo);
+		
 	}
 
+    /**
+     * 선택된 주문을 주문테이블에서 삭제한다.
+     *
+     * @param List<Integer> - 주문 고유번호 목록
+     * @return
+     */
 	@Override
 	public void deleteOrders(List<Integer> orderList) {
-		// TODO Auto-generated method stub
 		dao.deleteOrders(orderList);
 	}
 }
