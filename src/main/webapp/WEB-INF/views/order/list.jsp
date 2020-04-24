@@ -90,13 +90,6 @@
 	<!-- ./wrapper -->
 
 	<%@include file="/WEB-INF/views/include/plugin_js.jsp"%>
-	<script>
 
-		$(() => {
-
-
-		});
-
-	</script>
 </body>
 </html>

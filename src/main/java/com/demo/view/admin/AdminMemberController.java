@@ -19,6 +19,21 @@ import com.demo.biz.common.PageMaker;
 import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.member.MemberService;
 
+/**
+ * @ClassName : AdminMemberController.java
+ * @Description : 관리자 회원관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/admin/member")
 public class AdminMemberController {
@@ -32,6 +47,12 @@ public class AdminMemberController {
 		this.service = service;
 	}
 	
+    /**
+     * 회원 목록 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public void listMember(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -47,6 +68,12 @@ public class AdminMemberController {
 		model.addAttribute("pageMaker", pageMaker);
 	}
 	
+    /**
+     * 관리자가 선택한 회원들을 탈퇴시킨다.
+     *
+     * @param List 선택한 회원들의 ID 목록
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "deleteChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteCheckedMember(@RequestParam("memberList[]") List<String> memberList) {

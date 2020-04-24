@@ -19,63 +19,6 @@
 		<!-- Navbar Right Menu -->
 		<div class="navbar-custom-menu">
 			<ul class="nav navbar-nav">
-				<!-- 
-
-				Notifications Menu
-				<li class="dropdown notifications-menu">
-					Menu toggle button
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-bell-o"></i> <span class="label label-warning">10</span>
-					</a>
-					<ul class="dropdown-menu">
-						<li class="header">You have 10 notifications</li>
-						<li>
-							Inner Menu: contains the notifications
-							<ul class="menu">
-								<li>
-									start notification
-									<a href="#"> <i class="fa fa-users text-aqua"></i> 5 new members joined today
-									</a>
-								</li>
-								end notification
-							</ul>
-						</li>
-						<li class="footer">
-							<a href="#">View all</a>
-						</li>
-					</ul>
-				</li>
-				Tasks Menu
-				<li class="dropdown tasks-menu">
-					Menu Toggle Button
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-flag-o"></i> <span class="label label-danger">9</span>
-					</a>
-					<ul class="dropdown-menu">
-						<li class="header">You have 9 tasks</li>
-						<li>
-							Inner menu: contains the tasks
-							<ul class="menu">
-								<li>
-									Task item
-									<a href="#"> Task title and progress text
-										<h3>
-											Design some buttons <small class="pull-right">20%</small>
-										</h3> The progress bar
-										<div class="progress xs">
-											Change the css width attribute to simulate progress
-											<div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-												<span class="sr-only">20% Complete</span>
-											</div>
-										</div>
-									</a>
-								</li>
-								end task item
-							</ul>
-						</li>
-						<li class="footer">
-							<a href="#">View all tasks</a>
-						</li>
-					</ul>
-				</li> -->
 				<!-- User Account Menu -->
 				<li class="dropdown user user-menu"><a href="/?lang=en">
 								<span class="hidden-xs"><spring:message code="message.include.main_header.language.en"/></span>
@@ -112,45 +55,6 @@
 						</a></li>
 					</c:otherwise>
 				</c:choose>
-
-				<!-- <ul class="dropdown-menu">
-						The user image in the menu
-						<li class="user-header">
-							<p>
-								Alexander Pierce - Web Developer <small>Member since Nov. 2012</small>
-							</p>
-						</li>
-						<li class="user-header">
-							<p>
-								Alexander Pierce - Web Developer <small>Member since Nov. 2012</small>
-							</p>
-						</li>
-						
-						Menu Body
-						<li class="user-body">
-							<div class="row">
-								<div class="col-xs-4 text-center">
-									<a href="#">Followers</a>
-								</div>
-								<div class="col-xs-4 text-center">
-									<a href="#">Sales</a>
-								</div>
-								<div class="col-xs-4 text-center">
-									<a href="#">Friends</a>
-								</div>
-							</div>
-							/.row
-						</li>
-						Menu Footer
-						<li class="user-footer">
-							<div class="pull-left">
-								<a href="#" class="btn btn-default btn-flat">Profile</a>
-							</div>
-							<div class="pull-right">
-								<a href="#" class="btn btn-default btn-flat">Sign out</a>
-							</div>
-						</li>
-					</ul> -->
 				<!-- Control Sidebar Toggle Button -->
 				<!-- Messages: style can be found in dropdown.less-->
 				<li class="dropdown messages-menu"><a href="#" id="btnMsg"
@@ -245,37 +149,6 @@
         {{/each}}
 	</script>
 	<script>
-
-			/*
-			$.ajax({
-				type : 'post',
-				url : 'https://openapi.naver.com/v1/datalab/shopping/categories',
-				headers : {
-					"Access-Control-Allow-Origin" : "*",
-					"X-Naver-Client-Id" : "rD9HMUHFlI40eg948HHo",
-					"X-Naver-Client-Secret" : "wMC5hT3cyq",
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "post"
-				},
-				contentType : 'application/x-www-form-urlencoded',
-				data : {
-					"startDate": "2017-08-01",
-					"endDate": "2017-09-30",
-					"timeUnit": "month",
-					"category": [
-					      {"name": "패션의류", "param": [ "50000000"]},
-					      {"name": "화장품/미용", "param": [ "50000002"]}
-					],
-					"device": "pc",
-					"gender": "f",
-					"ages": [ "20",  "30"]
-				},
-				dataType : 'text',
-				success : function(data) {
-					alert(data);
-				}
-			});
-			*/
 
 			var clickMsg = function(msg) {
 

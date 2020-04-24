@@ -33,7 +33,7 @@ public class Criteria {
     /**
      * 현재 페이지를 설정한다.
      *
-     * @param page - 현재 페이지
+     * @param page 현재 페이지
      * @return
      */
 	public void setPage(int page){
@@ -49,7 +49,7 @@ public class Criteria {
     /**
      * 페이지당 항목 개수를 설정한다.
      *
-     * @param perPageNum - 페이지당 항목 개수
+     * @param perPageNum 페이지당 항목 개수
      * @return
      */
 	public void setPerPageNum(int perPageNum){

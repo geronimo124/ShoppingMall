@@ -1,6 +1,5 @@
 package com.demo.biz.order.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.demo.biz.common.Criteria;
 import com.demo.biz.order.ReviewDAO;
 import com.demo.biz.order.ReviewVO;
 
@@ -42,7 +40,7 @@ public class ReviewDAOImpl implements ReviewDAO {
     /**
      * 상품 리뷰를 작성한다.
      *
-     * @param ReviewVO - 리뷰 내용
+     * @param ReviewVO 리뷰 내용
      * @return
      */
 	@Override
@@ -53,25 +51,18 @@ public class ReviewDAOImpl implements ReviewDAO {
     /**
      * 페이징된 상품 리뷰 목록을 가져온다.
      *
-     * @param pdNo - 상품 고유번호
-     * @param Criteria - 페이징 정보
-     * @return List<ReviewVO> - 리뷰 목록
+     * @param Map 상품 고유코드와 페이징 정보
+     * @return List - 리뷰 목록
      */
 	@Override
-	public List<ReviewVO> listReview(Integer pdNo, Criteria cri) {
-		
-		Map<String, Object> map = new HashMap<>();
-
-	    map.put("pdNo", pdNo);
-	    map.put("cri", cri);
-
+	public List<ReviewVO> listReview(Map<String, Object> map) {
 	    return session.selectList(NAMESPACE + ".listReview", map);
 	}
 
     /**
      * 리뷰의 총 개수를 반환한다.
      *
-     * @param pdNo - 상품 고유번호
+     * @param pdNo 상품 고유번호
      * @return 리뷰의 총 개수
      */
 	@Override
@@ -82,7 +73,7 @@ public class ReviewDAOImpl implements ReviewDAO {
     /**
      * 상품 리뷰를 상품 테이블에서 삭제한다.
      *
-     * @param revNo - 리뷰 고유번호
+     * @param revNo 리뷰 고유번호
      * @return
      */
 	@Override
@@ -93,7 +84,7 @@ public class ReviewDAOImpl implements ReviewDAO {
     /**
      * 상품 리뷰를 수정한다.
      *
-     * @param revNo - 리뷰 고유번호
+     * @param revNo 리뷰 고유번호
      * @return
      */
 	@Override
@@ -104,17 +95,11 @@ public class ReviewDAOImpl implements ReviewDAO {
     /**
      * 상품 리뷰에 대한 상세 내용을 가져온다.
      *
-     * @param ordNo - 주문 고유번호
-     * @param pdNo - 상품 고유번호
+     * @param Map 주문 고유번호, 상품 고유번호
      * @return ReviewVO - 리뷰 내용
      */
 	@Override
-	public ReviewVO getReview(Integer ordNo, Integer pdNo) {
-		Map<String, Object> map = new HashMap<>();
-
-	    map.put("ordNo", ordNo);
-	    map.put("pdNo", pdNo);
-		
+	public ReviewVO getReview(Map<String, Integer> map) {
 		return session.selectOne(NAMESPACE + ".getReview", map);
 	}
 }

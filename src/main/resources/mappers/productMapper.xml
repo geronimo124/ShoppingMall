@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.ProductMapper">
 
 	<insert id="registerProduct">
-		<![CDATA[
+		
 			INSERT INTO PRODUCTS_TB (
 					PD_NO,
 					CTGY_PTCD,
@@ -26,64 +26,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					  FROM PRODUCTS_TB ),
 					#{ctgyPtcd}, #{ctgyPtnm}, #{ctgyCd}, #{ctgyNm}, #{pdNm},
 					#{pdTag}, #{pdSale}, #{pdStatus}, #{pdImg}, #{pdDetl}, #{pdStock})
-		]]>
+
 	</insert>
 
 	<select id="getProductList" resultType="product">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
 				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
 				FROM PRODUCTS_TB P
 				WHERE 1=1
-		]]>
+
 				<include refid="search"></include>		
-		<![CDATA[
+
 			)
 			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
-		]]>
+
 	</select>
 	
 	<select id="countProductList" resultType="int">
-		<![CDATA[
+
 			SELECT COUNT(*)
 			FROM PRODUCTS_TB
 			WHERE 1=1
-		]]>
-		<include refid="search"></include>
+
+			<include refid="search"></include>
+		
 	</select>
 	
-	<sql id="search">
-		<if test="searchType != null">
-			<if test="searchType == 'n'.toString()">
-				AND PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-			</if>
-			<if test="searchType == 'c'.toString()">
-				AND CTGY_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-			</if>
-			<if test="searchType == 'u'.toString()">
-				<![CDATA[ AND PD_TAG <= #{keyword} ]]> 
-			</if>
-			<if test="searchType == 'd'.toString()">
-				<![CDATA[ AND PD_TAG >= #{keyword} ]]> 
-			</if>
-		</if>
-	</sql>
-	
 	<select id="getCategoryList" resultType="category">
-		<![CDATA[
+
 			SELECT
 					CTGY_CD,
 					CTGY_PARENT,
 					CTGY_NM
 			FROM CATEGORY_TB
 			WHERE CTGY_PARENT=#{ctgyParent}
-		]]>
+
 	</select>
 	
 	<select id="getProduct" parameterType="Integer" resultType="product">
-		<![CDATA[
+
 			SELECT
 					PD_NO,
 					CTGY_PTCD,
@@ -101,30 +85,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					PD_UPDDT
 			FROM PRODUCTS_TB
 			WHERE PD_NO=#{pdNo}
-		]]>
+
 	</select>
 	
 	<delete id="deleteProduct" parameterType="Integer">
-		<![CDATA[
+
 			DELETE FROM PRODUCTS_TB
 			WHERE PD_NO=#{pdNo}
-		]]>
+
 	</delete>
 	
 	<delete id="deleteProducts" parameterType="list">
-		<![CDATA[
+
 			DELETE FROM PRODUCTS_TB
 			WHERE 
 					PD_NO
 					IN
-		]]>
-		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-			#{item}
-		</foreach>
+
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			
 	</delete>
 	
 	<update id="modifyProduct" parameterType="product">
-		<![CDATA[
+
 			UPDATE PRODUCTS_TB
 			SET
 					CTGY_PTCD=#{ctgyPtcd},
@@ -140,11 +125,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					PD_STOCK=#{pdStock},
 					PD_UPDDT = SYSDATE
 			WHERE PD_NO=#{pdNo}
-		]]>
+
 	</update>
 	
 	<update id="modifyCheckedProduct" parameterType="product">
-		<![CDATA[
+
 			UPDATE PRODUCTS_TB
 			SET
 					PD_TAG=#{pdTag},
@@ -152,7 +137,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					PD_STATUS=#{pdStatus},
 					PD_STOCK=#{pdStock}
 			WHERE PD_NO=#{pdNo}
-		]]>
+
 	</update>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'n'.toString()">
+				AND PD_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND CTGY_NM LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'u'.toString()">
+				<![CDATA[ AND PD_TAG <= #{keyword} ]]> 
+			</if>
+			<if test="searchType == 'd'.toString()">
+				<![CDATA[ AND PD_TAG >= #{keyword} ]]> 
+			</if>
+		</if>
+	</sql>
 
 </mapper>

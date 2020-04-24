@@ -10,7 +10,7 @@ message.include.left.login=로그인
 message.include.left.basket=장바구니
 message.include.left.order=주문조회
 message.include.left.csCenter=고객센터
-message.include.left.notice=공지사항
+message.include.left.notice=공지 사항
 message.include.left.info=회사 소개
 message.include.left.naverKeyword=오늘의 NAVER 패션 키워드
 

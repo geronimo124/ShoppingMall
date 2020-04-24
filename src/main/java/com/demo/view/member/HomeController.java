@@ -1,25 +1,33 @@
 package com.demo.view.member;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.biz.common.PageMaker;
 import com.demo.biz.common.SearchCriteria;
-import com.demo.biz.product.CategoryVO;
 import com.demo.biz.product.MProductService;
 
+/**
+ * @ClassName : HomeController.java
+ * @Description : 사용자 홈페이지에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 public class HomeController {
 
@@ -32,6 +40,12 @@ public class HomeController {
 		this.service = service;
 	}
 	
+    /**
+     * 사용자 홈페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String home(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -49,18 +63,4 @@ public class HomeController {
 		return "home";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/getSubCateList/{ctgyParent}", method = RequestMethod.GET)
-	public ResponseEntity<List<CategoryVO>> getSubCateList(@PathVariable("ctgyParent") Integer ctgyParent) {
-
-		ResponseEntity<List<CategoryVO>> entity = null;
-
-		try {
-			entity = new ResponseEntity<List<CategoryVO>>(service.getCategoryList(ctgyParent), HttpStatus.OK);
-		} catch(Exception e) {
-			entity = new ResponseEntity<List<CategoryVO>>(HttpStatus.BAD_REQUEST);
-		}
-		
-		return entity;
-	}
 }

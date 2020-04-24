@@ -23,15 +23,15 @@ public interface BasketService {
     /**
      * 장바구니 목록을 가져온다.
      *
-     * @param mbId - 회원 ID
-     * @return List<BasketVO> - 장바구니 목록
+     * @param mbId 회원 ID
+     * @return List - 장바구니 목록
      */
 	public List<BasketVO> getBaskets(String mbId);
 	
     /**
      * 장바구니 테이블에 장바구니 정보를 삽입 후 성공 및 실패를 반환한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return 삽입 성공 및 실패
      */
 	public boolean insertBasket(BasketVO vo);
@@ -39,7 +39,7 @@ public interface BasketService {
     /**
      * 장바구니 테이블에 장바구니 정보를 삭제한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return
      */
 	public void deleteBasket(BasketVO vo);
@@ -47,7 +47,7 @@ public interface BasketService {
     /**
      * 장바구니 정보를 업데이트한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return
      */
 	public void updateBasket(BasketVO vo);
@@ -55,7 +55,7 @@ public interface BasketService {
     /**
      * 선택된 장바구니 항목들을 삭제한다.
      *
-     * @param Map<String, Object> - 회원 ID와 삭제할 장바구니 목록 
+     * @param Map 회원 ID와 삭제할 장바구니 목록 
      * @return
      */
 	public void deleteBaskets(Map<String, Object> map);
@@ -63,7 +63,7 @@ public interface BasketService {
     /**
      * 선택된 장바구니 정보를 업데이트한다.
      *
-     * @param List<BasketVO> - 장바구니 정보 목록
+     * @param List - 장바구니 정보 목록
      * @return
      */
 	public void updateBaskets(List<BasketVO> basketList);

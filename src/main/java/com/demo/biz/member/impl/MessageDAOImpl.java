@@ -40,7 +40,7 @@ public class MessageDAOImpl implements MessageDAO {
     /**
      * 메시지를 전송한다.
      *
-     * @param MessageVO - 전송할 메시지 정보
+     * @param MessageVO 전송할 메시지 정보
      * @return
      */
 	@Override
@@ -51,7 +51,7 @@ public class MessageDAOImpl implements MessageDAO {
     /**
      * 해당 ID의 회원 정보를 가져온다.
      *
-     * @param mbId - 회원 ID
+     * @param mbId 회원 ID
      * @return MemberVO - 회원 정보
      */
 	@Override
@@ -62,8 +62,8 @@ public class MessageDAOImpl implements MessageDAO {
     /**
      * 해당 회원이 받았지만 읽지않은 모든 메시지를 가져온다.
      *
-     * @param mbId - 회원 ID
-     * @return List<MessageVO> - 미확인 메시지 리스트
+     * @param mbId 회원 ID
+     * @return List - 미확인 메시지 리스트
      */
 	@Override
 	public List<MessageVO> getMsgs(String mbId) {
@@ -73,7 +73,7 @@ public class MessageDAOImpl implements MessageDAO {
     /**
      * 선택한 메시지의 상세 정보를 가져온다.
      *
-     * @param msgNo - 메시지 고유번호
+     * @param msgNo 메시지 고유번호
      * @return MessageVO - 메시지 정보
      */
 	@Override
@@ -84,7 +84,7 @@ public class MessageDAOImpl implements MessageDAO {
     /**
      * 메시지의 상태를 '읽음'으로 업데이트한다.
      *
-     * @param msgNo - 메시지 고유번호
+     * @param msgNo 메시지 고유번호
      * @return
      */
 	@Override

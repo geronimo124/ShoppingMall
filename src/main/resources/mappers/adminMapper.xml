@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.AdminMapper">
 
 	<select id="login" resultType="admin">
-		<![CDATA[
+	
 			SELECT 
 					ADM_ID,
 					ADM_PW,
@@ -14,14 +14,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					ADM_CONDT
 			FROM ADMIN_TB 
 			WHERE ADM_ID=#{id}
-		]]>
+			
 	</select>
 
 	<update id="updateConDate">
-		<![CDATA[
+	
 			UPDATE ADMIN_TB 
 			SET ADM_CONDT=SYSDATE
 			WHERE ADM_ID=#{id}
-		]]>
+			
 	</update>
 </mapper>

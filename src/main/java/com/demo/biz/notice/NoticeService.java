@@ -24,15 +24,15 @@ public interface NoticeService {
     /**
      * 검색된 공지사항 목록을 가져온다.
      *
-     * @param SearchCriteria - 검색 정보
-     * @return List<NoticeVO> - 검색된 공지사항 리스트
+     * @param SearchCriteria 검색 정보
+     * @return List - 검색된 공지사항 리스트
      */
 	public List<NoticeVO> getNoticeList(SearchCriteria cri);
 	
     /**
      * 검색된 공지사항의 총 개수를 가져온다.
      *
-     * @param SearchCriteria - 검색 정보
+     * @param SearchCriteria 검색 정보
      * @return 검색된 공지사항의 총 개수
      */
 	public int countNoticeList(SearchCriteria cri);
@@ -40,7 +40,7 @@ public interface NoticeService {
     /**
      * 관리자가 공지사항을 작성한다.
      *
-     * @param NoticeVO - 공지사항 내용
+     * @param NoticeVO 공지사항 내용
      * @return
      */
 	public void writeNotice(NoticeVO vo);
@@ -48,7 +48,7 @@ public interface NoticeService {
     /**
      * 공지사항의 자세한 내용을 가져온다.
      *
-     * @param ntNo - 공지사항 고유번호
+     * @param ntNo 공지사항 고유번호
      * @return NoticeVO - 공지사항 내용
      */
 	public NoticeVO getNotice(Integer ntNo);
@@ -56,7 +56,7 @@ public interface NoticeService {
     /**
      * 공지사항을 삭제한다.
      *
-     * @param ntNo - 공지사항 고유번호
+     * @param ntNo 공지사항 고유번호
      * @return
      */
 	public void deleteNotice(Integer ntNo);
@@ -64,7 +64,7 @@ public interface NoticeService {
     /**
      * 공지사항을 수정한다.
      *
-     * @param NoticeVO - 수정된 공지사항 내용
+     * @param NoticeVO 수정된 공지사항 내용
      * @return
      */
 	public void modifyNotice(NoticeVO vo);

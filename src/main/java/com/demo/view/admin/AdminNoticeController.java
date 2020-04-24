@@ -23,6 +23,21 @@ import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.notice.NoticeService;
 import com.demo.biz.notice.NoticeVO;
 
+/**
+ * @ClassName : AdminNoticeController.java
+ * @Description : 관리자 공지사항관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/admin/notice")
 public class AdminNoticeController {
@@ -36,6 +51,12 @@ public class AdminNoticeController {
 		this.service = service;
 	}
 	
+    /**
+     * 공지사항 목록 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listNotice(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -53,11 +74,23 @@ public class AdminNoticeController {
 		return "/admin/notice/list";
 	}
 	
+    /**
+     * 공지사항 글쓰기 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public void writeNotice() {
 		
 	}
 	
+    /**
+     * 관리자가 공지사항을 작성한다.
+     *
+     * @param NoticeVO 공지사항 정보
+     * @return redirect URL
+     */
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String writeNotice(HttpSession session, RedirectAttributes rttr, NoticeVO vo) {
 		
@@ -75,6 +108,12 @@ public class AdminNoticeController {
 		return "redirect:/admin/notice";
 	}
 	
+    /**
+     * 공지사항 읽기 페이지.
+     *
+     * @param ntNo 공지사항 고유번호
+     * @return JSP
+     */
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public void readNotice(@RequestParam("ntNo") Integer ntNo, @ModelAttribute("cri") SearchCriteria cri, Model model) {
 
@@ -84,6 +123,12 @@ public class AdminNoticeController {
 		
 	}
 	
+    /**
+     * 관리자가 공지사항 글을 삭제한다.
+     *
+     * @param ntNo 공지사항 고유번호
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/delete/{ntNo}", method = RequestMethod.GET)
 	public ResponseEntity<String> deleteNotice(@PathVariable("ntNo") Integer ntNo) {
@@ -103,6 +148,12 @@ public class AdminNoticeController {
 		return entity;
 	}
 	
+    /**
+     * 공지사항 수정 페이지.
+     *
+     * @param ntNo 공지사항 고유번호
+     * @return JSP
+     */
 	@RequestMapping(value = "modify", method = RequestMethod.GET)
 	public void modifyNotice(@RequestParam("ntNo") Integer ntNo, @ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -112,6 +163,12 @@ public class AdminNoticeController {
 		model.addAttribute("noticeVO", vo);
 	}
 	
+    /**
+     * 관리자가 공지사항을 수정한다.
+     *
+     * @param NoticeVO 공지사항 정보
+     * @return redirect URL
+     */
 	@RequestMapping(value = "modify", method = RequestMethod.POST)
 	public String modifyNotice(NoticeVO vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		

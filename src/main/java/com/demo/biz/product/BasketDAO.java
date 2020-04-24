@@ -23,15 +23,15 @@ public interface BasketDAO {
     /**
      * 장바구니 목록을 가져온다.
      *
-     * @param mbId - 회원 ID
-     * @return List<BasketVO> - 장바구니 목록
+     * @param mbId 회원 ID
+     * @return List - 장바구니 목록
      */
 	public List<BasketVO> getBaskets(String mbId);
 	
     /**
      * 장바구니 테이블에 장바구니 정보를 삽입한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return
      */
 	public void insertBasket(BasketVO vo);
@@ -39,7 +39,7 @@ public interface BasketDAO {
     /**
      * 장바구니 목록에 해당 상품이 있는지 확인하기 위해 정보를 가져온다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return BasketVO - 장바구니 정보
      */
 	public BasketVO getBasket(BasketVO vo);
@@ -47,7 +47,7 @@ public interface BasketDAO {
     /**
      * 장바구니 테이블에 장바구니 정보를 삭제한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return
      */
 	public void deleteBasket(BasketVO vo);
@@ -55,7 +55,7 @@ public interface BasketDAO {
     /**
      * 장바구니 정보를 업데이트한다.
      *
-     * @param BasketVO - 장바구니 정보
+     * @param BasketVO 장바구니 정보
      * @return
      */
 	public void updateBasket(BasketVO vo);
@@ -63,7 +63,7 @@ public interface BasketDAO {
     /**
      * 선택된 장바구니 항목들을 삭제한다.
      *
-     * @param Map<String, Object> - 회원 ID와 삭제할 장바구니 목록 
+     * @param Map 회원 ID와 삭제할 장바구니 목록 
      * @return
      */
 	public void deleteBaskets(Map<String, Object> map);

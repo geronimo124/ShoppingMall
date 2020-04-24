@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.MessageMapper">
 
 	<insert id="sendMsg" parameterType="message">
-		<![CDATA[
+
 			INSERT INTO MESSAGE_TB (
 					MSG_NO,
 					MSG_TARGET,
@@ -18,11 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					  FROM MESSAGE_TB ),
 					#{msgTarget}, #{msgSender}, #{msgContent}
 			)
-		]]>
+
 	</insert>
 
 	<select id="getMember" resultType="member">
-		<![CDATA[
+
 			SELECT
 					MSG_NO,
 					MSG_TARGET,
@@ -33,11 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					MSG_SDDT
 			FROM MEMBERS_TB
 			WHERE MB_ID=#{mbId}
-		]]>
+
 	</select>
 	
 	<select id="getMsgs" resultType="message">
-		<![CDATA[
+
 			SELECT
 					MSG_NO,
 					MSG_TARGET,
@@ -50,11 +50,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE
 					MSG_TARGET=#{mbId}
 					AND MSG_STATUS = 'N'
-		]]>
+
 	</select>
 	
 	<select id="getMsg" resultType="message">
-		<![CDATA[
+
 			SELECT
 					MSG_NO,
 					MSG_TARGET,
@@ -65,17 +65,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					MSG_SDDT
 			FROM MESSAGE_TB
 			WHERE MSG_NO=#{msgNo}
-		]]>
+
 	</select>
 	
 	<update id="updateStatus">
-		<![CDATA[
+
 			UPDATE MESSAGE_TB
 			SET
 					MSG_STATUS = 'Y',
 					MSG_OPDT = SYSDATE
 			WHERE MSG_NO=#{msgNo}
-		]]>
+
 	</update>
 
 </mapper>

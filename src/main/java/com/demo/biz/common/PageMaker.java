@@ -59,7 +59,7 @@ public class PageMaker {
     /**
      * 항목의 총 개수를 초기화 한 후, 다른 필드의 값을 계산한다.
      *
-     * @param totalCount - 항목의 총 개수
+     * @param totalCount 항목의 총 개수
      * @return
      */
 	public void setTotalCount(int totalCount) {
@@ -95,7 +95,7 @@ public class PageMaker {
     /**
      * 페이징 쿼리를 생성 후 반환한다.
      *
-     * @param page - 목적 페이지
+     * @param page 목적 페이지
      * @return 완성된 페이징 쿼리
      */
 	public String makeQuery(int page){
@@ -112,7 +112,7 @@ public class PageMaker {
     /**
      * 검색 페이징 쿼리를 생성 후 반환한다.
      *
-     * @param page - 목적 페이지
+     * @param page 목적 페이지
      * @return 완성된 검색 페이징 쿼리
      */
 	public String makeSearch(int page){

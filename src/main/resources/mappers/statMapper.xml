@@ -6,18 +6,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.StatMapper">
 
 	<select id="getCountNewOrders" parameterType="map" statementType="CALLABLE">
+	
 		{ call proc_stat_new_order(#{admId, mode=IN, jdbcType=VARCHAR, javaType=String},
 									#{count, mode=OUT, jdbcType=INTEGER, javaType=Integer})
 		}
+		
+	</select>
+	
+	<select id="getCountNewOrders2" parameterType="java.util.Date">
+	
+		<![CDATA[
+			SELECT COUNT(*) FROM ORDERS_TB WHERE lastCondt <= ORD_DT;
+		]]>	
+	
 	</select>
 	
 	<select id="getCountNewMembers" parameterType="map" statementType="CALLABLE">
+	
 		{ call proc_stat_new_member(#{admId, mode=IN, jdbcType=VARCHAR, javaType=String},
 									#{count, mode=OUT, jdbcType=INTEGER, javaType=Integer})
 		}
+		
 	</select>
 
 	<select id="getSalesGraph" resultType="map">
+	
 		<![CDATA[
 			SELECT
 					DIFF,
@@ -33,10 +46,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			HAVING DIFF < 7
 			ORDER BY DIFF
 		]]>	
+	
 	</select>
 	
 	<select id="getBestSeller" resultType="product">
-		<![CDATA[
+	
 			SELECT *
 			FROM PRODUCTS_TB
 			WHERE
@@ -62,18 +76,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							)
 						WHERE ROWNUM = 1
 					)
-		]]>	
+
 	</select>
 	
 	<select id="getCategoryList" resultType="category">
-		<![CDATA[
+
 			SELECT
 					CTGY_CD,
 					CTGY_PARENT,
 					CTGY_NM
 			FROM CATEGORY_TB
 			WHERE CTGY_PARENT=#{ctgyParent}
-		]]>
+
 	</select>
 
 </mapper>

@@ -29,6 +29,21 @@ import com.demo.biz.common.PageMaker;
 import com.demo.biz.product.CategoryVO;
 import com.demo.biz.product.MProductService;
 
+/**
+ * @ClassName : ProductController.java
+ * @Description : 사용자 상품 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -42,12 +57,20 @@ public class ProductController {
 		this.service = service;
 	}
 	
+    /**
+     * 파일을 웹페이지에 보여준다.
+     *
+     * @param fileName 파일 이름
+     * @return ResponseEntity - 파일 정보
+     */
 	@ResponseBody
 	@RequestMapping("/displayFile")
 	public ResponseEntity<byte[]> displayFile(HttpServletRequest request, String fileName) {
 
 		InputStream in = null; 
 		ResponseEntity<byte[]> entity = null;
+		
+		// 업로드 파일 경로
 		String uploadPath = request.getSession().getServletContext().getRealPath("/");
 		uploadPath += "resources\\upload";
 
@@ -88,8 +111,14 @@ public class ProductController {
 		return entity;    
 	}
 	
+    /**
+     * 특정 카테고리에 해당하는 상품 목록 페이지.
+     *
+     * @param ctgyCd 카테고리 고유코드
+     * @return URL
+     */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public void listProduct(@ModelAttribute("cri") Criteria cri, String ctgyCd, Model model) {
+	public void listProduct(@ModelAttribute("cri") Criteria cri, Integer ctgyCd, Model model) {
 
 		model.addAttribute("productList", service.getProductList(ctgyCd, cri));
 		
@@ -103,6 +132,12 @@ public class ProductController {
 		
 	}
 	
+    /**
+     * 사용자가 선택한 카테고리의 하위 카테고리 목록을 보여준다.
+     *
+     * @param ctgyParent 부모 카테고리 고유코드
+     * @return ResponseEntity - 카테고리 목록
+     */
 	@ResponseBody
 	@RequestMapping(value = "/getSubCateList/{ctgyParent}", method = RequestMethod.GET)
 	public ResponseEntity<List<CategoryVO>> getSubCateList(@PathVariable("ctgyParent") Integer ctgyParent) {
@@ -118,6 +153,12 @@ public class ProductController {
 		return entity;
 	}
 	
+    /**
+     * 상품 상세보기 페이지.
+     *
+     * @param pdNo 상품 고유코드
+     * @return URL
+     */
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public void readProduct(@RequestParam("pdNo") Integer pdNo, Criteria cri, Model model) {
 

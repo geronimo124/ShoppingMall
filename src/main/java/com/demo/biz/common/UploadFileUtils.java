@@ -35,9 +35,9 @@ public class UploadFileUtils {
     /**
      * 미디어타입에 따라 썸네일 또는 아이콘을 만들어 입력받은 위치에 원래 파일과 만들어진 파일을 업로드한다.
      *
-     * @param uploadPath - 파일이 저장될 위치
-     * @param originalName - 파일 이름
-     * @param fileData - 파일 데이터
+     * @param uploadPath 파일이 저장될 위치
+     * @param originalName 파일 이름
+     * @param fileData 파일 데이터
      * @return 만들어진 파일 이름
      * @throws Exception
      */
@@ -69,9 +69,9 @@ public class UploadFileUtils {
     /**
      * 사진 파일이 아닐 경우 아이콘을 생성한다.
      *
-     * @param uploadPath - 파일이 저장될 위치
-     * @param path - 파일의 나머지 경로
-     * @param fileName - 파일 이름
+     * @param uploadPath 파일이 저장될 위치
+     * @param path 파일의 나머지 경로
+     * @param fileName 파일 이름
      * @return 만들어진 아이콘 이름
      * @throws Exception
      */
@@ -86,9 +86,9 @@ public class UploadFileUtils {
     /**
      * 사진 파일인 경우 썸네일 이미지를 생성한다.
      *
-     * @param uploadPath - 파일이 저장될 위치
-     * @param path - 파일의 나머지 경로
-     * @param fileName - 파일 이름
+     * @param uploadPath 파일이 저장될 위치
+     * @param path 파일의 나머지 경로
+     * @param fileName 파일 이름
      * @return 만들어진 썸네일 이름
      * @throws Exception
      */
@@ -112,7 +112,7 @@ public class UploadFileUtils {
     /**
      * 현재 날짜를 통해 '저장위치/월/일'의 저장 경로를 계산한다.
      *
-     * @param uploadPath - 파일이 저장될 위치
+     * @param uploadPath 파일이 저장될 위치
      * @return 저장 경로
      */
 	private static String calcPath(String uploadPath){
@@ -138,7 +138,7 @@ public class UploadFileUtils {
     /**
      * 저장한 날짜의 디렉토리가 없을 경우 디렉토리를 생성한다.
      *
-     * @param uploadPath - 파일이 저장될 위치
+     * @param uploadPath 파일이 저장될 위치
      * @param paths - 파일의 나머지 경로
      * @return
      */

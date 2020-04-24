@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.MProductMapper">
 
 	<select id="getProductList" parameterType="map" resultType="product">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
@@ -17,23 +17,76 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						AND PD_STATUS='Y'
 			)
 			WHERE RNUM BETWEEN #{cri.pageStart} AND (#{cri.pageStart} + #{cri.perPageNum} - 1)
-		]]>
+
 	</select>
 	
 	<select id="getAllProductList" resultType="product">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
 				SELECT P.*, ROW_NUMBER() OVER(ORDER BY PD_NO DESC) AS RNUM
 				FROM PRODUCTS_TB P
 				WHERE PD_STATUS='Y'
-		]]>
-			<include refid="search"></include>	
-		<![CDATA[	
+
+				<include refid="search"></include>	
+
 			)
 			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
-		]]>
+
+	</select>
+	
+	<select id="countProductList" resultType="int">
+
+			SELECT COUNT(*)
+			FROM PRODUCTS_TB
+			WHERE 
+					CTGY_CD=#{ctgyCd}
+					AND PD_STATUS='Y'
+
+	</select>
+	
+	<select id="countAllProductList" resultType="int">
+
+			SELECT COUNT(*)
+			FROM PRODUCTS_TB
+			WHERE PD_STATUS='Y'
+
+			<include refid="search"></include>
+		
+	</select>
+	
+	<select id="getCategoryList" resultType="category">
+
+			SELECT
+					CTGY_CD,
+					CTGY_PARENT,
+					CTGY_NM
+			FROM CATEGORY_TB
+			WHERE CTGY_PARENT=#{ctgyParent}
+			
+	</select>
+
+	<select id="getProduct" parameterType="Integer" resultType="product">
+
+			SELECT
+					PD_NO,
+					CTGY_PTCD,
+					CTGY_PTNM,
+					CTGY_CD,
+					CTGY_NM,
+					PD_NM,
+					PD_TAG,
+					PD_SALE,
+					PD_STATUS,
+					PD_IMG,
+					PD_DETL,
+					PD_STOCK,
+					PD_ENLDT,
+					PD_UPDDT
+			FROM PRODUCTS_TB
+			WHERE PD_NO=#{pdNo}
+
 	</select>
 	
 	<sql id="search">
@@ -52,57 +105,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 	</sql>
-	
-	<select id="countProductList" resultType="int">
-		<![CDATA[
-			SELECT COUNT(*)
-			FROM PRODUCTS_TB
-			WHERE 
-					CTGY_CD=#{ctgyCd}
-					AND PD_STATUS='Y'
-		]]>
-	</select>
-	
-	<select id="countAllProductList" resultType="int">
-		<![CDATA[
-			SELECT COUNT(*)
-			FROM PRODUCTS_TB
-			WHERE PD_STATUS='Y'
-		]]>
-		<include refid="search"></include>
-	</select>
-	
-	<select id="getCategoryList" resultType="category">
-		<![CDATA[
-			SELECT
-					CTGY_CD,
-					CTGY_PARENT,
-					CTGY_NM
-			FROM CATEGORY_TB
-			WHERE CTGY_PARENT=#{ctgyParent}
-		]]>
-	</select>
-
-	<select id="getProduct" parameterType="Integer" resultType="product">
-		<![CDATA[
-			SELECT
-					PD_NO,
-					CTGY_PTCD,
-					CTGY_PTNM,
-					CTGY_CD,
-					CTGY_NM,
-					PD_NM,
-					PD_TAG,
-					PD_SALE,
-					PD_STATUS,
-					PD_IMG,
-					PD_DETL,
-					PD_STOCK,
-					PD_ENLDT,
-					PD_UPDDT
-			FROM PRODUCTS_TB
-			WHERE PD_NO=#{pdNo}
-		]]>
-	</select>
 
 </mapper>

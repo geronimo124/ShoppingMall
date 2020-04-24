@@ -6,43 +6,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.NoticeMapper">
 
 	<select id="getNoticeList" resultType="notice">
-		<![CDATA[
+		
 			SELECT *
 			FROM
 			(
 				SELECT N.*, ROW_NUMBER() OVER(ORDER BY NT_NO DESC) AS RNUM
 				FROM NOTICE_TB N
 				WHERE 1=1
-		]]>
+
 				<include refid="search"></include>		
-		<![CDATA[
+				
 			)
 			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
-		]]>
+			
 	</select>
 	
 	<select id="countNoticeList" resultType="int">
-		<![CDATA[
+
 			SELECT COUNT(*)
 			FROM NOTICE_TB
 			WHERE 1=1
-		]]>
-		<include refid="search"></include>
+
+			<include refid="search"></include>
+		
 	</select>
 	
-	<sql id="search">
-		<if test="searchType != null">
-			<if test="searchType == 't'.toString()">
-				AND NT_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-			</if>
-			<if test="searchType == 'c'.toString()">
-				AND NT_CONTENT LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-			</if>
-		</if>
-	</sql>
-	
 	<insert id="writeNotice" parameterType="notice">
-		<![CDATA[
+
 			INSERT INTO NOTICE_TB (
 					NT_NO,
 					ADM_ID,
@@ -55,11 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					  FROM NOTICE_TB ),
 					#{admId}, #{admNm}, #{ntTitle}, #{ntContent}
 			)
-		]]>
+
 	</insert>
 	
 	<select id="readNotice" resultType="notice">
-		<![CDATA[
+
 			SELECT
 					NT_NO,
 					ADM_ID,
@@ -69,24 +59,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					NT_DT
 			FROM NOTICE_TB
 			WHERE NT_NO=#{ntNo}
-		]]>
+
 	</select>
 	
 	<delete id="deleteNotice">
-		<![CDATA[
+
 			DELETE FROM NOTICE_TB
 			WHERE NT_NO=#{ntNo}
-		]]>
+
 	</delete>
 	
 	<update id="modifyNotice" parameterType="notice">
-		<![CDATA[
+
 			UPDATE NOTICE_TB
 			SET
 					NT_TITLE=#{ntTitle},
 					NT_CONTENT=#{ntContent}
 			WHERE NT_NO=#{ntNo}
-		]]>
+
 	</update>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				AND NT_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND NT_CONTENT LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
 	
 </mapper>

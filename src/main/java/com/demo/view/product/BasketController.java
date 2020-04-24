@@ -24,6 +24,21 @@ import com.demo.biz.member.MemberVO;
 import com.demo.biz.product.BasketService;
 import com.demo.biz.product.BasketVO;
 
+/**
+ * @ClassName : BasketController.java
+ * @Description : 사용자 장바구니 관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/basket")
 public class BasketController {
@@ -37,6 +52,12 @@ public class BasketController {
 		this.service = service;
 	}
 	
+    /**
+     * 장바구니 목록 페이지.
+     *
+     * @param
+     * @return URL
+     */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public void basket(HttpSession session, Model model) {
 		
@@ -48,6 +69,12 @@ public class BasketController {
 		
 	}
 	
+    /**
+     * 장바구니에 상품을 등록한다.
+     *
+     * @param BasketVO 장바구니 정보
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public ResponseEntity<String> insertBasket(HttpSession session, @RequestBody BasketVO vo) {
@@ -61,17 +88,27 @@ public class BasketController {
 		vo.setMbId(member.getMbId());
 		
 		try {
+			
 			if(service.insertBasket(vo))
 				entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 			else
 				entity = new ResponseEntity<String>("FAIL", HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
 		}
 
 		return entity;
 	}
 	
+    /**
+     * 장바구니에서 상품을 삭제한다.
+     *
+     * @param pdNo 상품 고유번호
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/delete/{pdNo}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteBasket(HttpSession session, @PathVariable Integer pdNo) {
@@ -87,15 +124,27 @@ public class BasketController {
 		logger.info(vo.toString());
 		
 		try {
+			
 			service.deleteBasket(vo);
+			
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		return entity;
+		
 	}
 	
+    /**
+     * 장바구니의 내용을 수정한다.
+     *
+     * @param BasketVO 장바구니 정보
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public ResponseEntity<String> modifyBasket(HttpSession session, BasketVO vo) {
@@ -109,15 +158,27 @@ public class BasketController {
 		logger.info(vo.toString());
 		
 		try {
+			
 			service.updateBasket(vo);
+			
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		return entity;
+		
 	}
 	
+    /**
+     * 사용자가 선택한 장바구니들을 삭제한다.
+     *
+     * @param List 장바구니 고유번호 목록
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/deleteChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteCheckedBasket(HttpSession session, @RequestParam("basketList[]") List<Integer> basketList) {
@@ -132,15 +193,27 @@ public class BasketController {
 		map.put("basketList", basketList);
 		
 		try {
+			
 			service.deleteBaskets(map);
+			
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		return entity;
+		
 	}
 	
+    /**
+     * 사용자가 선택한 장바구니 내용을 수정한다.
+     *
+     * @param List 장바구니 정보 목록
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/modifyChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> modifyCheckedBasket(HttpSession session, @RequestBody List<BasketVO> basketList) {
@@ -153,13 +226,19 @@ public class BasketController {
 			vo.setMbId(member.getMbId());
 		
 		try {
+			
 			service.updateBaskets(basketList);
+			
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		return entity;
+		
 	}
 	
 }

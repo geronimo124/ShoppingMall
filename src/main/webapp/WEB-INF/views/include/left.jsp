@@ -46,18 +46,6 @@
 		<!-- Sidebar Menu -->
 		<ul class="sidebar-menu" data-widget="tree">
 			<li class="header"><spring:message code="message.include.left.menu"/></li>
-			<!-- <li class="active">
-				<a href="#">
-					<i class="fa fa-link"></i>
-					<span>Link</span>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class="fa fa-link"></i>
-					<span>Another Link</span>
-				</a>
-			</li> -->
 			
 			<c:forEach items="${mainCateList}" var="categoryVO">
 				<li class="treeview mainCate">

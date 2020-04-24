@@ -18,6 +18,21 @@ import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.product.QnaService;
 import com.demo.biz.product.QnaVO;
 
+/**
+ * @ClassName : AdminQnaController.java
+ * @Description : 관리자 QNA관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/admin/product/qna")
 public class AdminQnaController {
@@ -31,6 +46,12 @@ public class AdminQnaController {
 		this.service = service;
 	}
 	
+    /**
+     * QNA 목록 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public void qnaList(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -47,6 +68,12 @@ public class AdminQnaController {
 		
 	}
 	
+    /**
+     * 관리자가 QNA 답변을 등록한다.
+     *
+     * @param QnaVO QNA 정보
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public ResponseEntity<String> insertQna(@RequestBody QnaVO vo) {
@@ -66,6 +93,12 @@ public class AdminQnaController {
 		return entity;
 	}
 	
+    /**
+     * 관리자가 QNA 글을 삭제한다.
+     *
+     * @param QnaVO QNA 정보
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteQna(@RequestBody QnaVO vo) {
@@ -86,6 +119,12 @@ public class AdminQnaController {
 		
 	}
 	
+    /**
+     * 관리자가 QNA 글을 수정한다.
+     *
+     * @param QnaVO QNA 정보
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/modify", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyQna(@RequestBody QnaVO vo) {

@@ -26,15 +26,15 @@ public interface OrderDAO {
     /**
      * 주문할 상품을 장바구니 목록에서 가져온다.
      *
-     * @param Map<String, Object> - 아이디와 주문할 상품 목록
-     * @return List<BasketVO> - 주문할 장바구니 상품 목록
+     * @param Map 아이디와 주문할 상품 목록
+     * @return List - 주문할 장바구니 상품 목록
      */
 	public List<BasketVO> getBaskets(Map<String, Object> map);
 	
     /**
      * 주문테이블에 주문 정보를 입력한다.
      *
-     * @param OrderVO - 주문 정보
+     * @param OrderVO 주문 정보
      * @return
      */
 	public void insertOrder(OrderVO vo);
@@ -42,7 +42,7 @@ public interface OrderDAO {
     /**
      * 방금 주문한 주문 번호를 가져온다.
      *
-     * @param OrderVO - 주문 정보
+     * @param OrderVO 주문 정보
      * @return 주문 번호
      */
 	public int getOrderNo(OrderVO vo);
@@ -50,7 +50,7 @@ public interface OrderDAO {
     /**
      * 주문상세테이블에 주문상세 정보를 입력한다.
      *
-     * @param OrderDetailVO - 주문상세 정보
+     * @param OrderDetailVO 주문상세 정보
      * @return
      */
 	public void insertOrderDetail(OrderDetailVO vo);
@@ -58,7 +58,7 @@ public interface OrderDAO {
     /**
      * 주문한 상품을 장바구니 테이블에서 삭제한다.
      *
-     * @param Map<String, Object> - 아이디와 주문한 상품 목록
+     * @param Map 아이디와 주문한 상품 목록
      * @return
      */
 	public void deleteBaskets(Map<String, Object> map);
@@ -66,7 +66,7 @@ public interface OrderDAO {
     /**
      * 주문이 완료되면 회원의 적립금을 업데이트한다.
      *
-     * @param MemberVO - 회원 정보
+     * @param MemberVO 회원 정보
      * @return
      */
 	public void updateMileage(MemberVO vo);
@@ -74,15 +74,15 @@ public interface OrderDAO {
     /**
      * 주문한 모든 주문 목록을 가져온다.
      *
-     * @param mbId - 회원 ID
-     * @return List<OrderVO> - 주문 목록
+     * @param mbId 회원 ID
+     * @return List - 주문 목록
      */
 	public List<OrderVO> getOrderList(String mbId);
 	
     /**
      * 회원 정보를 가져온다.
      *
-     * @param mbId - 회원 ID
+     * @param mbId 회원 ID
      * @return MemberVO - 회원 정보
      */
 	public MemberVO getMember(String mbId);
@@ -90,7 +90,7 @@ public interface OrderDAO {
     /**
      * 상품 정보를 가져온다.
      *
-     * @param pdNo - 상품 고유번호
+     * @param pdNo 상품 고유번호
      * @return BasketVO - 상품 정보
      */
 	public BasketVO getProduct(Integer pdNo);
@@ -98,15 +98,15 @@ public interface OrderDAO {
     /**
      * 주문한 모든 주문상세 목록을 가져온다.
      *
-     * @param ordNo - 주문 고유번호
-     * @return List<BasketVO> - 주문한 주문상세 목록
+     * @param ordNo 주문 고유번호
+     * @return List - 주문한 주문상세 목록
      */
 	public List<BasketVO> getOrderDetail(Integer ordNo);
 	
     /**
      * 주문한 주문 정보를 가져온다.
      *
-     * @param ordNo - 주문 고유번호
+     * @param ordNo 주문 고유번호
      * @return OrderVO - 주문 정보
      */
 	public OrderVO getOrder(Integer ordNo);
@@ -114,23 +114,23 @@ public interface OrderDAO {
     /**
      * 검색된 모든 주문 목록을 가져온다.
      *
-     * @param OrderSearchCriteria - 검색 정보
-     * @return List<OrderVO> - 검색된 주문 목록
+     * @param OrderSearchCriteria 검색 정보
+     * @return List - 검색된 주문 목록
      */
 	public List<OrderVO> getAllOrderList(OrderSearchCriteria cri);
 	
     /**
      * 검색된 주문의 총 개수를 목록으로 가져온다.
      *
-     * @param OrderSearchCriteria - 검색 정보
-     * @return List<OrderVO> - 검색된 주문 목록
+     * @param OrderSearchCriteria 검색 정보
+     * @return List - 검색된 주문 목록
      */
 	public List<OrderVO> countAllOrderList(OrderSearchCriteria cri);
 	
     /**
      * 해당 상품의 재고 개수를 반환한다.
      *
-     * @param pdNo - 상품 고유번호
+     * @param pdNo 상품 고유번호
      * @return 상품 재고
      */
 	public int getStock(Integer pdNo);
@@ -138,7 +138,7 @@ public interface OrderDAO {
     /**
      * 선택된 주문의 정보를 수정한다.
      *
-     * @param OrderVO - 주문 정보
+     * @param OrderVO 주문 정보
      * @return
      */
 	public void modifyCheckedOrder(OrderVO order);
@@ -146,7 +146,7 @@ public interface OrderDAO {
     /**
      * 선택된 주문을 주문테이블에서 삭제한다.
      *
-     * @param List<Integer> - 주문 고유번호 목록
+     * @param List 주문 고유번호 목록
      * @return
      */
 	public void deleteOrders(List<Integer> orderList);

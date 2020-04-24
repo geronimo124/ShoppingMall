@@ -31,6 +31,21 @@ import com.demo.biz.member.MemberService;
 import com.demo.biz.member.MemberVO;
 import com.demo.view.common.SessionListener;
 
+/**
+ * @ClassName : MemberController.java
+ * @Description : 사용자 회원정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -39,10 +54,15 @@ public class MemberController {
 	
 	private final MemberService service;
 	
-	// Facebook OAuth
+	/**
+	 * Facebook OAuth 
+	 */
 	@Autowired
 	private FacebookConnectionFactory connectionFactory;
-	
+
+	/**
+	 * Facebook OAuth 
+	 */
 	@Autowired
 	private OAuth2Parameters oAuth2Parameters;
 	
@@ -51,11 +71,18 @@ public class MemberController {
 		this.service = service;
 	}
 	
+    /**
+     * 사용자 로그인 페이지. 로그인이 되어있다면 홈페이지로 이동한다.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session, Model model) {
 		
 		logger.info("login page");
 		
+		// Facebook OAuth
 		OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
 		String facebook_url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);
 
@@ -68,6 +95,12 @@ public class MemberController {
 		
 	}
 	
+    /**
+     * 사용자 계정으로 로그인한다.
+     *
+     * @param LoginDTO 입력 ID, PW
+     * @return URL
+     */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(LoginDTO dto, Model model) {
 		
@@ -77,11 +110,13 @@ public class MemberController {
 		
 		SessionListener listener = SessionListener.getInstance();
 		
+		// 입력한 ID나 PW가 다를 경우
 		if(vo == null) {
 			model.addAttribute("msg", "FAIL");
 			return;
 		}
 		
+		// 이미 로그인 된 계정일 경우
 		if(listener.isUsing(dto.getId())) {
 			model.addAttribute("msg", "DUPLICATE");
 			return;
@@ -90,6 +125,12 @@ public class MemberController {
 		model.addAttribute("member", vo);
 	}
 	
+    /**
+     * Facebook OAuth를 통해 계정 정보를 가져와 로그인한다.
+     *
+     * @param
+     * @return URL
+     */
 	@RequestMapping(value = "/facebookSignInCallback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String facebookSignInCallback(@RequestParam String code, Model model) throws Exception {
 
@@ -113,10 +154,8 @@ public class MemberController {
 				logger.info("accessToken is expired. refresh token = {}", accessToken);
 			};
 
-
 			Connection<Facebook> connection = connectionFactory.createConnection(accessGrant);
 			Facebook facebook = connection == null ? new FacebookTemplate(accessToken) : connection.getApi();
-			//UserOperations userOperations = facebook.userOperations();
 
 			try
 
@@ -124,13 +163,16 @@ public class MemberController {
 				String [] fields = { "id", "email",  "name"};
 				User userProfile = facebook.fetchObject("me", User.class, fields);
 				
+				// 이메일 정보를 이용하여 로그인
 				MemberVO vo = service.loginMember(userProfile.getEmail());
 				
+				// 입력한 ID나 PW가 다를 경우
 				if(vo == null) {
 					model.addAttribute("msg", "FAIL");
 					return "login";
 				}
 				
+				// 이미 로그인 된 계정일 경우
 				if(listener.isUsing(vo.getMbId())) {
 					model.addAttribute("msg", "DUPLICATE");
 					return "login";
@@ -153,6 +195,12 @@ public class MemberController {
 
 	}
 	
+    /**
+     * 사용자 계정을 로그아웃 한다.
+     *
+     * @param
+     * @return redirect URL
+     */
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logoutMember(HttpSession session) {
 		
@@ -165,7 +213,12 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	
+    /**
+     * 회원가입 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void signup() {
 	
@@ -173,17 +226,28 @@ public class MemberController {
 	
 	}
 	
+    /**
+     * 사용자가 회원가입을 한다.
+     *
+     * @param MemberVO 회원 정보
+     * @return redirect JSP
+     */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String signup(MemberVO vo, HttpSession session, RedirectAttributes rttr) {
 		
 		logger.info(vo.toString());
 		
 		try {
+			
 			service.insertMember(vo);
+			
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			rttr.addFlashAttribute("msg", "FAIL");
+			
 			return "redirect:register";
+			
 		}
 		
 		session.setAttribute("temp", vo.getMbId());
@@ -191,6 +255,12 @@ public class MemberController {
 		return "redirect:authkey";
 	}
 	
+    /**
+     * 회원가입 시, 아이디가 중복되는지 확인한다.
+     *
+     * @param mbId 회원 ID
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "/checkId/{mbId}", method = RequestMethod.GET)
 	public ResponseEntity<String> checkId(@PathVariable("mbId") String mbId) {
@@ -213,6 +283,12 @@ public class MemberController {
 		return entity;
 	}
 	
+    /**
+     * 이메일 인증 페이지.
+     *
+     * @param id 회원 ID
+     * @return JSP
+     */
 	@RequestMapping(value = "/authkey", method = RequestMethod.GET)
 	public void authkey(String id, HttpSession session, Model model) {
 		
@@ -221,6 +297,13 @@ public class MemberController {
 		model.addAttribute("temp", id);
 	}
 	
+    /**
+     * 메일로 수신한 인증 코드를 통해 회원 인증을 한다.
+     *
+     * @param mbAuth 회원 인증코드
+     * @param mbId 회원 ID
+     * @return redirect JSP
+     */
 	@RequestMapping(value = "/authkey", method = RequestMethod.POST)
 	public String authkey(@RequestParam("mbAuth") String mbAuth, @RequestParam("mbId") String mbId, RedirectAttributes rttr, HttpSession session) {
 		
@@ -229,15 +312,28 @@ public class MemberController {
 		MemberVO vo = service.getMember(mbId);
 		
 		if(mbAuth.equals(vo.getMbAuthkey())) {
+			
 			rttr.addFlashAttribute("msg", "SUCCESS");
+			
 			service.updateAuth(mbId);
+			
 			return "redirect:login";
+			
 		} else {
+			
 			rttr.addFlashAttribute("msg", "FAIL");
+			
 			return "redirect:authkey";
+			
 		}
 	}
 	
+    /**
+     * 회원정보 수정 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
 	public void modifyMember() {
 		
@@ -245,12 +341,19 @@ public class MemberController {
 		
 	}
 
+    /**
+     * 사용자 회원 정보를 수정한다.
+     *
+     * @param MemberVO 회원 정보
+     * @return JSP
+     */
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String modifyMember(HttpSession session, MemberVO vo) {
 		
 		logger.info(vo.toString());
 		
 		service.updateMember(vo);
+		
 		session.setAttribute("member", vo);
 		
 		return "/home";

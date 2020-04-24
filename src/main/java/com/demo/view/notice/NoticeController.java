@@ -14,6 +14,21 @@ import com.demo.biz.common.PageMaker;
 import com.demo.biz.common.SearchCriteria;
 import com.demo.biz.notice.NoticeService;
 
+/**
+ * @ClassName : NoticeController.java
+ * @Description : 사용자 공지사항 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
@@ -27,6 +42,12 @@ public class NoticeController {
 		this.service = service;
 	}
 	
+    /**
+     * 공지사항 목록 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listNotice(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 		
@@ -44,6 +65,12 @@ public class NoticeController {
 		return "/notice/list";
 	}
 	
+    /**
+     * 공지사항 읽기 페이지.
+     *
+     * @param ntNo 공지사항 고유번호
+     * @return JSP
+     */
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public void readNotice(@RequestParam("ntNo") Integer ntNo, @ModelAttribute("cri") SearchCriteria cri, Model model) {
 
@@ -53,6 +80,12 @@ public class NoticeController {
 		
 	}
 	
+    /**
+     * 회사 소개 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/company", method = RequestMethod.GET)
 	public void company() {
 		

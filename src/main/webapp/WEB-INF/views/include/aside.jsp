@@ -6,10 +6,7 @@
 	<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
 		<li class="active"><a href="#chat-tab"
 			data-toggle="tab"><i class="fa fa-wechat"></i></a></li>
-			<!-- 
-		<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i
-				class="fa fa-gears"></i></a></li>
-			 -->
+			
 	</ul>
 	<!-- Tab panes -->
 	<h3 class="text-center"><spring:message code="message.include.aside.title"/></h3>

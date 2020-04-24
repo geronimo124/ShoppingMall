@@ -203,22 +203,6 @@
 			
 			$('#btnCancel').on('click', () => {
 
-				// 파일 업로드한거 삭제 요망
-				/*
-				$(".uploadedList .delbtn").each((index, item) => {
-					
-					$.ajax({
-						   url:"/deleteFile",
-						   type:"post",
-						   data: {fileName:$(item).attr("href")},
-						   dataType:"text",
-						   success:() => {}
-
-					 });
-					
-				});
-				*/
-
 				self.location = "list"
 					+ "?page=" + $('#page').val()
 					+ "&perPageNum=" + $('#perPageNum').val()
@@ -226,62 +210,7 @@
 					+ "&keyword=" + $('#keyword').val();
 				
 			});
-
-/*
-			$(".fileDrop").on('drop', (event) => {
-				event.preventDefault();
-				
-				let files = event.originalEvent.dataTransfer.files;
-				
-				let file = files[0];
-
-				let formData = new FormData();
-				
-				formData.append("file", file);	
-				
-				
-				$.ajax({
-					  url: '/uploadAjax',
-					  data: formData,
-					  dataType:'text',
-					  processData: false,
-					  contentType: false,
-					  type: 'POST',
-					  success: (data) => {
-						  
-						  let fileInfo = getFileInfo(data);
-						  
-						  let html = template(fileInfo);
-						  
-						  $("#subCategory").append(html);
-					  }
-					});	
-			});
-*/
-
-
-			////////////////////// 이거 구현 해야됨 //////////////////////////
-			/*
-			$("#registerForm").submit(function(event){
-				event.preventDefault();
-
-				
-
-				$(this).get(0).submit();
-				
-				var that = $(this);
-				var str ="";
-				$(".uploadedList .delbtn").each(function(index){
-					 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href") +"'> ";
-				});
-				
-				that.append(str);
-				
-				that.get(0).submit();
-				//alert(that.get(0));
-				
-			});
-			*/
+			
 			$('#mainCategory').on('change', function() {
 
 				let mainCategory = $(this).val();

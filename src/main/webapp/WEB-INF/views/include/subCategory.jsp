@@ -18,9 +18,6 @@
 						<c:if test="${subCategory.cate_code ne productVO.cate_code}">${subCategory.cate_name}</c:if>		
 					</c:otherwise>
 				</c:choose>
-				
-				<%-- <c:if test="${subCategory.cate_code eq productVO.cate_code}"><b>${subCategory.cate_name}</b></c:if>
-				<c:if test="${subCategory.cate_code ne productVO.cate_code}">${subCategory.cate_name}</c:if> --%>
 			</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 		</li>

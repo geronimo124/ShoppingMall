@@ -24,7 +24,7 @@ public interface EmailService {
     /**
      * 이메일을 전송한다.
      *
-     * @param EmailDTO - 입력한 이메일 정보
+     * @param EmailDTO 입력한 이메일 정보
      * @return
      */
 	public void sendMail(EmailDTO dto);
@@ -32,7 +32,7 @@ public interface EmailService {
     /**
      * 입력받은 ID의 사용자 정보를 가져온다.
      *
-     * @param mbId - 사용자 ID
+     * @param mbId 사용자 ID
      * @return MemberVO - 사용자 정보
      */
 	public MemberVO getMember(String mbId);
@@ -41,7 +41,7 @@ public interface EmailService {
      * 모든 사용자 정보를 가져온다.
      *
      * @param
-     * @return List<MemberVO> - 모든 사용자 정보 리스트
+     * @return List - 모든 사용자 정보 리스트
      */
 	public List<MemberVO> getAllMembers();
 	

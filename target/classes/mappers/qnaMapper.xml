@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.QnaMapper">
 
 	<insert id="insertQna" parameterType="qna" statementType="CALLABLE">
+	
 		{ call proc_qna_insert(#{qnaGroup, mode=IN, jdbcType=INTEGER, javaType=Integer},
 							   #{qnaStep, mode=IN, jdbcType=INTEGER, javaType=Integer},
 							   #{qnaLevel, mode=IN, jdbcType=INTEGER, javaType=Integer},
@@ -15,10 +16,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							   #{qnaWriter, mode=IN, jdbcType=VARCHAR, javaType=String},
 							   #{qnaContent, mode=IN, jdbcType=VARCHAR, javaType=String})
 		}
+		
 	</insert>
 	
 	<select id="listQna" parameterType="map" resultType="qna">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
@@ -27,42 +29,83 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				WHERE PD_NO=#{pdNo}
 			)
 			WHERE RNUM BETWEEN #{cri.pageStart} AND (#{cri.pageStart} + #{cri.perPageNum} - 1)
-		]]>
+
 	</select>
 	
 	<select id="countQnaList" resultType="int">
-		<![CDATA[
+
 			SELECT COUNT(*)
 			FROM QNA_TB
 			WHERE PD_NO=#{pdNo}
-		]]>
+
 	</select>
 
 	<select id="getQnaList" resultType="qna">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
 				SELECT Q.*, P.PD_NM, ROW_NUMBER() OVER(ORDER BY QNA_GROUP, QNA_STEP) AS RNUM
 				FROM QNA_TB Q, PRODUCTS_TB P
 				WHERE Q.PD_NO = P.PD_NO
-		]]>
+
 				<include refid="search"></include>		
-		<![CDATA[
+
 			)
 			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
-		]]>
+
 	</select>
 	
 	<select id="countQnaListCri" resultType="int">
-		<![CDATA[
+
 			SELECT COUNT(*)
 			FROM QNA_TB Q, PRODUCTS_TB P
 			WHERE Q.PD_NO = P.PD_NO
-		]]>
-		<include refid="search"></include>
+
+			<include refid="search"></include>
+		
 	</select>
 	
+	<delete id="deleteQna" parameterType="qna" statementType="CALLABLE">
+	
+		{ call proc_qna_delete(#{qnaGroup, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaStep, mode=IN, jdbcType=INTEGER, javaType=Integer},
+							   #{qnaLevel, mode=IN, jdbcType=INTEGER, javaType=Integer})
+		}
+		
+	</delete>
+	
+	<select id="checkChild" parameterType="qna" resultType="qna">
+
+			SELECT
+					QNA_NO,
+					QNA_GROUP,
+					QNA_STEP,
+					QNA_LEVEL,
+					MB_ID,
+					PD_NO,
+					QNA_TITLE,
+					QNA_WRITER,
+					QNA_CONTENT,
+					QNA_DT
+			FROM QNA_TB
+			WHERE
+					QNA_GROUP=#{qnaGroup} 
+					AND QNA_STEP=#{qnaStep}+1 
+					AND QNA_LEVEL=#{qnaLevel}+1
+
+	</select>
+	
+	<update id="modifyQna" parameterType="qna">
+
+			UPDATE QNA_TB 
+			SET 
+					QNA_TITLE=#{qnaTitle},
+					QNA_CONTENT=#{qnaContent}
+			WHERE QNA_NO=#{qnaNo}
+
+	</update>
+
 	<sql id="search">
 		<if test="searchType != null">
 			<if test="searchType == 'n'.toString()">
@@ -82,43 +125,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 	</sql>
-	
-	<delete id="deleteQna" parameterType="qna" statementType="CALLABLE">
-		{ call proc_qna_delete(#{qnaGroup, mode=IN, jdbcType=INTEGER, javaType=Integer},
-							   #{qnaStep, mode=IN, jdbcType=INTEGER, javaType=Integer},
-							   #{qnaLevel, mode=IN, jdbcType=INTEGER, javaType=Integer})
-		}
-	</delete>
-	
-	<select id="checkChild" parameterType="qna" resultType="qna">
-		<![CDATA[
-			SELECT
-					QNA_NO,
-					QNA_GROUP,
-					QNA_STEP,
-					QNA_LEVEL,
-					MB_ID,
-					PD_NO,
-					QNA_TITLE,
-					QNA_WRITER,
-					QNA_CONTENT,
-					QNA_DT
-			FROM QNA_TB
-			WHERE
-					QNA_GROUP=#{qnaGroup} 
-					AND QNA_STEP=#{qnaStep}+1 
-					AND QNA_LEVEL=#{qnaLevel}+1
-		]]>
-	</select>
-	
-	<update id="modifyQna" parameterType="qna">
-		<![CDATA[
-			UPDATE QNA_TB 
-			SET 
-					QNA_TITLE=#{qnaTitle},
-					QNA_CONTENT=#{qnaContent}
-			WHERE QNA_NO=#{qnaNo}
-		]]>
-	</update>
-	
+		
 </mapper>

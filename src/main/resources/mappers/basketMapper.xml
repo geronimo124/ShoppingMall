@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.BasketMapper">
 	
 	<select id="getBaskets" resultType="basket">
-		<![CDATA[
+	
 			SELECT
 					B.PD_NO,
 					P.PD_IMG,
@@ -18,22 +18,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE 
 					P.PD_NO = B.PD_NO 
 					AND B.MB_ID=#{mbId}
-		]]>
+					
 	</select>
 	
 	<insert id="insertBasket">
-		<![CDATA[
+	
 			INSERT INTO BASKETS_TB (
 					MB_ID, 
 					PD_NO,
 					BSK_QTY
 			)
 			VALUES (#{mbId}, #{pdNo}, #{bskQty})
-		]]>
+			
 	</insert>
 	
 	<select id="getBasket" parameterType="basket" resultType="basket">
-		<![CDATA[
+	
 			SELECT
 					MB_ID,
 					PD_NO,
@@ -42,40 +42,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE
 					MB_ID=#{mbId}
 					AND PD_NO=#{pdNo}
-		]]>	
+					
 	</select>
 	
 	<delete id="deleteBasket" parameterType="basket">
-		<![CDATA[
+
 			DELETE FROM BASKETS_TB
 			WHERE
 					MB_ID=#{mbId}
 					AND PD_NO=#{pdNo}
-		]]>			
+					
 	</delete>
 	
 	<update id="updateBasket" parameterType="basket">
-		<![CDATA[
+
 			UPDATE BASKETS_TB
 			SET BSK_QTY=#{bskQty}
 			WHERE
 					MB_ID=#{mbId}
 					AND PD_NO=#{pdNo}
-		]]>		
+
 	</update>
 	
 	<delete id="deleteBaskets" parameterType="map">
-		<![CDATA[
+
 			DELETE FROM BASKETS_TB
 			WHERE
 					MB_ID=#{mbId}
 					AND
 						PD_NO
 						IN
-		]]>
-		<foreach item="item" index="index" collection="basketList" open="(" separator="," close=")">
-			#{item}
-		</foreach>
+
+			<foreach item="item" index="index" collection="basketList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		
 	</delete>
 	
 </mapper>

@@ -14,6 +14,21 @@ import com.demo.biz.common.EmailDTO;
 import com.demo.biz.member.EmailService;
 import com.demo.biz.member.MemberVO;
 
+/**
+ * @ClassName : AdminEmailController.java
+ * @Description : 관리자 이메일관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/admin/email")
 public class AdminEmailController {
@@ -27,6 +42,12 @@ public class AdminEmailController {
 		this.service = service;
 	}
 	
+    /**
+     * 이메일 전송 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "/send", method = RequestMethod.GET)
 	public void sendMail() {
 		
@@ -34,6 +55,12 @@ public class AdminEmailController {
 		
 	}
 	
+    /**
+     * 관리자 계정으로 이메일을 전송한다.
+     *
+     * @param EmailDTO 이메일 정보
+     * @return JSP
+     */
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
 	public String sendMail(EmailDTO dto, Model model) {
 		
@@ -41,6 +68,7 @@ public class AdminEmailController {
 		
 		dto.setSenderMail("jeonilbae@naver.com");
 		
+		// 모든 사용자에게 메일을 전송할 경우
 		if(dto.getReceiveMail().equals("To: All Members")) {
 		
 			try {
@@ -58,7 +86,10 @@ public class AdminEmailController {
 				model.addAttribute("msg", "FAIL");
 			}
 			
-		} else {
+		} 
+		
+		// 특정 사용자에게 메일을 전송할 경우
+		else {
 			
 			try {
 				MemberVO member = service.getMember(dto.getReceiveMail());

@@ -242,6 +242,7 @@
 		$(() => {
 			
 			let maxMile = '${member.mbMile}';
+			
 			let sum = 0;
 			
 			$('.tag').each(function() {
@@ -251,9 +252,9 @@
 			$('#sum').html(sum);
 			$('#total').html(sum + 2500);
 
-			$('#useMile').on('focusout', function() {
+			$('#useMile').on('keyup', function() {
 
-				if(maxMile < $(this).val()) {
+				if(maxMile < parseInt($(this).val())) {
 					alert('적립금을 초과하여 사용할 수 없습니다.');
 					$(this).val(0);
 				} else {
@@ -320,34 +321,6 @@
 					}
 
 			 	});
-				/*
-				var i;
-				for(i = 0; i < products.length; i++) {
-
-					let product = products[i];
-					let quantity = quantities[i];
-					
-					$.ajax({
-							url:"/order/getStock/" + product,
-						    type:"get",
-						    dataType:"text",
-						    success: function(data) {
-							    if(data < quantity) {
-							    	alert('재고가 부족합니다');
-							    	event.preventDefault();
-								}
-							}
-
-					 });
-					
-				}
-
-				alert('으아아');
-				*/
-				/*
-				
-
-				*/
 			});
 
 		});

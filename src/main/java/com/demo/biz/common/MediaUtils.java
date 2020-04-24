@@ -37,7 +37,7 @@ public class MediaUtils {
     /**
      * 매핑된 미디어타입을 반환한다.
      *
-     * @param type - 파일의 확장자
+     * @param type 파일의 확장자
      * @return MediaType - 확장자와 일치하는 미디어타입
      */
 	public static MediaType getMediaType(String type){

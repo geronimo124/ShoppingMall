@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.demo.mapper.OrderMapper">
 
 	<select id="getBaskets" parameterType="map" resultType="basket">
-		<![CDATA[
+
 			SELECT
 					B.PD_NO,
 					P.PD_IMG,
@@ -21,14 +21,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					AND
 						B.PD_NO 
 						IN
-		]]>
-		<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
-			#{item}
-		</foreach>
+
+			<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+
 	</select>
 	
 	<select id="getProduct" resultType="basket">
-		<![CDATA[
+
 			SELECT
 					PD_NO,
 					PD_IMG,
@@ -37,11 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					PD_SALE
 			FROM PRODUCTS_TB
 			WHERE PD_NO=#{pdNo}
-		]]>		
+
 	</select>
 	
 	<insert id="insertOrder" parameterType="order">
-		<![CDATA[
+
 			INSERT INTO ORDERS_TB (
 					ORD_NO,
 					MB_ID,
@@ -59,18 +60,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					#{mbId}, #{ordNm}, #{ordZip}, #{ordAddr}, #{ordDeaddr},
 					#{ordPhone}, #{ordPrice}, #{ordMsg}
 			)
-		]]>
+
 	</insert>
 	
 	<select id="getOrderNo" resultType="int">
-		<![CDATA[
+
 			SELECT MAX(ORD_NO)
 			FROM ORDERS_TB
-		]]>
+
 	</select>
 	
 	<insert id="insertOrderDetail" parameterType="orderDetail">
-		<![CDATA[
+
 			INSERT INTO ORDER_DETAIL_TB (
 					ORD_NO,
 					PD_NO,
@@ -78,33 +79,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					ORDDT_PRICE
 			)
 			VALUES (#{ordNo}, #{pdNo}, #{orddtQty}, #{orddtPrice})
-		]]>
+
 	</insert>
 	
 	<delete id="deleteBaskets" parameterType="map">
-		<![CDATA[
+
 			DELETE FROM BASKETS_TB
 			WHERE
 					MB_ID=#{mbId}
 					AND
 						PD_NO
 						IN
-		]]>
-		<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
-			#{item}
-		</foreach>
+
+			<foreach item="item" index="index" collection="productList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			
 	</delete>
 	
 	<update id="updateMileage" parameterType="member">
-		<![CDATA[
+
 			UPDATE MEMBERS_TB
 			SET MB_MILE=#{mbMile}
 			WHERE MB_ID=#{mbId}
-		]]>
+
 	</update>
 	
 	<select id="getOrderList" resultType="order">
-		<![CDATA[
+
 			SELECT
 					O.ORD_NO,
 					O.ORD_DT,
@@ -117,11 +119,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					AND OD.PD_NO = P.PD_NO
 					AND O.MB_ID=#{mbId}
 			ORDER BY O.ORD_NO DESC
-		]]>	
+
 	</select>
 	
 	<select id="getMember" resultType="member">
-		<![CDATA[
+
 			SELECT
 					MB_ID,
 				   	MB_PW,
@@ -139,11 +141,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					MB_AUTH
 			FROM MEMBERS_TB
 			WHERE MB_ID=#{mbId}
-		]]>	
+
 	</select>
 	
 	<select id="getOrderDetail" resultType="basket">
-		<![CDATA[
+
 			SELECT
 					P.PD_NO,
 					P.PD_IMG,
@@ -154,11 +156,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE
 					OD.PD_NO = P.PD_NO
 					AND OD.ORD_NO=#{ordNo}
-		]]>	
+
 	</select>
 	
 	<select id="getOrder" resultType="order">
-		<![CDATA[
+
 			SELECT
 					ORD_NO,
 					MB_ID,
@@ -173,11 +175,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					ORD_DT
 			FROM ORDERS_TB
 			WHERE ORD_NO=#{ordNo}
-		]]>	
+
 	</select>
 	
 	<select id="getAllOrderList" resultType="order">
-		<![CDATA[
+
 			SELECT *
 			FROM
 			(
@@ -192,13 +194,65 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				WHERE
 						O.ORD_NO = OD.ORD_NO
 						AND OD.PD_NO = P.PD_NO
-		]]>	
-		<include refid="search"></include>	
-		<![CDATA[
+
+				<include refid="search"></include>	
+
 			)
 			WHERE RNUM BETWEEN #{pageStart} AND (#{pageStart} + #{perPageNum} - 1)
-		]]>	
+
 	</select>
+	
+	<select id="getStock" resultType="int">
+
+			SELECT PD_STOCK
+			FROM PRODUCTS_TB
+			WHERE PD_NO=#{pdNo}
+
+	</select>
+	
+	<select id="countAllOrderList" resultType="order">
+
+			SELECT *
+			FROM
+			(
+				SELECT
+						O.ORD_NO,
+						O.ORD_DT,
+						P.PD_NM,
+						O.ORD_PRICE,
+						O.ORD_STATUS, 
+						ROW_NUMBER() OVER(ORDER BY O.ORD_NO DESC) AS RNUM
+				FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
+				WHERE
+						O.ORD_NO = OD.ORD_NO
+						AND OD.PD_NO = P.PD_NO
+
+				<include refid="search"></include>	
+			
+			)
+			
+	</select>
+	
+	<update id="modifyCheckedOrder" parameterType="order">
+
+			UPDATE ORDERS_TB
+			SET ORD_STATUS=#{ordStatus}
+			WHERE ORD_NO=#{ordNo}
+
+	</update>
+	
+	<delete id="deleteOrders" parameterType="list">
+
+			DELETE FROM ORDERS_TB
+			WHERE
+					ORD_NO
+					IN 
+
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			
+	</delete>
 	
 	<sql id="search">
 		<if test="searchMap.get('searchNumKey'.toString()) != null">
@@ -244,55 +298,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 	</sql>
-	
-	<select id="getStock" resultType="int">
-		<![CDATA[
-			SELECT PD_STOCK
-			FROM PRODUCTS_TB
-			WHERE PD_NO=#{pdNo}
-		]]>	
-	</select>
-	
-	<select id="countAllOrderList" resultType="order">
-		<![CDATA[
-			SELECT *
-			FROM
-			(
-				SELECT
-						O.ORD_NO,
-						O.ORD_DT,
-						P.PD_NM,
-						O.ORD_PRICE,
-						O.ORD_STATUS, 
-						ROW_NUMBER() OVER(ORDER BY O.ORD_NO DESC) AS RNUM
-				FROM ORDERS_TB O, ORDER_DETAIL_TB OD, PRODUCTS_TB P
-				WHERE
-						O.ORD_NO = OD.ORD_NO
-						AND OD.PD_NO = P.PD_NO
-		]]>	
-		<include refid="search"></include>	
-		<![CDATA[
-			)
-		]]>	
-	</select>
-	
-	<update id="modifyCheckedOrder" parameterType="order">
-		<![CDATA[
-			UPDATE ORDERS_TB
-			SET ORD_STATUS=#{ordStatus}
-			WHERE ORD_NO=#{ordNo}
-		]]>	
-	</update>
-	
-	<delete id="deleteOrders" parameterType="list">
-		<![CDATA[
-			DELETE FROM ORDERS_TB
-			WHERE
-					ORD_NO
-					IN 
-		]]>	
-		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-	</delete>
 </mapper>

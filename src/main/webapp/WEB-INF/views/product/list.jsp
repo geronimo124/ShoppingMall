@@ -43,11 +43,15 @@
 											alt="Attachment">
 										</a>
 										<div>
-											<p><strong>${productVO.pdNm }</strong></p>
+											<p>
+												<strong>${productVO.pdNm }</strong>
+											</p>
 											<div
 												class="d-flex justify-content-between align-items-center">
-												<fmt:formatNumber value="${productVO.pdTag }" pattern="#,###" />원 <small class="text-muted">Sale
-													: <fmt:formatNumber value="${productVO.pdSale }" type="percent" /></small>
+												<fmt:formatNumber value="${productVO.pdTag }"
+													pattern="#,###" />
+												원 <small class="text-muted">Sale : <fmt:formatNumber
+														value="${productVO.pdSale }" type="percent" /></small>
 											</div>
 										</div>
 									</div>
@@ -60,31 +64,31 @@
 			</section>
 			<div>
 
-								<div class="text-center">
-									<ul class="pagination">
+				<div class="text-center">
+					<ul class="pagination">
 
-										<c:if test="${pageMaker.prev}">
-											<li><a
-												href="list${pageMaker.makeQuery(pageMaker.startPage - 1) }&ctgyCd=${ctgyCd}">&laquo;</a></li>
-										</c:if>
+						<c:if test="${pageMaker.prev}">
+							<li><a
+								href="list${pageMaker.makeQuery(pageMaker.startPage - 1) }&ctgyCd=${ctgyCd}">&laquo;</a></li>
+						</c:if>
 
-										<c:forEach begin="${pageMaker.startPage }"
-											end="${pageMaker.endPage }" var="idx">
-											<li
-												<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-												<a href="list${pageMaker.makeQuery(idx)}&ctgyCd=${ctgyCd}">${idx}</a>
-											</li>
-										</c:forEach>
+						<c:forEach begin="${pageMaker.startPage }"
+							end="${pageMaker.endPage }" var="idx">
+							<li
+								<c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+								<a href="list${pageMaker.makeQuery(idx)}&ctgyCd=${ctgyCd}">${idx}</a>
+							</li>
+						</c:forEach>
 
-										<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-											<li><a
-												href="list${pageMaker.makeQuery(pageMaker.endPage +1) }&ctgyCd=${ctgyCd}">&raquo;</a></li>
-										</c:if>
+						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+							<li><a
+								href="list${pageMaker.makeQuery(pageMaker.endPage +1) }&ctgyCd=${ctgyCd}">&raquo;</a></li>
+						</c:if>
 
-									</ul>
-								</div>
+					</ul>
+				</div>
 
-							</div>
+			</div>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->

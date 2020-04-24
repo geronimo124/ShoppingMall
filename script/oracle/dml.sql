@@ -1,6 +1,6 @@
 
 -- 관리자(pw:1234)
-INSERT INTO ADMIN_TB VALUES('admin', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '관리자', sysdate);
+INSERT INTO ADMIN_TB VALUES('admin1', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '관리자', sysdate);
 
 -- 회원
 INSERT INTO MEMBERS_TB VALUES('hello', '$2a$10$gze1/SwRC7AVCOMhJ6VC0ealimLNQfaQykGKbBi7vKERGHuD5zsye', '김인사', '인사맨',

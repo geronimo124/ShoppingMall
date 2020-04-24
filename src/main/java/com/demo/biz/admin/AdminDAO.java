@@ -22,7 +22,7 @@ public interface AdminDAO {
     /**
      * 입력받은 값으로 로그인을 시도한다.
      *
-     * @param LoginDTO - 사용자에게 입력받은 ID와 PW
+     * @param dto 사용자에게 입력받은 ID와 PW
      * @return AdminVO - 로그인을 시도한 관리자 정보
      */
 	public AdminVO loginAdmin(LoginDTO dto);
@@ -30,7 +30,7 @@ public interface AdminDAO {
     /**
      * 접속 일자를 업데이트한다.
      *
-     * @param LoginDTO - 사용자에게 입력받은 ID와 PW
+     * @param LoginDTO 사용자에게 입력받은 ID와 PW
      * @return
      */
 	public void updateConDate(LoginDTO dto);

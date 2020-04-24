@@ -22,7 +22,7 @@ public interface MessageService {
     /**
      * 메시지를 전송한 후 성공과 실패를 반환한다.
      *
-     * @param MessageVO - 전송할 메시지 정보
+     * @param MessageVO 전송할 메시지 정보
      * @return 메시지 송신의 결과
      */
 	public boolean sendMsg(MessageVO vo);
@@ -30,15 +30,15 @@ public interface MessageService {
     /**
      * 해당 회원이 받았지만 읽지않은 모든 메시지를 가져온다.
      *
-     * @param mbId - 회원 ID
-     * @return List<MessageVO> - 미확인 메시지 리스트
+     * @param mbId 회원 ID
+     * @return List - 미확인 메시지 리스트
      */
 	public List<MessageVO> getMsgs(String mbId);
 	
     /**
      * 선택한 메시지의 상세 정보를 가져온다.
      *
-     * @param msgNo - 메시지 고유번호
+     * @param msgNo 메시지 고유번호
      * @return MessageVO - 메시지 정보
      */
 	public MessageVO getMsg(Integer msgNo);

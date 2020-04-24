@@ -23,6 +23,21 @@ import com.demo.biz.order.OrderSearchCriteria;
 import com.demo.biz.order.OrderService;
 import com.demo.biz.order.OrderVO;
 
+/**
+ * @ClassName : AdminOrderController.java
+ * @Description : 관리자 주문관리 정보에 대한 컨트롤러 클래스
+ * @Modification Information
+ *
+ *    수정일			수정자		수정내용
+ *    -------		-------     -------------------
+ *    2020. 4. 23.	전일배		최초생성
+ *
+ * @author 전일배
+ * @since 2020. 4. 23.
+ * @version
+ * @see
+ *
+ */
 @Controller
 @RequestMapping("/admin/order")
 public class AdminOrderController {
@@ -36,11 +51,23 @@ public class AdminOrderController {
 		this.service = service;
 	}
 	
+    /**
+     * 주문조회 페이지.
+     *
+     * @param
+     * @return JSP
+     */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public void mainOrder() {
 		
 	}
 	
+    /**
+     * 주문조회 페이지. 다중 검색 페이징 기능을 이용한다.
+     *
+     * @param Map 여러 검색 정보
+     * @return JSP
+     */
 	@RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public void listOrder(@RequestParam Map<String, String> paramMap, Model model) {
 		
@@ -63,6 +90,12 @@ public class AdminOrderController {
 		
 	}
 
+    /**
+     * 주문 상세보기 페이지.
+     *
+     * @param ordNo 주문 고유번호
+     * @return JSP
+     */
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public void detailOrder(Integer ordNo, Model model) {
 		
@@ -71,6 +104,12 @@ public class AdminOrderController {
 		
 	}
 	
+    /**
+     * 관리자가 선택된 주문정보를 수정한다.
+     *
+     * @param List 주문정보 목록
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "modifyChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> modifyCheckedOrder(@RequestBody List<OrderVO> orderList) {
@@ -89,6 +128,12 @@ public class AdminOrderController {
 		return entity;
 	}
 	
+    /**
+     * 관리자가 선택된 주문정보를 삭제한다.
+     *
+     * @param List 주문 고유번호 목록
+     * @return ResponseEntity - 성공 여부
+     */
 	@ResponseBody
 	@RequestMapping(value = "deleteChecked", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteCheckedOrder(HttpServletRequest request, @RequestParam("orderList[]") List<Integer> orderList) {

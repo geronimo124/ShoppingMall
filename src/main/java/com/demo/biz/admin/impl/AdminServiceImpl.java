@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
     /**
      * 입력받은 값을 이용, 비밀번호를 암호화하여 로그인을 시도한다.
      *
-     * @param LoginDTO - 사용자에게 입력받은 ID와 PW
+     * @param LoginDTO 사용자에게 입력받은 ID와 PW
      * @return AdminVO - 로그인을 시도한 관리자 정보
      */
 	@Override
